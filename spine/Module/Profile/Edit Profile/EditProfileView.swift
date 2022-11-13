@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct EditProfileView: View {
+    private enum ImageSelectionType {
+        case profile, background, none
+    }
+
     @Environment(\.dismiss) var dismiss
+    private let screenWidth = UIScreen.main.bounds.size.width
 
     @StateObject var editProfileViewModel: EditProfileViewModel = .init()
     @State private var showAction = false
+    @State private var selectionType: ImageSelectionType = .none
     @State var selectedMode: MediaMode?
     
     //2
@@ -20,21 +26,66 @@ struct EditProfileView: View {
             VStack(spacing: 0) {
                 LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
                 ScrollView(showsIndicators: false) {
-                    VStack(spacing: 20) {
-                        if let image = editProfileViewModel.images.first {
-                            AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
-                        } else if let image: UIImage = editProfileViewModel.userImage {
-                            AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
-                        } else {
-                            CircularBorderedProfileView(image: "ic_background", size: 100, borderWidth: 3, showShadow: true, showBadge: false)
+                    VStack {
+                        ZStack(alignment: .bottom) {
+                            if let bgImage = editProfileViewModel.backgroundImages.first {
+                                Image(uiImage: bgImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: screenWidth - 30, height: screenWidth/3)
+                                    .cornerRadius(10)
+                                    .onTapGesture {
+                                        selectionType = .background
+                                        showAction = true
+                                    }
+                            } else if let bgImage = editProfileViewModel.backgroundImage {
+                                Image(uiImage: bgImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: screenWidth - 30, height: screenWidth/3)
+                                    .cornerRadius(10)
+                                    .onTapGesture {
+                                        selectionType = .background
+                                        showAction = true
+                                    }
+                            } else {
+                                Image(ImageName.podcastDetailBanner)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: screenWidth - 30, height: screenWidth/3)
+                                    .cornerRadius(10)
+                                    .onTapGesture {
+                                        selectionType = .background
+                                        showAction = true
+                                    }
+                            }
+                            if let image = editProfileViewModel.images.first {
+                                AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
+                                    .offset(y: 40)
+                                    .onTapGesture {
+                                        selectionType = .profile
+                                        showAction = true
+                                    }
+                            } else if let image: UIImage = editProfileViewModel.userImage {
+                                AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
+                                    .offset(y: 40)
+                                    .onTapGesture {
+                                        selectionType = .profile
+                                        showAction = true
+                                    }
+                            } else {
+                                CircularBorderedProfileView(image: "ic_background", size: 100, borderWidth: 3, showShadow: true, showBadge: false)
+                                    .offset(y: 40)
+                                    .onTapGesture {
+                                        selectionType = .profile
+                                        showAction = true
+                                    }
+                            }
                         }
-                        
+                        .padding(.bottom, 40)
                         Title4(title: "ADD PROFILE IMAGE", fColor: .gray)
                     }
                     .padding(.vertical, 20)
-                    .onTapGesture {
-                        showAction = true
-                    }
 
                     if editProfileViewModel.professionalAcc == false {
                         StandardUser(professionalAcc: $editProfileViewModel.professionalAcc)
@@ -65,12 +116,9 @@ struct EditProfileView: View {
                 }
             })
             .sheet(item: $selectedMode) { mode in
-                switch mode {
-                case .camera:
-                    ImagePicker(sourceType: .camera, selectedImages: $editProfileViewModel.images)
-                case .gallary:
-                    ImagePicker(sourceType: .photoLibrary, selectedImages: $editProfileViewModel.images)
-                }
+                let imageSource: UIImagePickerController.SourceType = mode == .camera ? .camera : .photoLibrary
+                let imageBinding: Binding<[UIImage]> = selectionType == .background ? $editProfileViewModel.backgroundImages : $editProfileViewModel.images
+                ImagePicker(sourceType: imageSource, selectedImages: imageBinding)
             }
             .actionSheet(isPresented: $showAction) { () -> ActionSheet in
                 ActionSheet(title: Text("Choose mode"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {

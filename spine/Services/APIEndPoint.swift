@@ -27,6 +27,7 @@ enum APIEndPoint: String {
     case editProfile = "/profile/profileEdit"
     case userDetails = "/userDetails"
     case uploadProfilePic = "/profile/userProfilePic"
+    case uploadBgProfilePic = "profile/userBgProfilePic"
     case updateUserEmail = "requestToChangeEmail"
 
     case messagingAuthorization = "eventMessagingAutho"

@@ -14,6 +14,7 @@ class EditProfileViewModel: ObservableObject {
     @State var practnrProfile = UserProfileViewModel()
     @State var companyProfile = UserProfileViewModel()
     @Published var images: [UIImage] = []
+    @Published var backgroundImages: [UIImage] = []
 
     private(set) var alertTitle: String?
     private(set) var alertMessage: String?
@@ -26,10 +27,12 @@ class EditProfileViewModel: ObservableObject {
     
     @Published var showAlert = false
     @Published var userImage: UIImage?
-    
+    @Published var backgroundImage: UIImage?
+
     private var userDetails: UserDetailResponse? {
         didSet {
             getUserImage()
+            getUserBackgroundImage()
         }
     }
     
@@ -37,15 +40,29 @@ class EditProfileViewModel: ObservableObject {
     private func getUserImage() {
         if let userDetails: UserDetailResponse = userDetails, let imageURL: URL = .init(string: "\(userDetails.image)\(userDetails.data.userImage)") {
             imageCancellable?.cancel()
-            let session: URLSession = .shared
-            let imagePublisher = session.dataTaskPublisher(for: imageURL)
-                .map { (data, response) in UIImage(data: data) }
-                .replaceError(with: nil)
-                .receive(on: DispatchQueue.main)
+            let imagePublisher = imageDownloadTask(with: imageURL)
             imageCancellable = imagePublisher.sink { [weak self] imgObj in
                 self?.userImage = imgObj
             }
         }
+    }
+    
+    private var bgImageCancellable: AnyCancellable?
+    private func getUserBackgroundImage() {
+        if let userDetails: UserDetailResponse = userDetails, let imageURL: URL = .init(string: "\(userDetails.image)\(userDetails.data.bgImage)") {
+            bgImageCancellable?.cancel()
+            let imagePublisher = imageDownloadTask(with: imageURL)
+            bgImageCancellable = imagePublisher.sink { [weak self] imgObj in
+                self?.backgroundImage = imgObj
+            }
+        }
+    }
+
+    private func imageDownloadTask(with imageURL: URL) -> any Publisher<UIImage?, Never> {
+        URLSession.shared.dataTaskPublisher(for: imageURL)
+            .map { (data, response) in UIImage(data: data) }
+            .replaceError(with: nil)
+            .receive(on: DispatchQueue.main)
     }
     
     func getUserProfile() {
@@ -127,12 +144,26 @@ class EditProfileViewModel: ObservableObject {
 
         self.showLoader = true
         if let userImageObj: UIImage = images.first {
-            serviceProvider.updateUserImage(userImageObj) { [weak self] apiRes in
-                print(apiRes)
-                self?.updateUserInformation(requestParams)
+            serviceProvider.updateUserImage(userImageObj) { [weak self] imgUploadRes in
+                print(imgUploadRes)
+                if let userBgImageObj: UIImage = self?.backgroundImages.first {
+                    self?.serviceProvider.updateUserBackgroundImage(userBgImageObj) { [weak self] bgUploadRes in
+                        print(bgUploadRes)
+                        self?.updateUserInformation(requestParams)
+                    }
+                } else {
+                    self?.updateUserInformation(requestParams)
+                }
             }
         } else {
-            updateUserInformation(requestParams)
+            if let userBgImageObj: UIImage = backgroundImages.first {
+                serviceProvider.updateUserBackgroundImage(userBgImageObj) { [weak self] bgUploadRes in
+                    print(bgUploadRes)
+                    self?.updateUserInformation(requestParams)
+                }
+            } else {
+                updateUserInformation(requestParams)
+            }
         }
     }
     
