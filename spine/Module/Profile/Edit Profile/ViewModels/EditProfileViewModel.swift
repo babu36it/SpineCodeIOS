@@ -13,17 +13,20 @@ class EditProfileViewModel: ObservableObject {
     let serviceProvider = EditProfileService(httpUtility: HttpUtility())
     @State var practnrProfile = UserProfileViewModel()
     @State var companyProfile = UserProfileViewModel()
-    
+    @Published var images: [UIImage] = []
+
+    private(set) var alertTitle: String?
+    private(set) var alertMessage: String?
+    private(set) var shouldDismiss: Bool = false
+
     @Published var profileType: BusinessProfileType = .practitioner
     @Published var professionalAcc = false
     @Published var apiResponse: EditProfileResponseModel?
     @Published var showLoader = false
     
-    @Published var showError = false
-    @Published var showSuccess = false
-    @Published var errorMessage: String?
-
+    @Published var showAlert = false
     @Published var userImage: UIImage?
+    
     private var userDetails: UserDetailResponse? {
         didSet {
             getUserImage()
@@ -61,8 +64,9 @@ class EditProfileViewModel: ObservableObject {
                     if error == .tokenExpired {
                         self.getUserProfile()
                     } else {
-                        self.errorMessage = "Error in retrieving the profile data"
-                        self.showError = true
+                        self.alertTitle = "Oo Oh!"
+                        self.alertMessage = "Error in retrieving the profile data"
+                        self.showAlert = true
                     }
                 }
             }
@@ -70,90 +74,86 @@ class EditProfileViewModel: ObservableObject {
     }
     
     func saveProfile() {
-        var requestParams: [String: Any] = [:]
-        if profileType == .company {
-            guard !companyProfile.name.isBlank else {
-                errorMessage = "Please input valid name"
-                showError = true
-                return
-            }
-            guard !companyProfile.displayName.isBlank else {
-                errorMessage = "Please input valid display name"
-                showError = true
-                return
-            }
-            guard !companyProfile.aboutMe.isBlank else {
-                errorMessage = "Please input valid status"
-                showError = true
-                return
-            }
+        let userProfileObj: UserProfileViewModel = profileType == .company ? companyProfile : practnrProfile
 
+        var errorMessage: String?
+        if userProfileObj.name.isEmpty {
+            errorMessage = "Please enter valid name"
+        } else if userProfileObj.displayName.isEmpty {
+            errorMessage = "Please enter valid display name"
+        } else if userProfileObj.aboutMe.isEmpty {
+            errorMessage = "Please enter valid status"
+        }
+        guard errorMessage == nil else {
+            alertTitle = "Invalid Input"
+            alertMessage = errorMessage
+            showAlert = true
+            return
+        }
+        
+        var requestParams: [String: Any] = [:]
+        
+        requestParams["name"] = userProfileObj.name
+        requestParams["display_name"] = userProfileObj.displayName
+        requestParams["bio"] = userProfileObj.aboutMe
+        requestParams["category"] = userProfileObj.category
+        requestParams["interested"] = userProfileObj.interestedIn
+
+        if professionalAcc {
             requestParams["account_type"] = "1"
             requestParams["listing_type"] = profileType == .company ? "2" : "1"
-            requestParams["name"] = companyProfile.name
-            requestParams["display_name"] = companyProfile.displayName
-            requestParams["bio"] = companyProfile.aboutMe
-            requestParams["category"] = companyProfile.category
-            requestParams["interested"] = companyProfile.interestedIn
-            requestParams["offer_desciption"] = companyProfile.offerDescription
-            requestParams["key_perfomance"] = companyProfile.perfArea
-            requestParams["desease_pattern"] = companyProfile.diseasePattrns
-            requestParams["languages"] = companyProfile.language
-            requestParams["qualification"] = companyProfile.qualification
+            requestParams["offer_desciption"] = userProfileObj.offerDescription
+            requestParams["key_perfomance"] = userProfileObj.perfArea
+            requestParams["desease_pattern"] = userProfileObj.diseasePattrns
+            requestParams["languages"] = userProfileObj.language
+            requestParams["qualification"] = userProfileObj.qualification
             
-            requestParams["company_name"] = companyProfile.companyName
-            requestParams["street_1"] = companyProfile.street1
-            requestParams["street_2"] = companyProfile.street2
-            requestParams["street_3"] = companyProfile.street3
-            requestParams["city"] = companyProfile.city
-            requestParams["postcode"] = companyProfile.postCode
-            requestParams["country"] = companyProfile.country
-            requestParams["metaverse_address"] = companyProfile.metaverseAddrs
-            requestParams["website"] = companyProfile.website
-            requestParams["contact_email"] = companyProfile.email
-            requestParams["business_phone"] = "\(companyProfile.phoneCode)\(companyProfile.phoneNumber)"
-            requestParams["business_mobile"] = "\(companyProfile.mobileCode)\(companyProfile.mobileNumber)"
+            requestParams["company_name"] = userProfileObj.companyName
+            requestParams["street_1"] = userProfileObj.street1
+            requestParams["street_2"] = userProfileObj.street2
+            requestParams["street_3"] = userProfileObj.street3
+            requestParams["city"] = userProfileObj.city
+            requestParams["postcode"] = userProfileObj.postCode
+            requestParams["country"] = userProfileObj.country
+            requestParams["metaverse_address"] = userProfileObj.metaverseAddrs
+            requestParams["website"] = userProfileObj.website
+            requestParams["contact_email"] = userProfileObj.email
+            requestParams["business_phone"] = "\(userProfileObj.phoneCode)\(userProfileObj.phoneNumber)"
+            requestParams["business_mobile"] = "\(userProfileObj.mobileCode)\(userProfileObj.mobileNumber)"
         } else {
-            guard !practnrProfile.name.isBlank else {
-                errorMessage = "Please input valid name"
-                showError = true
-                return
-            }
-            guard !practnrProfile.displayName.isBlank else {
-                errorMessage = "Please input valid display name"
-                showError = true
-                return
-            }
-            guard !practnrProfile.aboutMe.isBlank else {
-                errorMessage = "Please input valid status"
-                showError = true
-                return
-            }
-
             requestParams["account_type"] = "0"
             requestParams["listing_type"] = "0"
-            requestParams["name"] = practnrProfile.name
-            requestParams["display_name"] = practnrProfile.displayName
-            requestParams["bio"] = practnrProfile.aboutMe
-            requestParams["category"] = practnrProfile.category
-            requestParams["interested"] = practnrProfile.interestedIn
         }
 
         self.showLoader = true
-        serviceProvider.saveProfile(postData: requestParams) { result in
+        if let userImageObj: UIImage = images.first {
+            serviceProvider.updateUserImage(userImageObj) { [weak self] apiRes in
+                print(apiRes)
+                self?.updateUserInformation(requestParams)
+            }
+        } else {
+            updateUserInformation(requestParams)
+        }
+    }
+    
+    private func updateUserInformation(_ userInfo: [String: Any]) {
+        serviceProvider.saveProfile(postData: userInfo) { result in
             DispatchQueue.main.async { [weak self] in
                 self?.showLoader = false
                 switch result {
                 case .success(let value):
                     self?.apiResponse = value
-                    self?.showSuccess = true
+                    self?.alertTitle = "Success"
+                    self?.alertMessage = value.message
+                    self?.shouldDismiss = true
+                    self?.showAlert = true
                 case .failure(let error):
-                    print("error")
                     if error == .tokenExpired {
                         self?.saveProfile()
                     } else {
-                        self?.errorMessage = "Error in saving the profile data"
-                        self?.showError = true
+                        self?.alertTitle = "Oo Oh!"
+                        self?.alertMessage = "Error in saving the profile data"
+                        self?.showAlert = true
                     }
                 }
             }

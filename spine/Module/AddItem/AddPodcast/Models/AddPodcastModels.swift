@@ -82,10 +82,14 @@ struct LanguageListResponse: Codable {
 }
 
 struct LanguageModel: Codable {
-    let name: String
-    let id: String
-}
+    let id, name, iso6391, status: String
 
+    enum CodingKeys: String, CodingKey {
+        case id, name
+        case iso6391 = "iso_639-1"
+        case status
+    }
+}
 
 struct ItemModel: Identifiable {
     let name: String

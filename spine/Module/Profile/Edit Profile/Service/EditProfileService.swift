@@ -5,7 +5,7 @@
 //  Created by Mac on 09/11/22.
 //
 
-import Foundation
+import UIKit
 
 struct EditProfileResponseModel: Codable {
     let status: Bool
@@ -17,6 +17,18 @@ struct EditProfileService {
     
     init(httpUtility: HttpUtility) {
         self.httpUtility = httpUtility
+    }
+    
+    func updateUserImage(_ image: UIImage, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
+        guard let uploadProfilePicURL = URL(string: APIEndPoint.uploadProfilePic.urlStr) else {
+            completion(.failure(.invalidUrl))
+            return
+        }
+        if let mediaObj = Media(withImage: image, forKey: "image") {
+            httpUtility.uploadFiles([mediaObj], toURL: uploadProfilePicURL) { result in
+                completion(result)
+            }
+        }
     }
     
     func fetchUserDetails(completion: @escaping(_ result: Result<UserDetailResponse, CHError>)-> Void) {

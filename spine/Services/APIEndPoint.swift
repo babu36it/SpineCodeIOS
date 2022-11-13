@@ -12,11 +12,13 @@ let baseUrl = "https://thespiritualnetwork.com/api/v1/"
 enum APIEndPoint: String {
     case loginUsers = "login/loginUsers"
     case getEventTypes = "events/getEventTypes"
+    
     //add podcast
     case validateRss = "podcasts/validateRss"
     case rssEmailOTPVerification = "podcasts/sendEmailOTPVerification"
     case getRssData = "/podcasts/getRssData"
-    case languages = "/languages"
+    case languages = "languages"
+    case currency = "currency"
     case getPodcastsCategory = "/podcasts/getPodcastsCategory"
     case getPodcastsSubcategoryByIds = "/podcasts/getPodcastsSubcategoryByIds"
     case addPodcastsSubcategory = "/podcasts/addPodcastsSubcategory"
@@ -24,8 +26,15 @@ enum APIEndPoint: String {
     
     case editProfile = "/profile/profileEdit"
     case userDetails = "/userDetails"
+    case uploadProfilePic = "/profile/userProfilePic"
+    case updateUserEmail = "requestToChangeEmail"
+
+    case messagingAuthorization = "eventMessagingAutho"
+    
+    case mobileNotifications = "mobileAllNotification"
+    case emailNotifications = "emailAllNotification"
 
     var urlStr: String {
-        return baseUrl + self.rawValue
+        return baseUrl + rawValue
     }
 }

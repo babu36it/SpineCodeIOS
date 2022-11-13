@@ -27,6 +27,9 @@ struct OTPVC: View {
     var userID : String = ""
     var verificationCode : String = ""
     
+    var emailId: String?
+    var password: String?
+    
     var viewModel : LoginViewModel? = LoginViewModel()
     
     var btnBack: some View { Button(action: {
@@ -54,7 +57,7 @@ struct OTPVC: View {
                         .padding(.top, 20)
                         .padding(.bottom, 10)
                     HStack {
-                        OTPWithKAPin(numberofElement: 4) { currentCode in
+                        OTPWithKAPin(numberofElement: 6) { currentCode in
                             print("currentCode =====> \(currentCode)")
                             print(userID)
                         } didFinishCallback: { OTPNumber in
@@ -150,12 +153,22 @@ struct OTPVC: View {
         print(otpNumber)
         self.hideKeyboard()
         viewModel?.verifyOTP(userID: userID){ (response, status) in
-            if response?.status == true {
-                if let message  = response?.message{
-                   ShowToast.show(toatMessage: message)
-                    self.selection = 2
-                    AppUtility.shared.redirectToMainScreen()
-                   
+            if response?.status == true { // resign in
+                let request = signInRequestModel()
+                request.email = emailId
+                request.password = password
+                request.devicetoken = "saaadasd"
+                request.devicetype = "iPhone"
+                
+                viewModel?.signIn(request) { (response, status) in
+                    if response?.status == true {
+                        AppUtility.shared.redirectToMainScreen()
+                        if let message  = response?.message{
+                            ShowToast.show(toatMessage: message)
+                        }
+                    } else if let message  = response?.message{
+                        ShowToast.show(toatMessage: message)
+                    }
                 }
             }else{
                if let message  = response?.message{

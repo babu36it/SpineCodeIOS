@@ -122,7 +122,7 @@ struct RegisterVC: View {
                                 print(newValue)
                             }
                         
-                        NavigationLink(destination: OTPVC(userID:userID,verificationCode:verificationCode), tag: 1, selection: self.$selection) {
+                        NavigationLink(destination: OTPVC(userID: userID, verificationCode: verificationCode, emailId: emailId, password: password), tag: 1, selection: self.$selection) {
                             EmptyView()
                         }
                         
@@ -306,10 +306,10 @@ extension RegisterVC {
                        ShowToast.show(toatMessage: message)
                         self.selection = 1
                     }
-//                    if let response = response {
-//                        self.userID = response.data?.usersId ?? ""
-//                        self.verificationCode = response.data?.verificationPin ?? ""
-//                    }
+                    if let signInData = response?.data {
+                        self.userID = signInData.usersId ?? ""
+                        self.verificationCode = signInData.verificationPin ?? ""
+                    }
                 }else{
                   
                     if let message  = response?.message{

@@ -1,0 +1,26 @@
+//
+//  ChangeEmailService.swift
+//  spine
+//
+//  Created by Mac on 12/11/22.
+//
+
+import Foundation
+
+struct ChangeEmailService {
+    private let httpUtility: HttpUtility
+    
+    init(httpUtility: HttpUtility) {
+        self.httpUtility = httpUtility
+    }
+    
+    func updateUserEmail(_ toEmail: String, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
+        guard let updateEmail = URL(string: APIEndPoint.updateUserEmail.urlStr) else {
+            completion(.failure(.invalidUrl))
+            return
+        }
+        httpUtility.requestData(httpMethod: .post, postData: ["email": toEmail], url: updateEmail, resultType: EditProfileResponseModel.self) { result in
+            completion(result)
+        }
+    }
+}

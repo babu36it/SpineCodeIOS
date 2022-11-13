@@ -10,10 +10,7 @@ import SwiftUI
 struct AccountView: View {
     @Environment(\.dismiss) var dismiss
     @AppStorage("isDarkMode") private var isDarkModeOn = false
-    @AppStorage("saveEvent") private var saveEvent = false
-    @AppStorage("SettingLanguage") private var selectedLanguage = ""
-    @AppStorage("SettingCurrency") private var selectedCurrency = ""
-    
+    @AppStorage("saveEvent") private var saveEvent = false    
     
     var body: some View {
         VStack(spacing: 0) {
@@ -29,19 +26,17 @@ struct AccountView: View {
                     NavTitle(title: "Messaging")
                 }
                 
-                NavigationLink(destination: SaveEventsInCalndrView(saveEvent: $saveEvent)) {
+                NavigationLink(destination: SaveEventsInCalndrView()) {
                     NavTitle(title: "Save events to calender")
                         .badge(saveEvent ? "On": "Off")
                 }
                 
-                NavigationLink(destination: ItemSelectionView(selectedItem: $selectedLanguage, itemType: .language)) {
+                NavigationLink(destination: SelectionListView(listViewModel: LanguagesListViewModel())) {
                     NavTitle(title: "Language")
-                        .badge(selectedLanguage)
                 }
                 
-                NavigationLink(destination: ItemSelectionView(selectedItem: $selectedCurrency, itemType: .currency)) {
+                NavigationLink(destination: SelectionListView(listViewModel: CurrenciesListViewModel())) {
                     NavTitle(title: "Currency")
-                        .badge(selectedCurrency)
                 }
                 
                 Toggle("Dark mode", isOn: $isDarkModeOn)

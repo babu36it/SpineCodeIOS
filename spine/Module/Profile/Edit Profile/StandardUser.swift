@@ -15,14 +15,7 @@ enum BusinessProfileType {
 struct StandardUser: View {
     
     @EnvironmentObject var practnrProfile: UserProfileViewModel
-//    @State var name = ""
-//    @State var displayName = ""
-//    @State var aboutMe = ""
-//    @State var interestedIn = ""
-//    @State var categories = ""
-    
     @Binding var professionalAcc: Bool
-    
     
     var body: some View {
         VStack(spacing: 30) {

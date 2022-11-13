@@ -12,15 +12,13 @@ enum NotificationMode: String {
     case email = "EMAIL"
 }
 
-
 struct NotificationTypeView: View {
     @Environment(\.dismiss) var dismiss
     @State var selectedTab: NotificationMode = .mobile
     let width = UIScreen.main.bounds.width
-    @StateObject var notifModel = NotificationModel()
+    @StateObject var notifModel = NotificationTypeViewModel()
     
     @State var pushNotification = false
-    
     
     var body: some View {
         VStack(spacing: 0) {
@@ -42,39 +40,94 @@ struct NotificationTypeView: View {
             
             if selectedTab == .mobile {
                 ScrollView(showsIndicators: false) {
-                    CustomToggleBG(value: $notifModel.push, title: "Get Push Notifications", subtitle: C.StaticText.notf_push)
+                    CustomToggleBG(value: $notifModel.pushNotifications.notifications, title: "Get Push Notifications", subtitle: C.StaticText.notf_push)
+                        .onChange(of: notifModel.pushNotifications.notifications) { newValue in
+                            notifModel.updateMobileNotificationStatus()
+                    }
                     LazyVStack {
                         NotificationHeader()
-                        CustomToggle(value: $notifModel.likes, title: "Someone likes my stuff", subtitle: C.StaticText.notf_likes)
-                        CustomToggle(value: $notifModel.comments, title: "Someone comments on my stuff", subtitle: C.StaticText.notf_comments)
-                        CustomToggle(value: $notifModel.eventUpdate, title: "Event updates and reminders", subtitle: C.StaticText.notf_eventUpdate)
-                        CustomToggle(value: $notifModel.eventReminder, title: "Saved event reminders", subtitle: C.StaticText.notf_eventRemindr)
-                        CustomToggle(value: $notifModel.msgMob, title: "Messages", subtitle: C.StaticText.notf_msgMob)
-                        CustomToggle(value: $notifModel.activity, title: "Activity from members I follow", subtitle: C.StaticText.notf_activity)
-                        CustomToggle(value: $notifModel.impulse, title: "New Spine Impulses", subtitle: C.StaticText.notf_impulse)
-                        CustomToggle(value: $notifModel.post, title: "Posts from every member", subtitle: C.StaticText.notf_post)
-                    }.padding(.horizontal, 20)
-                }.padding(.top, 20)
+                        CustomToggle(value: $notifModel.pushNotifications.likes, title: "Someone likes my stuff", subtitle: C.StaticText.notf_likes)
+                            .onChange(of: notifModel.pushNotifications.likes) { newValue in
+                                notifModel.updateMobileNotificationStatus()
+                        }
+                        CustomToggle(value: $notifModel.pushNotifications.comments, title: "Someone comments on my stuff", subtitle: C.StaticText.notf_comments)
+                            .onChange(of: notifModel.pushNotifications.comments) { newValue in
+                                notifModel.updateMobileNotificationStatus()
+                        }
+                        CustomToggle(value: $notifModel.pushNotifications.updatesAndReminders, title: "Event updates and reminders", subtitle: C.StaticText.notf_eventUpdate)
+                            .onChange(of: notifModel.pushNotifications.updatesAndReminders) { newValue in
+                                notifModel.updateMobileNotificationStatus()
+                        }
+                        CustomToggle(value: $notifModel.pushNotifications.eventReminders, title: "Saved event reminders", subtitle: C.StaticText.notf_eventRemindr)
+                            .onChange(of: notifModel.pushNotifications.eventReminders) { newValue in
+                                notifModel.updateMobileNotificationStatus()
+                        }
+                        CustomToggle(value: $notifModel.pushNotifications.messages, title: "Messages", subtitle: C.StaticText.notf_msgMob)
+                            .onChange(of: notifModel.pushNotifications.messages) { newValue in
+                                notifModel.updateMobileNotificationStatus()
+                        }
+                        CustomToggle(value: $notifModel.pushNotifications.follows, title: "Activity from members I follow", subtitle: C.StaticText.notf_activity)
+                            .onChange(of: notifModel.pushNotifications.follows) { newValue in
+                                notifModel.updateMobileNotificationStatus()
+                        }
+                        CustomToggle(value: $notifModel.pushNotifications.impulses, title: "New Spine Impulses", subtitle: C.StaticText.notf_impulse)
+                            .onChange(of: notifModel.pushNotifications.impulses) { newValue in
+                                notifModel.updateMobileNotificationStatus()
+                        }
+                        CustomToggle(value: $notifModel.pushNotifications.anyPosts, title: "Posts from every member", subtitle: C.StaticText.notf_post)
+                            .onChange(of: notifModel.pushNotifications.anyPosts) { newValue in
+                                notifModel.updateMobileNotificationStatus()
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                }
+                .padding(.top, 20)
+                .onAppear(perform: {
+                    notifModel.getPushNotificationStatus()
+                })
             } else {
                 ScrollView(showsIndicators: false) {
-                    CustomToggleBG(value: $notifModel.email, title: "Get Email Updates", subtitle: C.StaticText.notf_email)
+                    CustomToggleBG(value: $notifModel.emailNotifications.notifications, title: "Get Email Updates", subtitle: C.StaticText.notf_email)
+                        .onChange(of: notifModel.emailNotifications.notifications) { newValue in
+                            notifModel.updateEmailNotificationsStatus()
+                    }
                     LazyVStack {
                         NotificationHeader()
-                        CustomToggle(value: $notifModel.iCal, title: "Event iCal attachments", subtitle: C.StaticText.notf_iCal)
-                        CustomToggle(value: $notifModel.msgEmail, title: "Messages", subtitle: C.StaticText.notf_msgEmail)
-                        CustomToggle(value: $notifModel.reply, title: "Replies to my comments", subtitle: "")
-                        CustomToggle(value: $notifModel.suggested, title: "Suggested events and podcasts", subtitle: C.StaticText.notf_suggested)
-                        CustomToggle(value: $notifModel.hqUpdate, title: "Updates from Spine HQ", subtitle: C.StaticText.notf_hqUpdate)
-                        CustomToggle(value: $notifModel.hqSurvey, title: "Spine HQ Surveys", subtitle: C.StaticText.notf_hqSurvey)
-                    }.padding(.horizontal, 20)
-                }.padding(.top, 20)
+                        CustomToggle(value: $notifModel.emailNotifications.eventAttach, title: "Event iCal attachments", subtitle: C.StaticText.notf_iCal)
+                            .onChange(of: notifModel.emailNotifications.eventAttach) { newValue in
+                                notifModel.updateEmailNotificationsStatus()
+                        }
+                        CustomToggle(value: $notifModel.emailNotifications.messages, title: "Messages", subtitle: C.StaticText.notf_msgEmail)
+                            .onChange(of: notifModel.emailNotifications.messages) { newValue in
+                                notifModel.updateEmailNotificationsStatus()
+                        }
+                        CustomToggle(value: $notifModel.emailNotifications.comments, title: "Replies to my comments", subtitle: "")
+                            .onChange(of: notifModel.emailNotifications.comments) { newValue in
+                                notifModel.updateEmailNotificationsStatus()
+                        }
+                        CustomToggle(value: $notifModel.emailNotifications.podcasts, title: "Suggested events and podcasts", subtitle: C.StaticText.notf_suggested)
+                            .onChange(of: notifModel.emailNotifications.podcasts) { newValue in
+                                notifModel.updateEmailNotificationsStatus()
+                        }
+                        CustomToggle(value: $notifModel.emailNotifications.updates, title: "Updates from Spine HQ", subtitle: C.StaticText.notf_hqUpdate)
+                            .onChange(of: notifModel.emailNotifications.updates) { newValue in
+                                notifModel.updateEmailNotificationsStatus()
+                        }
+                        CustomToggle(value: $notifModel.emailNotifications.surveys, title: "Spine HQ Surveys", subtitle: C.StaticText.notf_hqSurvey)
+                            .onChange(of: notifModel.emailNotifications.surveys) { newValue in
+                                notifModel.updateEmailNotificationsStatus()
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                }
+                .padding(.top, 20)
+                .onAppear(perform: {
+                    notifModel.getEmailNotificationStatus()
+                })
             }
             Spacer()
-            
-        }.onAppear(perform: {
-           
-        })
-        
+        }
+        .modifier(LoadingView(isLoading: $notifModel.showLoader))
         .navigationBarTitle("NOTIFICATIONS", displayMode: .inline)
         .modifier(BackButtonModifier(action: {
             self.dismiss()

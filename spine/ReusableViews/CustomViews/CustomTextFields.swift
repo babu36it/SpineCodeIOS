@@ -55,6 +55,8 @@ struct CustomTextFieldWithCount: View {
     let placeholder: String
     var count = 0
     var hashCount = 0
+    var keyboardType: UIKeyboardType = .default
+    var autoCapitalization: TextInputAutocapitalization = .sentences
     
     var body: some View {
         ZStack(alignment: .leading) {
@@ -65,16 +67,16 @@ struct CustomTextFieldWithCount: View {
                 .background(Color(UIColor.systemBackground))
                 .cornerRadius(8)
                 .shadow(color: Color.gray.opacity(0.7), radius: 5)
-                
             HStack {
                 TextField(placeholder, text: $searchText)
                     .font(.Poppins(type: .regular, size: 14))
                     .padding(.leading, 10)
+                    .keyboardType(keyboardType)
+                    .textInputAutocapitalization(autoCapitalization)
                 if count != 0 {
                     Title4(title: "\(count - searchText.count)", fColor: Color.placeHoldertxtClr)
                         .padding(5)
                 }
-                
             }
             .onChange(of: searchText) { newValue in
                 if count != 0 && newValue.count > count {

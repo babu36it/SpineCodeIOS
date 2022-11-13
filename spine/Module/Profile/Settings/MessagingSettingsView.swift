@@ -7,26 +7,18 @@
 
 import SwiftUI
 
-enum WhoCanMessage: String, CaseIterable, Identifiable {
-    var id: String { rawValue }
-    case hosts = "Hosts of an event you're going to"
-    case members = "Members of an event you're going to"
-    case anyone = "Anyone on Spine"
-}
-
 struct MessagingSettingsView: View {
     @Environment(\.dismiss) var dismiss
-    @AppStorage("WhoCanMessage") private var whoCanMsg: WhoCanMessage = .anyone
+    @StateObject var authorizationViewModel: MessagingSettingsViewModel = .init()
     
     var body: some View {
         VStack(spacing: 0) {
-            
             LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
             VStack {
                 List {
                     Section {
                         ForEach(WhoCanMessage.allCases) { item in
-                            WhoCanMsgCell(item: item, selectedItem: $whoCanMsg)
+                            WhoCanMsgCell(item: item, selectedItem: $authorizationViewModel.authorization)
                         }
                         .listRowSeparator(.hidden)
                     } header: {
@@ -40,8 +32,11 @@ struct MessagingSettingsView: View {
                     }
                 }.listStyle(.plain)
             }
-            
         }
+        .onAppear(perform: {
+            authorizationViewModel.getMessageAuthorizationStatus()
+        })
+        .modifier(LoadingView(isLoading: $authorizationViewModel.showLoader))
         .navigationBarTitle("MESSAGING", displayMode: .inline)
         .modifier(BackButtonModifier(action: {
             self.dismiss()
@@ -55,7 +50,6 @@ struct MessagingSettingsView_Previews: PreviewProvider {
     }
 }
 
-
 struct WhoCanMsgCell: View {
     let item: WhoCanMessage
     @Binding var selectedItem: WhoCanMessage
@@ -63,7 +57,7 @@ struct WhoCanMsgCell: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                NavTitle(title: item.rawValue)
+                NavTitle(title: item.description)
                 Spacer()
                 if selectedItem == item {
                     Image(systemName: ImageName.checkmark).foregroundColor(.lightBrown).frame(width: 10, height: 10)

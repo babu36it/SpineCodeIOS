@@ -32,7 +32,7 @@ class signInRequestModel: Mappable {
 // MARK: - signInResponseModel
 class signInResponseModel : NSObject, NSCoding, Mappable{
     
-    //var data : signInResponseData?
+    var data : signInResponseData?
     var status: Bool?
     var token: String?
     var tokenType: String?
@@ -44,7 +44,7 @@ class signInResponseModel : NSObject, NSCoding, Mappable{
     
     func mapping(map: Map)
     {
-       // data <- map["data"]
+        data <- map["data"]
         status <- map["status"]
         token <- map["token"]
         tokenType <- map["token_type"]
@@ -53,7 +53,7 @@ class signInResponseModel : NSObject, NSCoding, Mappable{
     }
     @objc required init(coder aDecoder: NSCoder)
     {
-       // data = aDecoder.decodeObject(forKey: "data") as? signInResponseData
+        data = aDecoder.decodeObject(forKey: "data") as? signInResponseData
         status = aDecoder.decodeObject(forKey: "status") as? Bool
         token = aDecoder.decodeObject(forKey: "token") as? String
         tokenType = aDecoder.decodeObject(forKey: "token_type") as? String
@@ -63,7 +63,7 @@ class signInResponseModel : NSObject, NSCoding, Mappable{
     
     @objc func encode(with aCoder: NSCoder)
     {
-       // aCoder.encode(data, forKey: "data")
+        aCoder.encode(data, forKey: "data")
         aCoder.encode(status, forKey: "status")
         aCoder.encode(token, forKey: "token")
         aCoder.encode(tokenType, forKey: "token_type")
