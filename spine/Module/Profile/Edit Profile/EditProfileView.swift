@@ -118,7 +118,8 @@ struct EditProfileView: View {
             .sheet(item: $selectedMode) { mode in
                 let imageSource: UIImagePickerController.SourceType = mode == .camera ? .camera : .photoLibrary
                 let imageBinding: Binding<[UIImage]> = selectionType == .background ? $editProfileViewModel.backgroundImages : $editProfileViewModel.images
-                ImagePicker(sourceType: imageSource, selectedImages: imageBinding)
+                let allowsEditing: Bool = selectionType == .profile
+                ImagePicker(sourceType: imageSource, allowsEditing: allowsEditing, selectedImages: imageBinding)
             }
             .actionSheet(isPresented: $showAction) { () -> ActionSheet in
                 ActionSheet(title: Text("Choose mode"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
