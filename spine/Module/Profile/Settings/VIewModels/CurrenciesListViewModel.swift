@@ -10,10 +10,27 @@ import Foundation
 class CurrenciesListViewModel: ObservableObject {
     let serviceProvider = CurrenciesListService(httpUtility: HttpUtility())
 
-    @Published var currencies: [CurrencyModel]?
     @Published var showLoader: Bool = false
     @Published var selectedCurrency: CurrencyModel?
+
+    @Published var filteredCurrencies: [CurrencyModel]?
+    @Published var searchQuery: String = "" {
+        didSet {
+            if searchQuery.isEmpty {
+                filteredCurrencies = currencies
+            } else {
+                let query: String = searchQuery.lowercased()
+                filteredCurrencies = currencies?.filter { $0.code.lowercased().contains(query) || $0.currency.lowercased().contains(query) }
+            }
+        }
+    }
     
+    private var currencies: [CurrencyModel]? {
+        didSet {
+            filteredCurrencies = currencies
+        }
+    }
+
     func getCurrencies() {
         showLoader = true
         serviceProvider.getCurrencies { result in
@@ -78,11 +95,16 @@ extension CurrenciesListViewModel: SelectionListable {
     }
     
     var listItems: [any SelectionListItemable] {
-        get { currencies ?? [] }
+        get { filteredCurrencies ?? [] }
         set { }
     }
     
-    var navTitle: String { return "Select Language" }
+    var searchText: String {
+        get { searchQuery }
+        set { searchQuery = newValue }
+    }
+
+    var navTitle: String { return "Select Currency" }
     
     func getListItems() {
         getCurrencies()

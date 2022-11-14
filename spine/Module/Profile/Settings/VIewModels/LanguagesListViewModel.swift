@@ -10,10 +10,27 @@ import Foundation
 class LanguagesListViewModel: ObservableObject {
     let serviceProvider = LanguagesListService(httpUtility: HttpUtility())
 
-    @Published var languages: [LanguageModel]?
     @Published var showLoader: Bool = false
     @Published var selectedLanguage: LanguageModel?
+
+    @Published var filteredLanguages: [LanguageModel]?
+    @Published var searchQuery: String = "" {
+        didSet {
+            if searchQuery.isEmpty {
+                filteredLanguages = languages
+            } else {
+                let query: String = searchQuery.lowercased()
+                filteredLanguages = languages?.filter { $0.name.lowercased().contains(query) }
+            }
+        }
+    }
     
+    private var languages: [LanguageModel]? {
+        didSet {
+            filteredLanguages = languages
+        }
+    }
+
     func getLanguages() {
         showLoader = true
         serviceProvider.getLanguages { result in
@@ -78,8 +95,13 @@ extension LanguagesListViewModel: SelectionListable {
     }
     
     var listItems: [any SelectionListItemable] {
-        get { languages ?? [] }
+        get { filteredLanguages ?? [] }
         set { }
+    }
+    
+    var searchText: String {
+        get { searchQuery }
+        set { searchQuery = newValue }
     }
     
     var navTitle: String { return "Select Language" }

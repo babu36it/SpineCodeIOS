@@ -16,7 +16,7 @@ protocol SelectionListable: ObservableObject {
     var listItems: [any SelectionListItemable] { get set }
     var selectedItem: (any SelectionListItemable)? { get set }
     var showLoader: Bool { get set }
-    
+    var searchText: String { get set }
     var navTitle: String { get }
     
     func getListItems()
@@ -29,8 +29,9 @@ struct SelectionListView<ViewModel: SelectionListable>: View {
     @StateObject var listViewModel: ViewModel
 
     var body: some View {
-        VStack(spacing: 30) {
-            GradientDivider().padding(.top, 10)
+        VStack {
+//            GradientDivider().padding(.top, 10)
+            CustomSearchBar(placeHolder: "Search", searchText: $listViewModel.searchText).padding(.horizontal, 5)
             VStack {
                 Divider().padding(.horizontal)
                 List {
