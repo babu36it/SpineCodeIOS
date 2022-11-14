@@ -32,17 +32,20 @@ struct RegisterVC: View {
     @State var userID = ""
     @State var verificationCode = ""
     
+    var isRootView: Bool = false
+
     var viewModel : LoginViewModel? = LoginViewModel()
     
     var loginManager = LoginManager()
     let readPermissions =  ["public_profile", "email", "user_friends","user_birthday"]
    
-    init() {
+    init(isRootView: Bool = false) {
         //Use this if NavigationBarTitle is with Large Font
         //            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.red]
         
         //Use this if NavigationBarTitle is with displayMode = .inline
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
+        self.isRootView = isRootView
     }
     
     var btnBack: some View { Button(action: {
@@ -168,7 +171,19 @@ struct RegisterVC: View {
                             .cornerRadius(5)
                             
                         }
-                        
+                        if isRootView {
+                            VStack {
+                                Button {
+                                    AppUtility.shared.redirectToLoginScreen()
+                                } label: {
+                                    Text("Already have an Account?")
+                                        .foregroundColor(.white)
+                                        .underline()
+                                        .font(AppUtility.shared.appFont(type: .regular, size: 16))
+                                }
+                                .padding()
+                            }
+                        }
                     }.padding(.top, 30)
                         .padding([.leading, .trailing], 30)
                 }

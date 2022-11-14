@@ -44,16 +44,18 @@ enum APIAddress: URLRequestConvertible {
     case forgotpassword(parameters: Parameters)
     case userMobileVerification(parameters: Parameters)
     case socialLogin(parameters: Parameters)
-     var method: HTTPMethod {
+    case resendEmailOTP(userID:String)
+    
+    var method: HTTPMethod {
         switch self {
         case .signin,.signup,.forgotpassword,.userMobileVerification,.socialLogin:
             return .post
-        case .userAccountVerify:
+        case .userAccountVerify, .resendEmailOTP:
             return .get
-//        case :
-//            return .delete
-//        case :
-//            return .put
+            //        case :
+            //            return .delete
+            //        case :
+            //            return .put
         }
     }
     
@@ -71,6 +73,8 @@ enum APIAddress: URLRequestConvertible {
             return "login/forgetPassword"
         case .userMobileVerification:
             return "login/verificationCodeOnMobile"
+        case .resendEmailOTP:
+            return "/login/reSendOtp/"
          default:
             return ""
         }
@@ -80,7 +84,7 @@ enum APIAddress: URLRequestConvertible {
         switch self {
         case .socialLogin(let parameters),.signin(let parameters),.signup(let parameters),.forgotpassword(let parameters),.userMobileVerification(let parameters):
             return parameters
-        case .userAccountVerify :
+        case .userAccountVerify, .resendEmailOTP:
             return nil
         }
     }

@@ -68,6 +68,14 @@ extension AppUtility {
         }
     }
     
+    var applicationKeyWindow: UIWindow? {
+        UIApplication.shared.connectedScenes
+            .filter({ $0.activationState == .foregroundActive })
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows.filter({ $0.isKeyWindow }) })
+            .first
+    }
+    
     func getRootViewController() -> UIViewController? {
         return UIApplication.shared.connectedScenes
             .filter({$0.activationState == .foregroundActive})
@@ -78,16 +86,16 @@ extension AppUtility {
     }
     
     func redirectToLoginScreen() {
-        if let window = UIApplication.shared.windows.first {
-            let loginView = LoginVC()
+        if let window = applicationKeyWindow {
+            let loginView = LoginVC(isRootView: true)
             window.rootViewController = UIHostingController(rootView: loginView)
             window.makeKeyAndVisible()
         }
     }
     
     func redirectToRegisterScreen() {
-        if let window = UIApplication.shared.windows.first {
-            let loginView = RegisterVC()
+        if let window = applicationKeyWindow {
+            let loginView = RegisterVC(isRootView: true)
             window.rootViewController = UIHostingController(rootView: loginView)
             window.makeKeyAndVisible()
         }
@@ -95,7 +103,7 @@ extension AppUtility {
     
     
     func redirectToMainScreen() {
-        if let window = UIApplication.shared.windows.first {
+        if let window = applicationKeyWindow {
             let homeView = TabBarView()
             window.rootViewController = UIHostingController(rootView: homeView)
             window.makeKeyAndVisible()

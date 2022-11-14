@@ -61,28 +61,28 @@ struct EditProfileView: View {
                             }
                             if let image = editProfileViewModel.images.first {
                                 AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
-                                    .offset(y: 40)
+                                    .offset(y: 50)
                                     .onTapGesture {
                                         selectionType = .profile
                                         showAction = true
                                     }
                             } else if let image: UIImage = editProfileViewModel.userImage {
                                 AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
-                                    .offset(y: 40)
+                                    .offset(y: 50)
                                     .onTapGesture {
                                         selectionType = .profile
                                         showAction = true
                                     }
                             } else {
                                 CircularBorderedProfileView(image: "ic_background", size: 100, borderWidth: 3, showShadow: true, showBadge: false)
-                                    .offset(y: 40)
+                                    .offset(y: 50)
                                     .onTapGesture {
                                         selectionType = .profile
                                         showAction = true
                                     }
                             }
                         }
-                        .padding(.bottom, 40)
+                        .padding(.bottom, 50)
                         Title4(title: "ADD PROFILE IMAGE", fColor: .gray)
                     }
                     .padding(.vertical, 20)

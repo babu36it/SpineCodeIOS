@@ -32,15 +32,16 @@ struct OTPVC: View {
     
     var viewModel : LoginViewModel? = LoginViewModel()
     
-    var btnBack: some View { Button(action: {
-        self.presentationMode.wrappedValue.dismiss()
-    }) {
-        HStack {
-            Image(ImageName.ic_back) // set image here
-                .aspectRatio(contentMode: .fit)
-                .foregroundColor(.white)
+    var btnBack: some View {
+        Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack {
+                Image(ImageName.ic_back) // set image here
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.white)
+            }
         }
-    }
     }
     
     var body: some View {
@@ -67,7 +68,6 @@ struct OTPVC: View {
                                 ShowToast.show(toatMessage: "Please enter correct OTP.")
                             }
                         }
-                        
                     }
                     .frame(height: 40)
                     .padding()
@@ -79,7 +79,7 @@ struct OTPVC: View {
                     //                        EmptyView()
                     //                    }
                     
-                    NavigationLink(destination: MobileNoVC(userID:userID), tag: 1, selection: self.$selection) {
+                    NavigationLink(destination: MobileNoVC(userID: userID), tag: 1, selection: self.$selection) {
                         EmptyView()
                     }
                     HStack {
@@ -115,7 +115,7 @@ struct OTPVC: View {
                 }
             }
             //Navigate To Login Session Expire
-            NavigationLink(destination:  TabBarView(), tag: 2, selection: self.$sessionExpire) {
+            NavigationLink(destination: TabBarView(), tag: 2, selection: self.$sessionExpire) {
                 EmptyView()
             }
             
@@ -137,16 +137,15 @@ struct OTPVC: View {
         self.hideKeyboard()
         self.showLoader = true
         ///api call to send OTP on Mobile number via Email
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
+        viewModel?.resendEmailOTP(userID: userID, { response, status in
             self.showLoader = false
             self.shouldShowAlert = true
-        }
+        })
     }
     
     func sendOTPSMSAgain(_ mobileNo : String) {
         self.hideKeyboard()
         selection = 1
-       
     }
     
     func verifyOTP(_ otpNumber : String) {
@@ -154,26 +153,26 @@ struct OTPVC: View {
         self.hideKeyboard()
         viewModel?.verifyOTP(userID: userID){ (response, status) in
             if response?.status == true { // resign in
-                let request = signInRequestModel()
-                request.email = emailId
-                request.password = password
-                request.devicetoken = "saaadasd"
-                request.devicetype = "iPhone"
-                
-                viewModel?.signIn(request) { (response, status) in
-                    if response?.status == true {
-                        AppUtility.shared.redirectToMainScreen()
-                        if let message  = response?.message{
+                if AppUtility.shared.userSettings.authToken.isEmpty {
+                    AppUtility.shared.redirectToMainScreen()
+                } else {
+                    guard let emailId = emailId, let password = password else {
+                        ShowToast.show(toatMessage: "Error in verifying OTP. Please retry later.")
+                        return
+                    }
+                    viewModel?.signIn(emailId: emailId, password: password, deviceToken: "saaadasd", completion: { response, result in
+                        if response?.status == true {
+                            AppUtility.shared.redirectToMainScreen()
+                            if let message  = response?.message{
+                                ShowToast.show(toatMessage: message)
+                            }
+                        } else if let message  = response?.message{
                             ShowToast.show(toatMessage: message)
                         }
-                    } else if let message  = response?.message{
-                        ShowToast.show(toatMessage: message)
-                    }
+                    })
                 }
-            }else{
-               if let message  = response?.message{
-                   ShowToast.show(toatMessage: message)
-                }
+            } else if let message  = response?.message{
+                ShowToast.show(toatMessage: message)
             }
         }
     }
@@ -184,7 +183,6 @@ struct OTPVC_Previews: PreviewProvider {
         OTPVC()
     }
 }
-
 
 struct OTPWithKAPin: UIViewRepresentable {
     var otpCode: String?
@@ -206,7 +204,7 @@ struct OTPWithKAPin: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) ->  SVPinView {
-        let pinView:SVPinView = SVPinView()
+        let pinView: SVPinView = SVPinView()
         
         pinView.pinLength = numberofElement
         //        pinView.secureCharacter = "\u{25CF}"

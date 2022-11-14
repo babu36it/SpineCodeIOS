@@ -166,6 +166,8 @@
 		18D5E3802825401B0075F5A2 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D5E37F2825401B0075F5A2 /* ProfileVC.swift */; };
 		18F87D37286986D100A0FC71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F87D36286986D100A0FC71 /* AppDelegate.swift */; };
 		29CA9FFCBC74916660861396 /* Pods_spine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3642862D535B89AD0648444 /* Pods_spine.framework */; };
+		2C0913AF292242DF009ECF8F /* OTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0913AE292242DF009ECF8F /* OTPViewModel.swift */; };
+		2C0913B1292242F4009ECF8F /* OTPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0913B0292242F4009ECF8F /* OTPService.swift */; };
 		2C47FADE291AE17800F7EE46 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47FADD291AE17800F7EE46 /* EditProfileViewModel.swift */; };
 		2C47FAE1291AE1E200F7EE46 /* EditProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47FAE0291AE1E200F7EE46 /* EditProfileService.swift */; };
 		2C47FAE3291D846600F7EE46 /* UserDetailResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47FAE2291D846600F7EE46 /* UserDetailResponse.swift */; };
@@ -402,6 +404,8 @@
 		18D5E37B2824EC850075F5A2 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		18D5E37F2825401B0075F5A2 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		18F87D36286986D100A0FC71 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2C0913AE292242DF009ECF8F /* OTPViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewModel.swift; sourceTree = "<group>"; };
+		2C0913B0292242F4009ECF8F /* OTPService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPService.swift; sourceTree = "<group>"; };
 		2C47FADD291AE17800F7EE46 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		2C47FAE0291AE1E200F7EE46 /* EditProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileService.swift; sourceTree = "<group>"; };
 		2C47FAE2291D846600F7EE46 /* UserDetailResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailResponse.swift; sourceTree = "<group>"; };
@@ -914,6 +918,8 @@
 		188D326F281F875700DA078D /* OTPVerification */ = {
 			isa = PBXGroup;
 			children = (
+				2C0913AC292240FF009ECF8F /* Service */,
+				2C0913AD292240FF009ECF8F /* ViewModels */,
 				188D3270281F877C00DA078D /* OTPVC.swift */,
 				6624C1072821A801009DD4F3 /* MobileNoVC.swift */,
 			);
@@ -957,6 +963,22 @@
 				04894D1F286D9EB700CF4860 /* Chat View */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		2C0913AC292240FF009ECF8F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				2C0913B0292242F4009ECF8F /* OTPService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		2C0913AD292240FF009ECF8F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2C0913AE292242DF009ECF8F /* OTPViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		2C47FADC291AE15F00F7EE46 /* ViewModels */ = {
@@ -1509,10 +1531,12 @@
 				66A238022817103800CA3763 /* CMSModel.swift in Sources */,
 				04873C7D28E60D9D0054A00C /* AddEventViewModel.swift in Sources */,
 				66A237CC281709FC00CA3763 /* AppButtons.swift in Sources */,
+				2C0913B1292242F4009ECF8F /* OTPService.swift in Sources */,
 				66A237D9281709FC00CA3763 /* UserSettings.swift in Sources */,
 				66A237392817093A00CA3763 /* StringExtensions.swift in Sources */,
 				180C16C72856CB140072D0DF /* PodcastDetailView.swift in Sources */,
 				18D5E37C2824EC850075F5A2 /* WebClient.swift in Sources */,
+				2C0913AF292242DF009ECF8F /* OTPViewModel.swift in Sources */,
 				048691FD2875C09B00BA0BAB /* WebView.swift in Sources */,
 				66A237C1281709FC00CA3763 /* AnyCodableValue.swift in Sources */,
 				0491B1B8290814BB00C4CD1C /* PodcastInfoViewModel.swift in Sources */,

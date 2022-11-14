@@ -9,29 +9,30 @@ import SwiftUI
 struct MobileNoVC: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    @State private var mobile   : String = ""
+    @State private var mobile: String = ""
     
     @State private var errorMessage: String = ""
     @State var showLoader: Bool = false
     
-    @State var shouldShowAlert    = false
+    @State var shouldShowAlert = false
     @State var message  = ""
-    @State var closure  : AlertAction?
+    @State var closure: AlertAction?
     @State var isSuccess = true
     
-    var viewModel : LoginViewModel? = LoginViewModel()
-    var userID : String = ""
+    var viewModel: LoginViewModel? = LoginViewModel()
+    var userID: String = ""
     
     
-    var btnBack: some View { Button(action: {
-        self.presentationMode.wrappedValue.dismiss()
-    }) {
-        HStack {
-            Image(ImageName.ic_back) // set image here
-                .aspectRatio(contentMode: .fit)
-                .foregroundColor(.white)
+    var btnBack: some View {
+        Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack {
+                Image(ImageName.ic_back) // set image here
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.white)
+            }
         }
-    }
     }
     var body: some View {
         //        NavigationView {
@@ -124,17 +125,12 @@ extension MobileNoVC {
         request.userID = userID
         viewModel?.mobileVerificationCode(request) { (response, status) in
             if response?.status == true {
-               
                 if let message  = response?.message{
                    ShowToast.show(toatMessage: message)
                 }
                 self.presentationMode.wrappedValue.dismiss()
-            }else{
-              
-                if let message  = response?.message{
-                   ShowToast.show(toatMessage: message)
-                }
-                
+            } else if let message  = response?.message{
+                ShowToast.show(toatMessage: message)
             }
         }
     }

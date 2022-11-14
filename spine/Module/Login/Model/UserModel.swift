@@ -6,21 +6,19 @@ import ObjectMapper
 // MARK: - signInRequestModel
 class signInRequestModel: Mappable {
     
-    private let Email             = "email"
-    private let Password          = "password"
-    private let DeviceToken       = "notify_device_token"
-    private let DeviceType        = "notify_device_type"
+    private let Email = "email"
+    private let Password = "password"
+    private let DeviceToken = "notify_device_token"
+    private let DeviceType = "notify_device_type"
+
+    lazy var email: String? = ""
+    lazy var password: String? = ""
+    lazy var devicetype: String? = ""
+    lazy var devicetoken: String? = ""
+
+    required init() { }
+    required init?(map: Map) { }
     
-    
-    
-    lazy var email              : String? = ""
-    lazy var password           : String? = ""
-    lazy var devicetype         : String? = ""
-    lazy var devicetoken        : String? = ""
-    
-    
-    required init(){ }
-    required init?(map: Map) {}
     func mapping(map: Map) {
         email                 <- map[Email]
         password              <- map[Password]
@@ -32,7 +30,7 @@ class signInRequestModel: Mappable {
 // MARK: - signInResponseModel
 class signInResponseModel : NSObject, NSCoding, Mappable{
     
-    var data : signInResponseData?
+    var data: signInResponseData?
     var status: Bool?
     var token: String?
     var tokenType: String?

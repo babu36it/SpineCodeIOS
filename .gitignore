@@ -12,6 +12,7 @@ Pods/
 ### Xcode ###
 ## User settings
 xcuserdata/
+*xcworkspace/xcuserdata/*
 
 ## Xcode 8 and earlier
 *.xcscmblueprint

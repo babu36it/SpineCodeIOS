@@ -11,13 +11,13 @@ struct spineApp: App {
     var body: some Scene {
         WindowGroup {
             //if signInResponseModel.isUserLoggedIn()  {
-            if AppUtility.shared.userSettings.authToken != "" {
-                TabBarView()
-                    .modifier(DarkModeViewModifier())
-            } else {
+            if AppUtility.shared.userSettings.authToken.isEmpty {
                 TutorialView()
                     .modifier(DarkModeViewModifier())
-           }
+            } else {
+                TabBarView()
+                    .modifier(DarkModeViewModifier())
+            }
         }
     }
 }

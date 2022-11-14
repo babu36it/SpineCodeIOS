@@ -19,9 +19,9 @@ struct LoginVC: View {
     @State private var errorMessage: String = "0"
     @State var showLoader: Bool = false
     
-    @State var shouldShowAlert    = false
-    @State var message  = ""
-    @State var closure  : AlertAction?
+    @State var shouldShowAlert = false
+    @State var message = ""
+    @State var closure: AlertAction?
     @State var isSuccess = true
     @State private var selection : Int? = 0
     @State var userLoginID = ""
@@ -31,23 +31,23 @@ struct LoginVC: View {
     
     var loginManager = LoginManager()
     let readPermissions =  ["public_profile", "email", "user_friends","user_birthday"]
-    init(isRootView: Bool = false) {
-            self.isRootView = isRootView
-        }
-        
-    var isRootView : Bool = false
-    var btnBack: some View { Button(action: {
-        self.presentationMode.wrappedValue.dismiss()
-    }) {
-        HStack {
-            Image(ImageName.ic_back) // set image here
-                .aspectRatio(contentMode: .fit)
-                .foregroundColor(.white)
+    
+    var btnBack: some View {
+        Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack {
+                Image(ImageName.ic_back) // set image here
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.white)
+            }
         }
     }
-    }
+    
+    var isRootView: Bool = false
+
     var body: some View {
-                ZStack(alignment: .center) {
+        ZStack(alignment: .center) {
             VStack {
                 HeaderTitleView(title: K.appHeaderTitle.login).padding(.top, 30)  .font(AppUtility.shared.appFont(type: .regular, size: 18))
                 VStack {
@@ -97,16 +97,14 @@ struct LoginVC: View {
                         }
                         NavigationLink(destination: ForgotPasswordVC(), tag: 1, selection: self.$selection) {
                             EmptyView()
-                                
+                            
                         }
                         VStack {
                             Button {
                                 self.selection = 1
-                                
                             } label: {
                                 Text("Forgot Password").foregroundColor(.white).underline().font(AppUtility.shared.appFont(type: .regular, size: 16))
                             }.padding()
-                            
                         }
                         HStack{
                             LabelledDivider(label: "Or")
@@ -130,6 +128,19 @@ struct LoginVC: View {
                             .background(Color.init(red: 1/255, green: 65/255, blue: 143/255))
                             .frame(height: 45)
                             .cornerRadius(5)
+                        }
+                        if isRootView {
+                            VStack {
+                                Button {
+                                    AppUtility.shared.redirectToRegisterScreen()
+                                } label: {
+                                    Text("Register New User?")
+                                        .foregroundColor(.white)
+                                        .underline()
+                                        .font(AppUtility.shared.appFont(type: .regular, size: 16))
+                                }
+                                .padding()
+                            }
                         }
                     }.padding(.top, 30)
                         .padding([.leading, .trailing], 30)
@@ -158,6 +169,7 @@ struct LoginVC: View {
         //.navigationBarHidden(true)
         
     }
+    
     private func redirectToMainScreen() {
         DispatchQueue.main.async {
             //            if let window = UIApplication.shared.windows.first {
@@ -185,29 +197,14 @@ struct LoginVC: View {
 //MARK:- Service Call
 extension LoginVC {
     func doLogin() {
-        let request = signInRequestModel()
-        request.email = self._emailId.wrappedValue
-        request.password = self._password.wrappedValue
-        request.devicetoken = "saaadasd"
-        request.devicetype = "iPhone"
-        
-        viewModel?.signIn(request) { (response, status) in
+        viewModel?.signIn(emailId: self._emailId.wrappedValue, password: self._password.wrappedValue, deviceToken: "saaadasd") { (response, status) in
             if response?.status == true {
                 AppUtility.shared.redirectToMainScreen()
                 if let message  = response?.message{
                     ShowToast.show(toatMessage: message)
                 }
-            }else{
-                
-//                if let response = response?.data {
-//                    self.userLoginID = response.usersId ?? ""
-//                    self.verificationCode = response.verificationPin ?? ""
-//                    selection = 2
-//                }
-                if let message  = response?.message{
-                    ShowToast.show(toatMessage: message)
-                }
-                
+            } else if let message  = response?.message{
+                ShowToast.show(toatMessage: message)
             }
         }
     }
@@ -220,7 +217,7 @@ extension LoginVC {
               case .cancelled:
                   print("User cancelled login.")
               case .success(let grantedPermissions, let declinedPermissions, let accessToken):
-                  print("Logged in! \(grantedPermissions) \(declinedPermissions) \(accessToken)")
+                  print("Logged in! \(grantedPermissions) \(declinedPermissions) \(String(describing: accessToken))")
                                   
                   GraphRequest(graphPath: "me",parameters:  ["fields": "id, name, first_name, email"]).start { (connection, result, error) -> Void  in
                       if (error == nil){
@@ -229,7 +226,7 @@ extension LoginVC {
                           let fbUserId = fbDetails["id"] ?? ""
                           let fbAccessToken = AccessToken.current?.tokenString ?? ""
 
-                          let fbResult = "id=\(fbUserId)&accessToken=\(fbAccessToken)"
+//                          let fbResult = "id=\(fbUserId)&accessToken=\(fbAccessToken)"
                           let request = socialLoginRequestModel()
                           let email = fbDetails["email"]  as? String
                           let id = fbDetails["id"]  as? String
