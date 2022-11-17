@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>659666712703-8sfgbmtk2f76qdf1aa580lnl2vd9jcnr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.659666712703-8sfgbmtk2f76qdf1aa580lnl2vd9jcnr</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>659666712703-op5mvdr53dth0bgvqt3m6v9v1f7ne1ib.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDf1EXF2lOofInLCMQKIQ2iS1mqd-JUNVc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>659666712703</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.spiritualnetwork.spin</string>
+	<key>PROJECT_ID</key>
+	<string>spine-2e9d3</string>
+	<key>STORAGE_BUCKET</key>
+	<string>spine-2e9d3.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:659666712703:ios:97d274174eed38d389274a</string>
+</dict>
+</plist>

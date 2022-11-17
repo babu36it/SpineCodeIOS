@@ -5,24 +5,17 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct MobileNoVC: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
-    @State private var mobile: String = ""
-    
-    @State private var errorMessage: String = ""
-    @State var showLoader: Bool = false
-    
-    @State var shouldShowAlert = false
-    @State var message  = ""
+
+    @StateObject var viewModel: MobileOTPViewModel = .init()
+    @State private var selection: Int? = 0
     @State var closure: AlertAction?
-    @State var isSuccess = true
-    
-    var viewModel: LoginViewModel? = LoginViewModel()
+
     var userID: String = ""
-    
-    
+        
     var btnBack: some View {
         Button(action: {
             self.presentationMode.wrappedValue.dismiss()
@@ -35,7 +28,6 @@ struct MobileNoVC: View {
         }
     }
     var body: some View {
-        //        NavigationView {
         ZStack(alignment: .center) {
             VStack {
                 VStack {
@@ -44,14 +36,25 @@ struct MobileNoVC: View {
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color.init(white: 0.93))
                         .padding()
-                    
+
                     HStack {
-                        Text("GB +44")
+                        Text(viewModel.countryCode.isEmpty ? "🇬🇧 +44" : "\(viewModel.countryFlag) +\(viewModel.countryCode)")
                             .font(AppUtility.shared.appFont(type: .SemiBold, size: 16))
                             .multilineTextAlignment(.center)
-                            .foregroundColor(Color.init(white: 0.93))
+                            .foregroundColor(viewModel.countryCode.isEmpty ? .secondary : Color(white: 0.93))
+                            .onTapGesture {
+                                withAnimation (.spring()) {
+                                    if self.viewModel.yPickerPosition != 200 {
+                                        self.viewModel.yPickerPosition = 200
+                                    } else {
+                                        self.viewModel.yPickerPosition = 0
+                                    }
+                                }
+                            }
+                        
                         Divider().frame(width: 1, height: 30, alignment: .center).background(Color.white)
-                        TextField("Phone number", text: $mobile)
+                        
+                        TextField("Phone Number", text: $viewModel.phoneNumber)
                             .foregroundColor(.white)
                             .accentColor(.white)
                             .frame(height: 35)
@@ -59,9 +62,6 @@ struct MobileNoVC: View {
                             .autocapitalization(.none)
                             .font(AppUtility.shared.appFont(type: .regular, size: 16))
                             .keyboardType(.phonePad)
-                            .onChange(of: mobile) { newValue in
-                                print(newValue)
-                            }
                     }
                     .padding([.top, .bottom], 5)
                     .padding([.leading, .trailing], 15)
@@ -69,31 +69,35 @@ struct MobileNoVC: View {
                     .padding(.bottom, 40)
                     
                     AppLoginButton(title: K.appButtonTitle.next, callback: {
-                        self.errorMessage = self.mobileValidation()
-                        if self.errorMessage == "" {
-//                            self.message = "OTP Send successfully on mobile number"
-                            self.doSendOTP()
-                        }
-                        else {
-                            self.shouldShowAlert = true
-                            self.isSuccess = false
-                            self.message = self.errorMessage
+                        self.hideKeyboard()
+                        viewModel.signInWithPhoneNumber { status, error in
+                            if status {
+                                self.selection = 1
+                            }
                         }
                     })
                 }
                 .padding([.leading, .trailing], 60)
                 Spacer()
             }
-            .onTapGesture {
-                self.hideKeyboard()
+            .onAppear {
+                self.viewModel.userID = userID
             }
-            if shouldShowAlert {
-                AlertView(shown: $shouldShowAlert, closureA: $closure, isSuccess: self.isSuccess, message: self.message, buttonTitle: K.appButtonTitle.ok, isShowButton: true, isShowCancel: false).buttonAction {
-                    shouldShowAlert = false
+            
+            NavigationLink(destination: MobileOTPVC(viewModel: viewModel), tag: 1, selection: $selection) {
+                EmptyView()
+            }
+
+            if viewModel.shouldShowAlert {
+                AlertView(shown: $viewModel.shouldShowAlert, closureA: $closure, isSuccess: self.viewModel.isSuccess, message: self.viewModel.errorMessage, buttonTitle: K.appButtonTitle.ok, isShowButton: true, isShowCancel: false).buttonAction {
+                    viewModel.shouldShowAlert = false
                 }
             }
             
-            IndicatorView(isAnimating: $showLoader)
+            IndicatorView(isAnimating: $viewModel.showLoader)
+            
+            CountryCodeView(countryCode: $viewModel.countryCode, countryFlag: $viewModel.countryFlag, yPosition: $viewModel.yPickerPosition)
+                .offset(y: viewModel.yPickerPosition)
         }
         .background(
             Image(ImageName.ic_background)
@@ -101,43 +105,55 @@ struct MobileNoVC: View {
                 .scaleEffect()
                 .edgesIgnoringSafeArea(.all)
         )
+        .onTapGesture {
+            self.hideKeyboard()
+            if self.viewModel.yPickerPosition != 200 {
+                withAnimation (.spring()) {
+                    self.viewModel.yPickerPosition = 200
+                }
+            }
+        }
         .navigationBarItems(leading: btnBack)
         .navigationBarBackButtonHidden(true)
     }
-    
-    func mobileValidation() -> String {
-        if _mobile.wrappedValue.count < 11 {
-            return K.Messages.mobileLengthErr
-        }
-        else {
-            return ""
-        }
-    }
 }
 
-//MARK:- Service Call
-extension MobileNoVC {
+struct CountryCodeView: View {
+    @Binding var countryCode: String
+    @Binding var countryFlag: String
+    @Binding var yPosition: CGFloat
     
-    func doSendOTP() {
-        self.hideKeyboard()
-        let request = mobileVerificationRequestModel()
-        request.mobile = self._mobile.wrappedValue
-        request.userID = userID
-        viewModel?.mobileVerificationCode(request) { (response, status) in
-            if response?.status == true {
-                if let message  = response?.message{
-                   ShowToast.show(toatMessage: message)
+    var body: some View {
+        GeometryReader { geo in
+            let viewHeight: CGFloat = 400
+            List(CountryCodes.countryInfos, id: \.name) { country in
+                HStack {
+                    Text("\(country.flag)")
+                    Text("\(country.name)")
+                    Spacer()
+                    Text("+\(country.code)").foregroundColor(.secondary)
                 }
-                self.presentationMode.wrappedValue.dismiss()
-            } else if let message  = response?.message{
-                ShowToast.show(toatMessage: message)
+                .background(Color.white)
+                .font(.system(size: 20))
+                .onTapGesture {
+                    self.countryCode = country.code
+                    self.countryFlag = country.flag
+                    withAnimation(.spring()) {
+                        self.yPosition = viewHeight/2
+                    }
+                }
             }
+            .listStyle(.plain)
+            .cornerRadius(20)
+            .padding(.bottom)
+            .frame(width: geo.size.width, height: viewHeight)
+            .position(x: geo.frame(in: .global).midX, y: geo.frame(in: .global).maxY - viewHeight/2)
         }
     }
 }
 
 struct MobileNoVC_Previews: PreviewProvider {
     static var previews: some View {
-        MobileNoVC()
+        MobileNoVC(userID: "0")
     }
 }

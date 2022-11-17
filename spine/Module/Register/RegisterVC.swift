@@ -48,15 +48,16 @@ struct RegisterVC: View {
         self.isRootView = isRootView
     }
     
-    var btnBack: some View { Button(action: {
+    var btnBack: some View {
+        Button(action: {
         self.presentationMode.wrappedValue.dismiss()
-    }) {
-        HStack {
-            Image(ImageName.ic_back) // set image here
-                .aspectRatio(contentMode: .fit)
-                .foregroundColor(.white)
+        }) {
+            HStack {
+                Image(ImageName.ic_back) // set image here
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.white)
+            }
         }
-    }
     }
     var body: some View {
         //        NavigationView {
@@ -207,6 +208,7 @@ struct RegisterVC: View {
                 .edgesIgnoringSafeArea(.all)
         )
         .navigationBarItems(leading: btnBack)
+        .navigationBarHidden(self.isRootView)
         .navigationBarBackButtonHidden(true)
     }
     

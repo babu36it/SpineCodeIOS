@@ -165,9 +165,8 @@ struct LoginVC: View {
                 .edgesIgnoringSafeArea(.all)
         )
         .navigationBarItems(leading: btnBack)
+        .navigationBarHidden(self.isRootView)
         .navigationBarBackButtonHidden(true)
-        //.navigationBarHidden(true)
-        
     }
     
     private func redirectToMainScreen() {

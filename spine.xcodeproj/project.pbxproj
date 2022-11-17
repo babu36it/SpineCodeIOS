@@ -171,6 +171,10 @@
 		2C47FADE291AE17800F7EE46 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47FADD291AE17800F7EE46 /* EditProfileViewModel.swift */; };
 		2C47FAE1291AE1E200F7EE46 /* EditProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47FAE0291AE1E200F7EE46 /* EditProfileService.swift */; };
 		2C47FAE3291D846600F7EE46 /* UserDetailResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47FAE2291D846600F7EE46 /* UserDetailResponse.swift */; };
+		2C5BADE92925233D00BB31D1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C5BADE82925233D00BB31D1 /* GoogleService-Info.plist */; };
+		2C5BADEB292541A500BB31D1 /* MobileOTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADEA292541A500BB31D1 /* MobileOTPViewModel.swift */; };
+		2C5BADEE292587E400BB31D1 /* CountryPhoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADED292587E400BB31D1 /* CountryPhoneModel.swift */; };
+		2C5BADF0292590E400BB31D1 /* MobileOTPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADEF292590E400BB31D1 /* MobileOTPVC.swift */; };
 		2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */; };
 		2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */; };
 		2C7B1FBA29202C4600E06E40 /* MessagingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */; };
@@ -409,6 +413,10 @@
 		2C47FADD291AE17800F7EE46 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		2C47FAE0291AE1E200F7EE46 /* EditProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileService.swift; sourceTree = "<group>"; };
 		2C47FAE2291D846600F7EE46 /* UserDetailResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailResponse.swift; sourceTree = "<group>"; };
+		2C5BADE82925233D00BB31D1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2C5BADEA292541A500BB31D1 /* MobileOTPViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileOTPViewModel.swift; sourceTree = "<group>"; };
+		2C5BADED292587E400BB31D1 /* CountryPhoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryPhoneModel.swift; sourceTree = "<group>"; };
+		2C5BADEF292590E400BB31D1 /* MobileOTPVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileOTPVC.swift; sourceTree = "<group>"; };
 		2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailService.swift; sourceTree = "<group>"; };
 		2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -918,10 +926,12 @@
 		188D326F281F875700DA078D /* OTPVerification */ = {
 			isa = PBXGroup;
 			children = (
+				2C5BADEC292587D700BB31D1 /* Model */,
 				2C0913AC292240FF009ECF8F /* Service */,
 				2C0913AD292240FF009ECF8F /* ViewModels */,
 				188D3270281F877C00DA078D /* OTPVC.swift */,
 				6624C1072821A801009DD4F3 /* MobileNoVC.swift */,
+				2C5BADEF292590E400BB31D1 /* MobileOTPVC.swift */,
 			);
 			path = OTPVerification;
 			sourceTree = "<group>";
@@ -977,6 +987,7 @@
 			isa = PBXGroup;
 			children = (
 				2C0913AE292242DF009ECF8F /* OTPViewModel.swift */,
+				2C5BADEA292541A500BB31D1 /* MobileOTPViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -996,6 +1007,22 @@
 				2C47FAE2291D846600F7EE46 /* UserDetailResponse.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		2C5BADE72925232F00BB31D1 /* FirebaseConfig */ = {
+			isa = PBXGroup;
+			children = (
+				2C5BADE82925233D00BB31D1 /* GoogleService-Info.plist */,
+			);
+			path = FirebaseConfig;
+			sourceTree = "<group>";
+		};
+		2C5BADEC292587D700BB31D1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2C5BADED292587E400BB31D1 /* CountryPhoneModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		2C7B1FB3291FFA7700E06E40 /* VIewModels */ = {
@@ -1127,6 +1154,7 @@
 		66A2374B281709FC00CA3763 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2C5BADE72925232F00BB31D1 /* FirebaseConfig */,
 				18979F672836199B00E6025B /* Font */,
 			);
 			path = Resources;
@@ -1405,6 +1433,7 @@
 				66A237C6281709FC00CA3763 /* YBTextPickerCell.xib in Resources */,
 				18979F6D2836199B00E6025B /* Poppins-SemiBold.ttf in Resources */,
 				66A23728281704A700CA3763 /* Assets.xcassets in Resources */,
+				2C5BADE92925233D00BB31D1 /* GoogleService-Info.plist in Resources */,
 				66A237C9281709FC00CA3763 /* YBTextPicker.xib in Resources */,
 				0482D5E42869F1C000DFCA2A /* SpineLaunchScreen.storyboard in Resources */,
 			);
@@ -1515,6 +1544,7 @@
 				66A662D2282304FD0012A129 /* HomeHeaderView.swift in Sources */,
 				2C7B1FBE2920453100E06E40 /* SaveEventsInCalendarViewModel.swift in Sources */,
 				0481A9162872EBD20096AFEE /* AccountView.swift in Sources */,
+				2C5BADF0292590E400BB31D1 /* MobileOTPVC.swift in Sources */,
 				66A23726281704A600CA3763 /* ContentView.swift in Sources */,
 				180C16C52856CB140072D0DF /* PodcastInfoView.swift in Sources */,
 				2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */,
@@ -1573,6 +1603,7 @@
 				66A237CE281709FC00CA3763 /* HeaderView.swift in Sources */,
 				04873C6F28E300920054A00C /* Error.swift in Sources */,
 				18D28A02283DCDE200C7BDDF /* StoriesMemmberVC.swift in Sources */,
+				2C5BADEB292541A500BB31D1 /* MobileOTPViewModel.swift in Sources */,
 				188D3271281F877C00DA078D /* OTPVC.swift in Sources */,
 				188F22842840FD1C00F8896D /* PracticionersListVC.swift in Sources */,
 				048712C72877E81800F70FBE /* CountTimer.swift in Sources */,
@@ -1590,6 +1621,7 @@
 				66A662CA2822EDEA0012A129 /* FeedListVC.swift in Sources */,
 				0485B62328814FCF00A79B40 /* StoryListView.swift in Sources */,
 				2C7B1FC6292118CA00E06E40 /* CurrenciesListViewModel.swift in Sources */,
+				2C5BADEE292587E400BB31D1 /* CountryPhoneModel.swift in Sources */,
 				66A237FB281709FC00CA3763 /* LoginViewModel.swift in Sources */,
 				04826C7A288FEC7300F171A4 /* AddHashTagView.swift in Sources */,
 				04973537289A90150019548A /* CustomButtons.swift in Sources */,

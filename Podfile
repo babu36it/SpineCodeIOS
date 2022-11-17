@@ -10,5 +10,6 @@ target 'spine' do
   pod 'WaterfallGrid'
   pod 'FBSDKLoginKit'
   # Pods for spine
-
+  pod 'FirebaseAuth'
+  
 end

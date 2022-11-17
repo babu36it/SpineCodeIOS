@@ -96,12 +96,12 @@ extension LoginViewModel {
             ShowHud.hide()
             if let res = response {
                 print(res)
-               // res.save()
+                res.save()
                 completion(response, true)
             } else  {
-                if let error = error {
-                   ShowToast.show(toatMessage: error.errorMessage ?? "")
-                }
+//                if let error = error {
+//                   ShowToast.show(toatMessage: error.errorMessage ?? "")
+//                }
                 completion(response, false)
             }
         }

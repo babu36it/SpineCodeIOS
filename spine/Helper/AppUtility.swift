@@ -88,7 +88,7 @@ extension AppUtility {
     func redirectToLoginScreen() {
         if let window = applicationKeyWindow {
             let loginView = LoginVC(isRootView: true)
-            window.rootViewController = UIHostingController(rootView: loginView)
+            window.rootViewController = UINavigationController(rootViewController: UIHostingController(rootView: loginView))
             window.makeKeyAndVisible()
         }
     }
@@ -96,7 +96,7 @@ extension AppUtility {
     func redirectToRegisterScreen() {
         if let window = applicationKeyWindow {
             let loginView = RegisterVC(isRootView: true)
-            window.rootViewController = UIHostingController(rootView: loginView)
+            window.rootViewController = UINavigationController(rootViewController: UIHostingController(rootView: loginView))
             window.makeKeyAndVisible()
         }
     }

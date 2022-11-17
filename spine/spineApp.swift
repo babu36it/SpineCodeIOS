@@ -3,7 +3,7 @@
 //  spine
 
 import SwiftUI
-import FBSDKCoreKit
+
 @main
 struct spineApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

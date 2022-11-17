@@ -12,6 +12,14 @@
 				<string>fb688748822386275</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-659666712703-ios-97d274174eed38d389274a</string>
+			</array>
+		</dict>
 	</array>
 	<key>FacebookAppID</key>
 	<string>688748822386275</string>

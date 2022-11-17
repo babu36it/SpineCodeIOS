@@ -76,7 +76,7 @@ struct K {
     }
     struct Messages {
         static let mobileNoError    = "Please enter mobile number"
-        static let mobileLengthErr  = "Mobile number should be minimum 11 characters"
+        static let mobileLengthErr  = "Mobile number should be minimum 10 characters"
         static let usernameError    = "Please enter username"
         static let towneError       = "Please enter town"
         static let passwordError    = "Please enter password"
