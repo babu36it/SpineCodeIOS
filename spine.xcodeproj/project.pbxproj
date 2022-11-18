@@ -176,6 +176,7 @@
 		2C5BADEE292587E400BB31D1 /* CountryPhoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADED292587E400BB31D1 /* CountryPhoneModel.swift */; };
 		2C5BADF0292590E400BB31D1 /* MobileOTPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADEF292590E400BB31D1 /* MobileOTPVC.swift */; };
 		2C5BADF22926D6B000BB31D1 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADF12926D6B000BB31D1 /* KeychainHelper.swift */; };
+		2C5BADF42928113F00BB31D1 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADF32928113F00BB31D1 /* FileManager+Extensions.swift */; };
 		2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */; };
 		2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */; };
 		2C7B1FBA29202C4600E06E40 /* MessagingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */; };
@@ -419,6 +420,7 @@
 		2C5BADED292587E400BB31D1 /* CountryPhoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryPhoneModel.swift; sourceTree = "<group>"; };
 		2C5BADEF292590E400BB31D1 /* MobileOTPVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileOTPVC.swift; sourceTree = "<group>"; };
 		2C5BADF12926D6B000BB31D1 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		2C5BADF32928113F00BB31D1 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailService.swift; sourceTree = "<group>"; };
 		2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -1123,6 +1125,7 @@
 				66A237352817093A00CA3763 /* DateExtensions.swift */,
 				66A237362817093A00CA3763 /* UIFont+Extension.swift */,
 				04983D8729113D9C0054F887 /* DateComponentsFormatter+Extension.swift */,
+				2C5BADF32928113F00BB31D1 /* FileManager+Extensions.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1578,6 +1581,7 @@
 				66A2380B2817115B00CA3763 /* TabBarItem.swift in Sources */,
 				2C5BADF22926D6B000BB31D1 /* KeychainHelper.swift in Sources */,
 				2C47FADE291AE17800F7EE46 /* EditProfileViewModel.swift in Sources */,
+				2C5BADF42928113F00BB31D1 /* FileManager+Extensions.swift in Sources */,
 				048AD9F428A52FBA0091BC60 /* PaymentConfirmView.swift in Sources */,
 				66A2373B2817093A00CA3763 /* UIFont+Extension.swift in Sources */,
 				66A238092817115B00CA3763 /* TabBarView.swift in Sources */,

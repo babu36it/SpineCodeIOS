@@ -143,12 +143,14 @@ extension LoginViewModel {
     }
 
     func userDetails(completion: @escaping (_ response:signInResponseModel?,_ status: Bool) -> Void) {
-        AlamofireClient<signInResponseModel>.responseObjectNew(APIRequest(.userDetails)) { (response, error) in
-            if let res = response {
-                completion(res, true)
-            } else {
-                print(String(describing: error))
-                completion(response, false)
+        EditProfileService(httpUtility: HttpUtility()).fetchUserDetails { result in
+            switch result {
+            case .success(let userResponse):
+                if let jsonData: Data = try? JSONEncoder().encode(userResponse), let jsonString: String = String(data: jsonData, encoding: .utf8), let responseModel: signInResponseModel = .init(JSONString: jsonString) {
+                    completion(responseModel, true)
+                }
+            case .failure(let error):
+                print(error)
             }
         }
     }

@@ -15,12 +15,19 @@ class LanguagesListService {
     }
     
     func getLanguages(completion: @escaping(_ result: Result<LanguageListResponse, CHError>) -> Void) {
-        guard let languagesList = URL(string: APIEndPoint.languages.urlStr) else {
-            completion(.failure(.invalidUrl))
-            return
-        }
-        httpUtility.requestData(url: languagesList, resultType: LanguageListResponse.self) { result in
-            completion(result)
+        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: "languages.json"), let response: LanguageListResponse = try? JSONDecoder().decode(LanguageListResponse.self, from: jsonData) {
+            completion(.success(response))
+        } else {
+            guard let languagesList = URL(string: APIEndPoint.languages.urlStr) else {
+                completion(.failure(.invalidUrl))
+                return
+            }
+            httpUtility.requestData(url: languagesList, resultType: LanguageListResponse.self) { result in
+                if let jsonData: Data = try? JSONEncoder().encode(result.get()) {
+                    FileManager.default.saveDataToCachesDirectory(jsonData, filename: "languages.json")
+                }
+                completion(result)
+            }
         }
     }
     

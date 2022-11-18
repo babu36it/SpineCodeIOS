@@ -8,6 +8,10 @@
 import Foundation
 
 class LanguagesListViewModel: ObservableObject {
+    private struct Constants {
+        static let languageFilename: String = "languages.json"
+    }
+    
     let serviceProvider = LanguagesListService(httpUtility: HttpUtility())
 
     @Published var selectedLanguage: LanguageModel?
@@ -31,24 +35,31 @@ class LanguagesListViewModel: ObservableObject {
     
     private var languages: [LanguageModel]? {
         didSet {
+            if let langId: String = AppUtility.shared.userInfo?.data?.defaultLanguageID {
+                selectedLanguage = languages?.first { $0.id == langId }
+            }
             filteredLanguages = languages
         }
     }
 
     func getLanguages() {
-        showLoader = true
-        serviceProvider.getLanguages { result in
-            DispatchQueue.main.async { [weak self] in
-                switch result {
-                case .success(let apiRes):
-                    if let langId: String = AppUtility.shared.userInfo?.data?.defaultLanguageID {
-                        self?.selectedLanguage = apiRes.data?.first { $0.id == langId }
+        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: Constants.languageFilename), let response: [LanguageModel] = try? JSONDecoder().decode([LanguageModel].self, from: jsonData) {
+            languages = response
+        } else {
+            showLoader = true
+            serviceProvider.getLanguages { result in
+                DispatchQueue.main.async { [weak self] in
+                    switch result {
+                    case .success(let apiRes):
+                        if let jsonData: Data = try? JSONEncoder().encode(apiRes.data) {
+                            FileManager.default.saveDataToCachesDirectory(jsonData, filename: Constants.languageFilename)
+                        }
+                        self?.languages = apiRes.data
+                    case .failure(let error):
+                        print(error)
                     }
-                    self?.languages = apiRes.data
-                case .failure(let error):
-                    print(error)
+                    self?.showLoader = false
                 }
-                self?.showLoader = false
             }
         }
     }

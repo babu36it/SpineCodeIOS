@@ -8,6 +8,10 @@
 import Foundation
 
 class CurrenciesListViewModel: ObservableObject {
+    private struct Constants {
+        static let currenciesFilename: String = "currencies.json"
+    }
+    
     let serviceProvider = CurrenciesListService(httpUtility: HttpUtility())
 
     @Published var selectedCurrency: CurrencyModel?
@@ -31,24 +35,31 @@ class CurrenciesListViewModel: ObservableObject {
     
     private var currencies: [CurrencyModel]? {
         didSet {
+            if let currID: String = AppUtility.shared.userInfo?.data?.defaultCurrencyID {
+                selectedCurrency = currencies?.first { $0.id == currID }
+            }
             filteredCurrencies = currencies
         }
     }
 
     func getCurrencies() {
-        showLoader = true
-        serviceProvider.getCurrencies { result in
-            DispatchQueue.main.async { [weak self] in
-                switch result {
-                case .success(let apiRes):
-                    if let currID: String = AppUtility.shared.userInfo?.data?.defaultCurrencyID {
-                        self?.selectedCurrency = apiRes.data?.first { $0.id == currID }
+        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: Constants.currenciesFilename), let response: [CurrencyModel] = try? JSONDecoder().decode([CurrencyModel].self, from: jsonData) {
+            currencies = response
+        } else {
+            showLoader = true
+            serviceProvider.getCurrencies { result in
+                DispatchQueue.main.async { [weak self] in
+                    switch result {
+                    case .success(let apiRes):
+                        if let jsonData: Data = try? JSONEncoder().encode(apiRes.data) {
+                            FileManager.default.saveDataToCachesDirectory(jsonData, filename: Constants.currenciesFilename)
+                        }
+                        self?.currencies = apiRes.data
+                    case .failure(let error):
+                        print(error)
                     }
-                    self?.currencies = apiRes.data
-                case .failure(let error):
-                    print(error)
+                    self?.showLoader = false
                 }
-                self?.showLoader = false
             }
         }
     }
@@ -79,7 +90,7 @@ extension CurrencyModel: SelectionListItemable {
     }
     
     var title: String {
-        get { "\(code) - \(currency)"}
+        get { "\(code) - \(currency) (\(symbol))" }
         set { }
     }
 }
@@ -101,6 +112,7 @@ extension CurrenciesListViewModel: SelectionListable {
     }
 
     func didSelect(item: any SelectionListItemable, completion: @escaping (Bool) -> Void) {
+        selectedCurrency = item as? CurrencyModel
         updateCurrency { result in
             switch result {
             case .success:

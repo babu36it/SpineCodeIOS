@@ -92,19 +92,24 @@ enum APIAddress: URLRequestConvertible {
         }
     }
     
+    var headers: HTTPHeaders? {
+        switch self {
+        case .userDetails:
+            if let authToken: String = AppUtility.shared.userInfo?.token {
+                return HTTPHeaders(["Authorization": authToken])
+            }
+            return nil
+        default:
+            return nil
+        }
+    }
+    
     // MARK: URLRequestConvertible
     func asURLRequest() throws -> URLRequest {
         let url = try currentEnvironment.baseURL.asURL()
         
         var urlRequest = URLRequest(url: url.appendingPathComponent(path))
         urlRequest.httpMethod = method.rawValue
-        let user = "devpankaj"
-        let password = "devpankaj"
-        let credentialData = "\(user):\(password)".data(using: String.Encoding.utf8)!
-        let base64Credentials = credentialData.base64EncodedString(options: [])
-        urlRequest.headers = ["Authorization":"Basic \(base64Credentials)", "X-API-KEY":"123run","Content-Type":"application/x-www-form-urlencoded"]
-    
-        print(urlRequest.headers)
         switch self {
         case .socialLogin(let parameters),.signin(let parameters),.signup(let parameters),.forgotpassword(let parameters),.userMobileVerification(let parameters):
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
@@ -112,11 +117,8 @@ enum APIAddress: URLRequestConvertible {
         default:
             break
         }
-        print(urlRequest.description)
         return urlRequest
     }
-    
-    
 }
 
 struct APIRequest {
