@@ -44,7 +44,10 @@ class AppUtility {
         LoginViewModel().userDetails { response, status in
             DispatchQueue.main.async { [weak self] in
                 if let response = response {
-                    self?.updateUserInfo(response)
+                    response.token = self?.userInfo?.token
+                    response.tokenType = self?.userInfo?.tokenType
+                    response.tokenExpiry = self?.userInfo?.tokenExpiry
+                    response.save()
                 }
             }
         }

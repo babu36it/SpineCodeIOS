@@ -123,7 +123,7 @@ struct HttpUtility {
                 }
                 
             case 401:
-                print("token time expired") //delte existing token and refresh token
+                print("token time expired for request: \(request)") //delte existing token and refresh token
                 //call refresh token here
                 self.refreshToken { success in
                     if success {
@@ -132,7 +132,7 @@ struct HttpUtility {
                 }
                 
             default:
-                print("all other case")
+                print("all other case for request: \(request)")
                 completion(.failure(.otherError))
             }
         }.resume()
