@@ -33,10 +33,12 @@ struct AccountView: View {
                 
                 NavigationLink(destination: SelectionListView(listViewModel: LanguagesListViewModel())) {
                     NavTitle(title: "Language")
+                        .badge(AppUtility.shared.userInfo?.data?.languages)
                 }
                 
                 NavigationLink(destination: SelectionListView(listViewModel: CurrenciesListViewModel())) {
                     NavTitle(title: "Currency")
+                        .badge(AppUtility.shared.userInfo?.data?.defaultCurrencyID)
                 }
                 
                 Toggle("Dark mode", isOn: $isDarkModeOn)

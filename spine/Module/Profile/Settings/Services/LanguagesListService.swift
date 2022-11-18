@@ -25,13 +25,12 @@ class LanguagesListService {
     }
     
     func updateLanguage(to language: LanguageModel, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
-        completion(.success(.init(status: true, message: "Successfully updated language.")))
-//        guard let updateAuthorization = URL(string: APIEndPoint.updateLanguage.urlStr) else {
-//            completion(.failure(.invalidUrl))
-//            return
-//        }
-//        httpUtility.requestData(httpMethod: .post, postData: ["language": language.id], url: updateAuthorization, resultType: EditProfileResponseModel.self) { result in
-//            completion(result)
-//        }
+        guard let updateLanguage = URL(string: APIEndPoint.updateLanguage.urlStr) else {
+            completion(.failure(.invalidUrl))
+            return
+        }
+        httpUtility.requestData(httpMethod: .post, postData: ["language_id": language.id], url: updateLanguage, resultType: EditProfileResponseModel.self) { result in
+            completion(result)
+        }
     }
 }

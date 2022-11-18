@@ -15,11 +15,11 @@ class SaveEventsInCalendarViewModel: ObservableObject {
 
     func getSaveEventsInCalendarStatus() {
         showLoader = true
-        serviceProvider.getSaveEventsInCalendarStatus { result in
+        serviceProvider.getAccountSettings { result in
             DispatchQueue.main.async { [weak self] in
                 switch result {
                 case .success(let apiRes):
-                    self?.saveEvent = apiRes.status
+                    self?.saveEvent = apiRes.data.eventCalenderStatus.toBool() ?? false
                 case .failure(let error):
                     print(error)
                 }
@@ -33,6 +33,12 @@ class SaveEventsInCalendarViewModel: ObservableObject {
         let eventStatus: String = status ? "1" : "0"
         serviceProvider.updateSaveEventsInCalendarStatus(eventStatus) { result in
             DispatchQueue.main.async { [weak self] in
+                switch result {
+                case .success(let apiRes):
+                    print(apiRes)
+                case .failure(let error):
+                    print(error)
+                }
                 self?.showLoader = false
             }
         }

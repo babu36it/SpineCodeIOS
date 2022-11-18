@@ -10,10 +10,14 @@ import Foundation
 class LanguagesListViewModel: ObservableObject {
     let serviceProvider = LanguagesListService(httpUtility: HttpUtility())
 
-    @Published var showLoader: Bool = false
     @Published var selectedLanguage: LanguageModel?
-
     @Published var filteredLanguages: [LanguageModel]?
+    
+    @Published var showAlertView: Bool = false
+    @Published var alertTitleStr: String = ""
+    @Published var alertMessageStr: String = ""
+    @Published var showLoader: Bool = false
+
     @Published var searchQuery: String = "" {
         didSet {
             if searchQuery.isEmpty {
@@ -37,6 +41,9 @@ class LanguagesListViewModel: ObservableObject {
             DispatchQueue.main.async { [weak self] in
                 switch result {
                 case .success(let apiRes):
+                    if let langId: String = AppUtility.shared.userInfo?.data?.defaultLanguageID {
+                        self?.selectedLanguage = apiRes.data?.first { $0.id == langId }
+                    }
                     self?.languages = apiRes.data
                 case .failure(let error):
                     print(error)
@@ -78,10 +85,27 @@ extension LanguageModel: SelectionListItemable {
 }
 
 extension LanguagesListViewModel: SelectionListable {
+    var showAlert: Bool {
+        get { self.showAlertView }
+        set { self.showAlertView = newValue }
+    }
+    
+    var alertTitle: String {
+        get { alertTitleStr }
+        set { alertTitleStr = newValue }
+    }
+    
+    var alertMessage: String {
+        get { alertMessageStr }
+        set { alertMessageStr = newValue }
+    }
+    
     func didSelect(item: any SelectionListItemable, completion: @escaping (Bool) -> Void) {
+        selectedLanguage = item as? LanguageModel
         updateLanguage { result in
             switch result {
             case .success:
+                AppUtility.shared.refreshUserInfo()
                 completion(true)
             case .failure:
                 completion(false)

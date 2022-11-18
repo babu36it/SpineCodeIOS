@@ -29,12 +29,16 @@ enum APIEndPoint: String {
     case uploadProfilePic = "/profile/userProfilePic"
     case uploadBgProfilePic = "profile/userBgProfilePic"
     case updateUserEmail = "requestToChangeEmail"
-
-    case messagingAuthorization = "eventMessagingAutho"
     
+    case updateLanguage = "profile/updateProfileLanguage"
+    case updateCurrency = "profile/updateProfileCurrency"
+
     case mobileNotifications = "mobileAllNotification"
     case emailNotifications = "emailAllNotification"
-
+    case messagingAuthorization = "eventMessagingAutho"
+    case saveEventToCalendar = "saveEventToCalender"
+    case userAccountSettings = "userAccountSetting"
+    
     var urlStr: String {
         return baseUrl + rawValue
     }

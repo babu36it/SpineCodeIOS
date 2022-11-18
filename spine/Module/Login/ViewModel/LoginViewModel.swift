@@ -89,6 +89,7 @@ extension LoginViewModel {
             }
         }
     }
+    
     // MARK: - mobileVerificationCode Webservice
     func mobileVerificationCode(_ request: mobileVerificationRequestModel,  completion: @escaping (_ response:signInResponseModel?,_ result: Bool) -> Void) {
         ShowHud.show()
@@ -141,4 +142,14 @@ extension LoginViewModel {
         }
     }
 
+    func userDetails(completion: @escaping (_ response:signInResponseModel?,_ status: Bool) -> Void) {
+        AlamofireClient<signInResponseModel>.responseObjectNew(APIRequest(.userDetails)) { (response, error) in
+            if let res = response {
+                completion(res, true)
+            } else {
+                print(String(describing: error))
+                completion(response, false)
+            }
+        }
+    }
 }

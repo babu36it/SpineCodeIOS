@@ -68,34 +68,28 @@ class signInResponseModel : NSObject, NSCoding, Mappable{
         aCoder.encode(tokenExpiry, forKey: "expires_in")
         aCoder.encode(message, forKey: "message")
     }
-    func save() -> Void {
-        //UserDefaults.standard.set(self.token, forKey: "token")
-        AppUtility.shared.userSettings.authToken = self.token ?? ""
-    }
-    
-    class func remove() -> Void {
-        //UserDefaults.standard.removeObject(forKey: "token")
-        AppUtility.shared.userSettings.authToken = ""
-        StandardUserDefaults.synchronize()
-    }
-    
-    static func loggedInUser() -> signInResponseModel? {
-        let user = StandardUserDefaults.getCustomObject(key: K.Key.loggedInUser) as? signInResponseModel
-        return user
-    }
-    
-    static func isUserLoggedIn() -> Bool {
-        if let token = UserDefaults.standard.string(forKey: "token"), token != "" {
-            return true
+}
+
+extension signInResponseModel {
+    func save() {
+        AppUtility.shared.updateUserInfo(self)
+        if let jsonData: Data = self.toJSONString()?.data(using: .utf8) {
+            KeychainHelper.shared.save(jsonData, forKey: "UserInformation")
         }
-        return false
     }
     
-    static func loggedInUserId() -> String? {
-        let user = StandardUserDefaults.getCustomObject(key: K.Key.loggedInUser) as? signInResponseModel
-        return ""//user?.data?.usersId
+    class func retrieve() -> signInResponseModel? {
+        if let jsonData: Data = KeychainHelper.shared.read(forKey: "UserInformation"), let jsonString: String = String(data: jsonData, encoding: .utf8) {
+            return signInResponseModel(JSONString: jsonString)
+        }
+        return nil
+    }
+    
+    class func remove() {
+        KeychainHelper.shared.delete(forKey: "UserInformation")
     }
 }
+
 /*
 class signInResponseModel :  NSObject, NSCoding, Mappable{
     
@@ -153,43 +147,74 @@ class signInResponseModel :  NSObject, NSCoding, Mappable{
 
 class signInResponseData : NSObject, NSCoding, Mappable{
 
-    var account : String?
-    var accountMode : String?
-    var address : AnyObject?
-    var bgImage : AnyObject?
-    var bio : AnyObject?
-    var businessAddress : String?
-    var businessPhone : AnyObject?
-    var category : String?
-    var contactEmail : AnyObject?
-    var createdOn : String?
-    var deviceToken : AnyObject?
-    var displayName : String?
-    var email : String?
-    var facebookId : AnyObject?
-    var facebookImage : AnyObject?
-    var impulseFollow : String?
-    var isDelete : String?
-    var lastLogin : AnyObject?
-    var name : String?
-    var notifyDeviceToken : AnyObject?
-    var notifyDeviceType : AnyObject?
-    var password : String?
-    var profileImage : String?
-    var profilePic : AnyObject?
-    var recoveryToken : AnyObject?
-    var referralCode : String?
-    var socialLogin : String?
-    var status : String?
-    var town : String?
-    var updatedOn : AnyObject?
-    var userLatitude : String?
-    var userLongitude : String?
-    var usersId : String?
-    var verificationPin : String?
-    var verifyEmail : String?
-    var website : AnyObject?
-
+    var account: String?
+    var accountMode: String?
+    var address: AnyObject?
+    var bgImage: AnyObject?
+    var bio: AnyObject?
+    var businessAddress: String?
+    var businessPhone: AnyObject?
+    var businessMobile: String?
+    var businessMobileCode: String?
+    var businessPhoneCode: String?
+    var category: String?
+    var categoryName: String?
+    var city: String?
+    var companyName: String?
+    var contactEmail: AnyObject?
+    var country: String?
+    var createdOn: String?
+    var defaultCurrencyID: String?
+    var defaultLanguageID: String?
+    var deseasePattern: String?
+    var deviceToken: AnyObject?
+    var displayName: String?
+    var documents: String?
+    var email: String?
+    var eventRecordsCount: String?
+    var facebookId: AnyObject?
+    var facebookImage: AnyObject?
+    var followerRecordCount: String?
+    var followingRecordCount: String?
+    var googleListing: String?
+    var impulseFollow: String?
+    var interested: String?
+    var isDelete: String?
+    var keyPerformance: String?
+    var languages: String?
+    var lastLogin: AnyObject?
+    var listingType: String?
+    var metaverseAddress: String?
+    var mobile: String?
+    var name: String?
+    var notifyDeviceToken: AnyObject?
+    var notifyDeviceType: AnyObject?
+    var offerDescription: String?
+    var otherLink: String?
+    var password: String?
+    var podRecordsCount: String?
+    var postRecordsCount: String?
+    var postCode: String?
+    var qualification: String?
+    var recoveryToken: AnyObject?
+    var referralCode: String?
+    var socialLogin: String?
+    var status: String?
+    var street1: String?
+    var street2: String?
+    var street3: String?
+    var town: String?
+    var updatedOn: AnyObject?
+    var userImage: String?
+    var userLatitude: String?
+    var userLongitude: String?
+    var usersId: String?
+    var verificationPin: String?
+    var verifyAccountStatus: String?
+    var verifyEmail: String?
+    var verifyMobile: String?
+    var website: AnyObject?
+    var wikipedia: String?
 
     required override init(){ }
     required init?(map: Map) {}
@@ -217,8 +242,6 @@ class signInResponseData : NSObject, NSCoding, Mappable{
         notifyDeviceToken <- map["notify_device_token"]
         notifyDeviceType <- map["notify_device_type"]
         password <- map["password"]
-        profileImage <- map["profile_image"]
-        profilePic <- map["profile_pic"]
         recoveryToken <- map["recovery_token"]
         referralCode <- map["referral_code"]
         socialLogin <- map["social_login"]
@@ -231,7 +254,40 @@ class signInResponseData : NSObject, NSCoding, Mappable{
         verificationPin <- map["verification_pin"]
         verifyEmail <- map["verify_email"]
         website <- map["website"]
-        
+        languages <- map["languages"]
+        defaultLanguageID <- map["default_language_id"]
+        defaultCurrencyID <- map["default_currency_id"]
+        businessMobileCode <- map["business_mobile_code"]
+        businessPhoneCode <- map["business_phone_code"]
+        categoryName <- map["category_name"]
+        city <- map["city"]
+        companyName <- map["company_name"]
+        country <- map["country"]
+        deseasePattern <- map["desease_pattern"]
+        documents <- map["documents"]
+        eventRecordsCount <- map["event_records_count"]
+        followerRecordCount <- map["followers_records_count"]
+        followingRecordCount <- map["following_records_count"]
+        googleListing <- map["google_listing"]
+        interested <- map["interested"]
+        keyPerformance <- map["key_perfomance"]
+        languages <- map["languages"]
+        listingType <- map["listing_type"]
+        metaverseAddress <- map["metaverse_address"]
+        mobile <- map["mobile"]
+        offerDescription <- map["offer_desciption"]
+        otherLink <- map["other_link"]
+        podRecordsCount <- map["pod_records_count"]
+        postRecordsCount <- map["post_records_count"]
+        postCode <- map["postcode"]
+        qualification <- map["qualification"]
+        street1 <- map["street_1"]
+        street2 <- map["street_2"]
+        street3 <- map["street_3"]
+        userImage <- map["user_image"]
+        verifyAccountStatus <- map["verify_account_status"]
+        verifyMobile <- map["verify_mobile"]
+        wikipedia <- map["wikipedia"]
     }
 
     /**
@@ -240,43 +296,74 @@ class signInResponseData : NSObject, NSCoding, Mappable{
     */
     @objc required init(coder aDecoder: NSCoder)
     {
-         account = aDecoder.decodeObject(forKey: "account") as? String
-         accountMode = aDecoder.decodeObject(forKey: "account_mode") as? String
-         address = aDecoder.decodeObject(forKey: "address") as? AnyObject
-         bgImage = aDecoder.decodeObject(forKey: "bg_image") as? AnyObject
-         bio = aDecoder.decodeObject(forKey: "bio") as? AnyObject
-         businessAddress = aDecoder.decodeObject(forKey: "business_address") as? String
-         businessPhone = aDecoder.decodeObject(forKey: "business_phone") as? AnyObject
-         category = aDecoder.decodeObject(forKey: "category") as? String
-         contactEmail = aDecoder.decodeObject(forKey: "contact_email") as? AnyObject
-         createdOn = aDecoder.decodeObject(forKey: "created_on") as? String
-         deviceToken = aDecoder.decodeObject(forKey: "device_token") as? AnyObject
-         displayName = aDecoder.decodeObject(forKey: "display_name") as? String
-         email = aDecoder.decodeObject(forKey: "email") as? String
-         facebookId = aDecoder.decodeObject(forKey: "facebook_id") as? AnyObject
-         facebookImage = aDecoder.decodeObject(forKey: "facebook_image") as? AnyObject
-         impulseFollow = aDecoder.decodeObject(forKey: "impulse_follow") as? String
-         isDelete = aDecoder.decodeObject(forKey: "is_delete") as? String
-         lastLogin = aDecoder.decodeObject(forKey: "last_login") as? AnyObject
-         name = aDecoder.decodeObject(forKey: "name") as? String
-         notifyDeviceToken = aDecoder.decodeObject(forKey: "notify_device_token") as? AnyObject
-         notifyDeviceType = aDecoder.decodeObject(forKey: "notify_device_type") as? AnyObject
-         password = aDecoder.decodeObject(forKey: "password") as? String
-         profileImage = aDecoder.decodeObject(forKey: "profile_image") as? String
-         profilePic = aDecoder.decodeObject(forKey: "profile_pic") as? AnyObject
-         recoveryToken = aDecoder.decodeObject(forKey: "recovery_token") as? AnyObject
-         referralCode = aDecoder.decodeObject(forKey: "referral_code") as? String
-         socialLogin = aDecoder.decodeObject(forKey: "social_login") as? String
-         status = aDecoder.decodeObject(forKey: "status") as? String
-         town = aDecoder.decodeObject(forKey: "town") as? String
-         updatedOn = aDecoder.decodeObject(forKey: "updated_on") as? AnyObject
-         userLatitude = aDecoder.decodeObject(forKey: "user_latitude") as? String
-         userLongitude = aDecoder.decodeObject(forKey: "user_longitude") as? String
-         usersId = aDecoder.decodeObject(forKey: "users_id") as? String
-         verificationPin = aDecoder.decodeObject(forKey: "verification_pin") as? String
-         verifyEmail = aDecoder.decodeObject(forKey: "verify_email") as? String
-         website = aDecoder.decodeObject(forKey: "website") as? AnyObject
-
+        account = aDecoder.decodeObject(forKey: "account") as? String
+        accountMode = aDecoder.decodeObject(forKey: "account_mode") as? String
+        address = aDecoder.decodeObject(forKey: "address") as? AnyObject
+        bgImage = aDecoder.decodeObject(forKey: "bg_image") as? AnyObject
+        bio = aDecoder.decodeObject(forKey: "bio") as? AnyObject
+        businessAddress = aDecoder.decodeObject(forKey: "business_address") as? String
+        businessPhone = aDecoder.decodeObject(forKey: "business_phone") as? AnyObject
+        category = aDecoder.decodeObject(forKey: "category") as? String
+        contactEmail = aDecoder.decodeObject(forKey: "contact_email") as? AnyObject
+        createdOn = aDecoder.decodeObject(forKey: "created_on") as? String
+        deviceToken = aDecoder.decodeObject(forKey: "device_token") as? AnyObject
+        displayName = aDecoder.decodeObject(forKey: "display_name") as? String
+        email = aDecoder.decodeObject(forKey: "email") as? String
+        facebookId = aDecoder.decodeObject(forKey: "facebook_id") as? AnyObject
+        facebookImage = aDecoder.decodeObject(forKey: "facebook_image") as? AnyObject
+        impulseFollow = aDecoder.decodeObject(forKey: "impulse_follow") as? String
+        isDelete = aDecoder.decodeObject(forKey: "is_delete") as? String
+        lastLogin = aDecoder.decodeObject(forKey: "last_login") as? AnyObject
+        name = aDecoder.decodeObject(forKey: "name") as? String
+        notifyDeviceToken = aDecoder.decodeObject(forKey: "notify_device_token") as? AnyObject
+        notifyDeviceType = aDecoder.decodeObject(forKey: "notify_device_type") as? AnyObject
+        password = aDecoder.decodeObject(forKey: "password") as? String
+        recoveryToken = aDecoder.decodeObject(forKey: "recovery_token") as? AnyObject
+        referralCode = aDecoder.decodeObject(forKey: "referral_code") as? String
+        socialLogin = aDecoder.decodeObject(forKey: "social_login") as? String
+        status = aDecoder.decodeObject(forKey: "status") as? String
+        town = aDecoder.decodeObject(forKey: "town") as? String
+        updatedOn = aDecoder.decodeObject(forKey: "updated_on") as? AnyObject
+        userLatitude = aDecoder.decodeObject(forKey: "user_latitude") as? String
+        userLongitude = aDecoder.decodeObject(forKey: "user_longitude") as? String
+        usersId = aDecoder.decodeObject(forKey: "users_id") as? String
+        verificationPin = aDecoder.decodeObject(forKey: "verification_pin") as? String
+        verifyEmail = aDecoder.decodeObject(forKey: "verify_email") as? String
+        website = aDecoder.decodeObject(forKey: "website") as? AnyObject
+        languages = aDecoder.decodeObject(forKey: "languages") as? String
+        defaultLanguageID = aDecoder.decodeObject(forKey: "default_language_id") as? String
+        defaultCurrencyID = aDecoder.decodeObject(forKey: "default_currency_id") as? String
+        businessMobileCode = aDecoder.decodeObject(forKey: "business_mobile_code") as? String
+        businessPhoneCode = aDecoder.decodeObject(forKey: "business_phone_code") as? String
+        categoryName = aDecoder.decodeObject(forKey: "category_name") as? String
+        city = aDecoder.decodeObject(forKey: "city") as? String
+        companyName = aDecoder.decodeObject(forKey: "company_name") as? String
+        country = aDecoder.decodeObject(forKey: "country") as? String
+        deseasePattern = aDecoder.decodeObject(forKey: "desease_pattern") as? String
+        documents = aDecoder.decodeObject(forKey: "documents") as? String
+        eventRecordsCount = aDecoder.decodeObject(forKey: "event_records_count") as? String
+        followerRecordCount = aDecoder.decodeObject(forKey: "followers_records_count") as? String
+        followingRecordCount = aDecoder.decodeObject(forKey: "following_records_count") as? String
+        googleListing = aDecoder.decodeObject(forKey: "google_listing") as? String
+        interested = aDecoder.decodeObject(forKey: "interested") as? String
+        keyPerformance = aDecoder.decodeObject(forKey: "key_perfomance") as? String
+        languages = aDecoder.decodeObject(forKey: "languages") as? String
+        listingType = aDecoder.decodeObject(forKey: "listing_type") as? String
+        metaverseAddress = aDecoder.decodeObject(forKey: "metaverse_address") as? String
+        mobile = aDecoder.decodeObject(forKey: "mobile") as? String
+        offerDescription = aDecoder.decodeObject(forKey: "offer_desciption") as? String
+        otherLink = aDecoder.decodeObject(forKey: "other_link") as? String
+        podRecordsCount = aDecoder.decodeObject(forKey: "pod_records_count") as? String
+        postRecordsCount = aDecoder.decodeObject(forKey: "post_records_count") as? String
+        postCode = aDecoder.decodeObject(forKey: "postcode") as? String
+        qualification = aDecoder.decodeObject(forKey: "qualification") as? String
+        street1 = aDecoder.decodeObject(forKey: "street_1") as? String
+        street2 = aDecoder.decodeObject(forKey: "street_2") as? String
+        street3 = aDecoder.decodeObject(forKey: "street_3") as? String
+        userImage = aDecoder.decodeObject(forKey: "user_image") as? String
+        verifyAccountStatus = aDecoder.decodeObject(forKey: "verify_account_status") as? String
+        verifyMobile = aDecoder.decodeObject(forKey: "verify_mobile") as? String
+        wikipedia = aDecoder.decodeObject(forKey: "wikipedia") as? String
     }
 
     /**
@@ -351,12 +438,6 @@ class signInResponseData : NSObject, NSCoding, Mappable{
         if password != nil{
             aCoder.encode(password, forKey: "password")
         }
-        if profileImage != nil{
-            aCoder.encode(profileImage, forKey: "profile_image")
-        }
-        if profilePic != nil{
-            aCoder.encode(profilePic, forKey: "profile_pic")
-        }
         if recoveryToken != nil{
             aCoder.encode(recoveryToken, forKey: "recovery_token")
         }
@@ -393,10 +474,111 @@ class signInResponseData : NSObject, NSCoding, Mappable{
         if website != nil{
             aCoder.encode(website, forKey: "website")
         }
-
+        if languages != nil{
+            aCoder.encode(languages, forKey: "languages")
+        }
+        if defaultLanguageID != nil{
+            aCoder.encode(defaultLanguageID, forKey: "default_language_id")
+        }
+        if defaultCurrencyID != nil{
+            aCoder.encode(defaultCurrencyID, forKey: "default_currency_id")
+        }
+        if businessMobileCode != nil {
+            aCoder.encode(businessMobileCode, forKey: "business_mobile_code")
+        }
+        if businessPhoneCode != nil {
+            aCoder.encode(businessPhoneCode, forKey: "business_phone_code")
+        }
+        if categoryName != nil {
+            aCoder.encode(categoryName, forKey: "category_name")
+        }
+        if city != nil {
+            aCoder.encode(city, forKey: "city")
+        }
+        if companyName != nil {
+            aCoder.encode(companyName, forKey: "company_name")
+        }
+        if country != nil {
+            aCoder.encode(country, forKey: "country")
+        }
+        if deseasePattern != nil {
+            aCoder.encode(deseasePattern, forKey: "desease_pattern")
+        }
+        if documents != nil {
+            aCoder.encode(documents, forKey: "documents")
+        }
+        if eventRecordsCount != nil {
+            aCoder.encode(eventRecordsCount, forKey: "event_records_count")
+        }
+        if followerRecordCount != nil {
+            aCoder.encode(followerRecordCount, forKey: "followers_records_count")
+        }
+        if followingRecordCount != nil {
+            aCoder.encode(followingRecordCount, forKey: "following_records_count")
+        }
+        if googleListing != nil {
+            aCoder.encode(googleListing, forKey: "google_listing")
+        }
+        if interested != nil {
+            aCoder.encode(interested, forKey: "interested")
+        }
+        if keyPerformance != nil {
+            aCoder.encode(keyPerformance, forKey: "key_perfomance")
+        }
+        if languages != nil {
+            aCoder.encode(languages, forKey: "languages")
+        }
+        if listingType != nil {
+            aCoder.encode(listingType, forKey: "listing_type")
+        }
+        if metaverseAddress != nil {
+            aCoder.encode(metaverseAddress, forKey: "metaverse_address")
+        }
+        if mobile != nil {
+            aCoder.encode(mobile, forKey: "mobile")
+        }
+        if offerDescription != nil {
+            aCoder.encode(offerDescription, forKey: "offer_desciption")
+        }
+        if otherLink != nil {
+            aCoder.encode(otherLink, forKey: "other_link")
+        }
+        if podRecordsCount != nil {
+            aCoder.encode(podRecordsCount, forKey: "pod_records_count")
+        }
+        if postRecordsCount != nil {
+            aCoder.encode(postRecordsCount, forKey: "post_records_count")
+        }
+        if postCode != nil {
+            aCoder.encode(postCode, forKey: "postcode")
+        }
+        if qualification != nil {
+            aCoder.encode(qualification, forKey: "qualification")
+        }
+        if street1 != nil {
+            aCoder.encode(street1, forKey: "street_1")
+        }
+        if street2 != nil {
+            aCoder.encode(street2, forKey: "street_2")
+        }
+        if street3 != nil {
+            aCoder.encode(street3, forKey: "street_3")
+        }
+        if userImage != nil {
+            aCoder.encode(userImage, forKey: "user_image")
+        }
+        if verifyAccountStatus != nil {
+            aCoder.encode(verifyAccountStatus, forKey: "verify_account_status")
+        }
+        if verifyMobile != nil {
+            aCoder.encode(verifyMobile, forKey: "verify_mobile")
+        }
+        if wikipedia != nil {
+            aCoder.encode(wikipedia, forKey: "wikipedia")
+        }
     }
-
 }
+
 // MARK: - signInRequestModel
 class signUpRequestModel: Mappable {
     

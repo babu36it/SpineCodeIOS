@@ -27,10 +27,8 @@ struct ProfileVC: View {
 //                        }
                         AppLoginButton(title: K.appButtonTitle.logout, callback: {
                             //self.selection = 1
-                           signInResponseModel.remove()
-                          AppUtility.shared.userSettings.islogin = false
-                          AppUtility.shared.redirectToLoginScreen()
-                           
+                            signInResponseModel.remove()
+                            AppUtility.shared.redirectToLoginScreen()
                         })
                     }.padding(.top, 200)
                         .padding([.leading, .trailing], 30)

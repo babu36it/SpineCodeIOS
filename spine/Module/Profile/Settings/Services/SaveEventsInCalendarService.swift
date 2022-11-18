@@ -7,10 +7,6 @@
 
 import Foundation
 
-struct SaveEventsInCalendarResponse {
-    var status: Bool = false
-}
-
 struct SaveEventsInCalendarService {
     private let httpUtility: HttpUtility
     
@@ -18,12 +14,18 @@ struct SaveEventsInCalendarService {
         self.httpUtility = httpUtility
     }
     
-    func getSaveEventsInCalendarStatus(completion: @escaping(_ result: Result<SaveEventsInCalendarResponse, CHError>) -> Void) {
-        completion(.success(SaveEventsInCalendarResponse()))
+    func getAccountSettings(completion: @escaping(_ result: Result<AccountSettingResponseModel, CHError>) -> Void) {
+        guard let accountSettings = URL(string: APIEndPoint.userAccountSettings.urlStr) else {
+            completion(.failure(.invalidUrl))
+            return
+        }
+        httpUtility.requestData(url: accountSettings, resultType: AccountSettingResponseModel.self) { result in
+            completion(result)
+        }
     }
-    
+
     func updateSaveEventsInCalendarStatus(_ status: String, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
-        guard let updateAuthorization = URL(string: APIEndPoint.messagingAuthorization.urlStr) else {
+        guard let updateAuthorization = URL(string: APIEndPoint.saveEventToCalendar.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }

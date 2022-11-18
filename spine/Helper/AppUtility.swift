@@ -9,11 +9,20 @@ import SwiftUI
 
 class AppUtility {
     static let shared = AppUtility()
-    var userSettings = UserSettings()
     var apiResponseMessage : String = ""
     var apiErrorCode       : Int = 0
     var fcmToken           : String = ""
     var customValue        : String = ""
+    
+    private(set) var userInfo: signInResponseModel?
+    init() {
+        if UserDefaults.standard.bool(forKey: "LaunchedSpine") {
+            userInfo = signInResponseModel.retrieve()
+        } else {
+            signInResponseModel.remove()
+            UserDefaults.standard.set(true, forKey: "LaunchedSpine")
+        }
+    }
     
     func isValidPassword(_ password: String) -> Bool {
         let passWordRegEx = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$"
@@ -26,6 +35,20 @@ class AppUtility {
 //        guard let jsonString = String(data: jsonData, encoding: .utf8) else { return nil}
 //        return jsonString
 //    }
+    
+    func updateUserInfo(_ updatedUser: signInResponseModel) {
+        userInfo = updatedUser
+    }
+    
+    func refreshUserInfo() {
+        LoginViewModel().userDetails { response, status in
+            DispatchQueue.main.async { [weak self] in
+                if let response = response {
+                    self?.updateUserInfo(response)
+                }
+            }
+        }
+    }
 }
 
 //MARK: - Set Print Option

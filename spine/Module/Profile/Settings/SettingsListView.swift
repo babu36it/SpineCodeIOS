@@ -68,8 +68,7 @@ struct SettingsListView: View {
             })
             
             Button("LOGOUT"){
-                AppUtility.shared.userSettings.authToken = ""
-                AppUtility.shared.userSettings.islogin = false
+                signInResponseModel.remove()
                 AppUtility.shared.redirectToLoginScreen()
             }
             .padding()

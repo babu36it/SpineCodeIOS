@@ -38,7 +38,8 @@ class MessagingSettingsViewModel: ObservableObject {
             DispatchQueue.main.async { [weak self] in
                 switch result {
                 case .success(let apiRes):
-                    self?.authorization = WhoCanMessage(rawValue: apiRes.status) ?? .anyone
+                    let messageAuth: Int = Int(apiRes.data.messageAuth) ?? 0
+                    self?.authorization = WhoCanMessage(rawValue: messageAuth) ?? .anyone
                 case .failure(let error):
                     print(error)
                 }

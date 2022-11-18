@@ -37,13 +37,12 @@ class CurrenciesListService {
     }
     
     func updateCurrency(to currency: CurrencyModel, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
-        completion(.success(.init(status: true, message: "Successfully updated language.")))
-//        guard let updateAuthorization = URL(string: APIEndPoint.updateLanguage.urlStr) else {
-//            completion(.failure(.invalidUrl))
-//            return
-//        }
-//        httpUtility.requestData(httpMethod: .post, postData: ["currency": currency.id], url: updateAuthorization, resultType: EditProfileResponseModel.self) { result in
-//            completion(result)
-//        }
+        guard let updateCurrency = URL(string: APIEndPoint.updateCurrency.urlStr) else {
+            completion(.failure(.invalidUrl))
+            return
+        }
+        httpUtility.requestData(httpMethod: .post, postData: ["currency_id": currency.id], url: updateCurrency, resultType: EditProfileResponseModel.self) { result in
+            completion(result)
+        }
     }
 }

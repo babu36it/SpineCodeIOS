@@ -153,7 +153,7 @@ struct OTPVC: View {
         self.hideKeyboard()
         viewModel?.verifyOTP(userID: userID){ (response, status) in
             if response?.status == true { // resign in
-                if AppUtility.shared.userSettings.authToken.isEmpty {
+                if let _ = AppUtility.shared.userInfo {
                     AppUtility.shared.redirectToMainScreen()
                 } else {
                     guard let emailId = emailId, let password = password else {

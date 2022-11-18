@@ -32,7 +32,9 @@ struct HttpUtility {
         //set content type
         request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue(AppUtility.shared.userSettings.authToken, forHTTPHeaderField: "Authorization")
+        if let authToken: String = AppUtility.shared.userInfo?.token {
+            request.addValue(authToken, forHTTPHeaderField: "Authorization")
+        }
 
         //call createDataBody method
         let dataBody = createDataBody(media: mediaFiles, boundary: boundary)
@@ -92,7 +94,9 @@ struct HttpUtility {
         request.httpMethod = httpMethod.rawValue
         //request.addValue("application/form-data", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue(AppUtility.shared.userSettings.authToken, forHTTPHeaderField: "Authorization") //AppUtility.shared.userSettings.authToken
+        if let authToken: String = AppUtility.shared.userInfo?.token {
+            request.addValue(authToken, forHTTPHeaderField: "Authorization")
+        }
         if let data = postData {
             request.httpBody = self.getPostString(params: data).data(using: .utf8)
         }
@@ -120,8 +124,6 @@ struct HttpUtility {
                 
             case 401:
                 print("token time expired") //delte existing token and refresh token
-                //Wrong number of segments
-                AppUtility.shared.userSettings.authToken = ""
                 //call refresh token here
                 self.refreshToken { success in
                     if success {
@@ -157,8 +159,6 @@ struct HttpUtility {
                 
             case 401:
                 print("token time expired") //delte existing token and refresh token
-                //Wrong number of segments
-                AppUtility.shared.userSettings.authToken = ""
                 //call refresh token here
                 self.refreshToken() { success in
                     if success {

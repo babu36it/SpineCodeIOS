@@ -253,8 +253,8 @@ class APIService {
                 }
                 else {
                     AppUtility.shared.printToConsole("Auth Token : \(empData.token ?? "")")
-                    if AppUtility.shared.userSettings.authToken == "" {
-                        AppUtility.shared.userSettings.authToken = empData.token ?? ""
+                    if AppUtility.shared.userInfo?.token == "" {
+                        AppUtility.shared.userInfo?.token = empData.token ?? ""
                     }
                     return completion(.success(empData.data))
                 }

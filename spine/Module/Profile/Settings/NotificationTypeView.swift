@@ -82,9 +82,6 @@ struct NotificationTypeView: View {
                     .padding(.horizontal, 20)
                 }
                 .padding(.top, 20)
-                .onAppear(perform: {
-                    notifModel.getPushNotificationStatus()
-                })
             } else {
                 ScrollView(showsIndicators: false) {
                     CustomToggleBG(value: $notifModel.emailNotifications.notifications, title: "Get Email Updates", subtitle: C.StaticText.notf_email)
@@ -121,12 +118,12 @@ struct NotificationTypeView: View {
                     .padding(.horizontal, 20)
                 }
                 .padding(.top, 20)
-                .onAppear(perform: {
-                    notifModel.getEmailNotificationStatus()
-                })
             }
             Spacer()
         }
+        .onAppear(perform: {
+            notifModel.getAccountSettings()
+        })
         .modifier(LoadingView(isLoading: $notifModel.showLoader))
         .navigationBarTitle("NOTIFICATIONS", displayMode: .inline)
         .modifier(BackButtonModifier(action: {

@@ -16,9 +16,12 @@ protocol SelectionListable: ObservableObject {
     var listItems: [any SelectionListItemable] { get set }
     var selectedItem: (any SelectionListItemable)? { get set }
     var showLoader: Bool { get set }
+    var showAlert: Bool { get set }
     var searchText: String { get set }
+    var alertTitle: String { get set }
+    var alertMessage: String { get set }
     var navTitle: String { get }
-    
+
     func getListItems()
     func didSelect(item: any SelectionListItemable, completion: @escaping (Bool) -> Void)
 }
@@ -30,34 +33,44 @@ struct SelectionListView<ViewModel: SelectionListable>: View {
 
     var body: some View {
         VStack {
-//            GradientDivider().padding(.top, 10)
             CustomSearchBar(placeHolder: "Search", searchText: $listViewModel.searchText).padding(.horizontal, 5)
             VStack {
                 Divider().padding(.horizontal)
                 List {
                     ForEach($listViewModel.listItems, id: \.itemId) { item in
                         VStack(alignment: .leading) {
-                            Title3(title: item.title.wrappedValue)
+                            HStack(spacing: 10) {
+//                                Image(systemName: listViewModel.selectedItem?.itemId == item.itemId.wrappedValue ? ImageName.checkmarkSquareFill : ImageName.square)
+//                                    .resizable()
+//                                    .frame(width: 25, height: 25)
+                                Title3(title: item.title.wrappedValue)
+                                Spacer()
+                                if listViewModel.selectedItem?.itemId == item.itemId.wrappedValue {
+                                    Image(systemName: "checkmark.circle")
+                                }
+                            }
                             Divider()
                         }
                         .listRowSeparator(.hidden)
                         .contentShape(Rectangle())
                         .onTapGesture {
-//                            listViewModel.selectedItem = item as? (any SelectionListItemable)
-                            if let selectedItm: any SelectionListItemable = item as? any SelectionListItemable {
-                                listViewModel.didSelect(item: selectedItm) { shouldDismiss in
-                                    if shouldDismiss {
-                                        dismiss()
-                                    }
+                            listViewModel.didSelect(item: item.wrappedValue) { shouldDismiss in
+                                if shouldDismiss {
+                                    dismiss()
                                 }
                             }
                         }
                     }
-                }.listStyle(.plain)
+                }
+                .listStyle(.plain)
             }
         }
         .onAppear(perform: { listViewModel.getListItems() })
         .modifier(LoadingView(isLoading: $listViewModel.showLoader))
+        .alert(listViewModel.alertTitle, isPresented: $listViewModel.showAlert, actions: {
+        }, message: {
+            Text(listViewModel.alertMessage)
+        })
         .navigationBarTitle(listViewModel.navTitle, displayMode: .inline)
         .modifier(BackButtonModifier(action: {
             self.dismiss()
