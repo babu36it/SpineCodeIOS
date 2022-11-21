@@ -177,6 +177,8 @@
 		2C5BADF0292590E400BB31D1 /* MobileOTPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADEF292590E400BB31D1 /* MobileOTPVC.swift */; };
 		2C5BADF22926D6B000BB31D1 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADF12926D6B000BB31D1 /* KeychainHelper.swift */; };
 		2C5BADF42928113F00BB31D1 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADF32928113F00BB31D1 /* FileManager+Extensions.swift */; };
+		2C5BADF62928CFA100BB31D1 /* AccountViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADF52928CFA100BB31D1 /* AccountViewViewModel.swift */; };
+		2C5BADF82928CFAF00BB31D1 /* AccountViewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADF72928CFAF00BB31D1 /* AccountViewService.swift */; };
 		2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */; };
 		2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */; };
 		2C7B1FBA29202C4600E06E40 /* MessagingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */; };
@@ -421,6 +423,8 @@
 		2C5BADEF292590E400BB31D1 /* MobileOTPVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileOTPVC.swift; sourceTree = "<group>"; };
 		2C5BADF12926D6B000BB31D1 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		2C5BADF32928113F00BB31D1 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
+		2C5BADF52928CFA100BB31D1 /* AccountViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewViewModel.swift; sourceTree = "<group>"; };
+		2C5BADF72928CFAF00BB31D1 /* AccountViewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewService.swift; sourceTree = "<group>"; };
 		2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailService.swift; sourceTree = "<group>"; };
 		2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -1038,6 +1042,7 @@
 				2C7B1FC12920E48600E06E40 /* LanguagesListViewModel.swift */,
 				2C7B1FC5292118CA00E06E40 /* CurrenciesListViewModel.swift */,
 				2C7B1FC9292128D600E06E40 /* NotificationTypeViewModel.swift */,
+				2C5BADF52928CFA100BB31D1 /* AccountViewViewModel.swift */,
 			);
 			path = VIewModels;
 			sourceTree = "<group>";
@@ -1051,6 +1056,7 @@
 				2C7B1FC32920E4D300E06E40 /* LanguagesListService.swift */,
 				2C7B1FC72921190100E06E40 /* CurrenciesListService.swift */,
 				2C7B1FCB292128E800E06E40 /* NotificationTypeService.swift */,
+				2C5BADF72928CFAF00BB31D1 /* AccountViewService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1602,6 +1608,7 @@
 				04A0592B28B62E8200262BDA /* ReportingMainView.swift in Sources */,
 				049D45B6285C58D4005FF3C2 /* ImagePicker.swift in Sources */,
 				66A662CC2822F3B90012A129 /* FeedVC.swift in Sources */,
+				2C5BADF82928CFAF00BB31D1 /* AccountViewService.swift in Sources */,
 				04E06E2728FF16D700290BE5 /* LinkRssViewModel.swift in Sources */,
 				180C16C12856CB140072D0DF /* RSSLinkOtpView.swift in Sources */,
 				047F64BB28B9D89300370458 /* HidePostView.swift in Sources */,
@@ -1629,6 +1636,7 @@
 				66A662CA2822EDEA0012A129 /* FeedListVC.swift in Sources */,
 				0485B62328814FCF00A79B40 /* StoryListView.swift in Sources */,
 				2C7B1FC6292118CA00E06E40 /* CurrenciesListViewModel.swift in Sources */,
+				2C5BADF62928CFA100BB31D1 /* AccountViewViewModel.swift in Sources */,
 				2C5BADEE292587E400BB31D1 /* CountryPhoneModel.swift in Sources */,
 				66A237FB281709FC00CA3763 /* LoginViewModel.swift in Sources */,
 				04826C7A288FEC7300F171A4 /* AddHashTagView.swift in Sources */,

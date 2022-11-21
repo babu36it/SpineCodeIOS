@@ -9,16 +9,16 @@ import Foundation
 
 extension FileManager {
     func saveDataToCachesDirectory(_ data: Data, filename: String) {
-        if let cacheDirectory: String = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
-            let filePath = cacheDirectory.appending("/\(filename)")
-            try? data.write(to: URL(fileURLWithPath: filePath))
+        if let cacheDirectory: URL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first {
+            let fileURL = cacheDirectory.appendingPathComponent(filename)
+            try? data.write(to: fileURL)
         }
     }
     
     func fileDataFromCachesDirectory(for filename: String) -> Data? {
-        if let cacheDirectory: String = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
-            let filePath = cacheDirectory.appending("/\(filename)")
-            return FileManager.default.contents(atPath: filePath)
+        if let cacheDirectory: URL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first {
+            let fileURL = cacheDirectory.appendingPathComponent(filename)
+            return try? Data(contentsOf: fileURL)
         }
         return nil
     }

@@ -25,7 +25,7 @@ struct AccountSettingModel: Codable {
     let status, creationDate, modificationDate: String
 
     enum CodingKeys: String, CodingKey {
-        case id
+        case id, status
         case userID = "user_id"
         case messageAuth = "message_auth"
         case eventCalenderStatus = "event_calender_status"
@@ -49,7 +49,6 @@ struct AccountSettingModel: Codable {
         case pPersonalized = "p_personalized"
         case pCustomization = "p_customization"
         case pNecessary = "p_necessary"
-        case status
         case creationDate = "creation_date"
         case modificationDate = "modification_date"
     }

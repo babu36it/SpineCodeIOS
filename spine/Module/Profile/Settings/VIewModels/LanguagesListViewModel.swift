@@ -8,10 +8,6 @@
 import Foundation
 
 class LanguagesListViewModel: ObservableObject {
-    private struct Constants {
-        static let languageFilename: String = "languages.json"
-    }
-    
     let serviceProvider = LanguagesListService(httpUtility: HttpUtility())
 
     @Published var selectedLanguage: LanguageModel?
@@ -43,23 +39,16 @@ class LanguagesListViewModel: ObservableObject {
     }
 
     func getLanguages() {
-        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: Constants.languageFilename), let response: [LanguageModel] = try? JSONDecoder().decode([LanguageModel].self, from: jsonData) {
-            languages = response
-        } else {
-            showLoader = true
-            serviceProvider.getLanguages { result in
-                DispatchQueue.main.async { [weak self] in
-                    switch result {
-                    case .success(let apiRes):
-                        if let jsonData: Data = try? JSONEncoder().encode(apiRes.data) {
-                            FileManager.default.saveDataToCachesDirectory(jsonData, filename: Constants.languageFilename)
-                        }
-                        self?.languages = apiRes.data
-                    case .failure(let error):
-                        print(error)
-                    }
-                    self?.showLoader = false
+        showLoader = true
+        serviceProvider.getLanguages { result in
+            DispatchQueue.main.async { [weak self] in
+                switch result {
+                case .success(let apiRes):
+                    self?.languages = apiRes.data
+                case .failure(let error):
+                    print(error)
                 }
+                self?.showLoader = false
             }
         }
     }
@@ -72,6 +61,7 @@ class LanguagesListViewModel: ObservableObject {
                     switch result {
                     case .success(_):
                         completion(.success(true))
+                        AppUtility.shared.refreshUserInfo()
                     case .failure(let error):
                         print(error)
                         completion(.failure(error))

@@ -20,6 +20,10 @@ struct CurrencyModel: Codable {
 }
 
 class CurrenciesListService {
+    private struct Constants {
+        static let currenciesFilename: String = "currencies.json"
+    }
+
     private let httpUtility: HttpUtility
     
     init(httpUtility: HttpUtility) {
@@ -27,12 +31,19 @@ class CurrenciesListService {
     }
     
     func getCurrencies(completion: @escaping(_ result: Result<CurrenciesListResponse, CHError>) -> Void) {
-        guard let languagesList = URL(string: APIEndPoint.currency.urlStr) else {
-            completion(.failure(.invalidUrl))
-            return
-        }
-        httpUtility.requestData(url: languagesList, resultType: CurrenciesListResponse.self) { result in
-            completion(result)
+        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: Constants.currenciesFilename), let response: CurrenciesListResponse = try? JSONDecoder().decode(CurrenciesListResponse.self, from: jsonData) {
+            completion(.success(response))
+        } else {
+            guard let languagesList = URL(string: APIEndPoint.currency.urlStr) else {
+                completion(.failure(.invalidUrl))
+                return
+            }
+            httpUtility.requestData(url: languagesList, resultType: CurrenciesListResponse.self) { result in
+                if let jsonData: Data = try? JSONEncoder().encode(result.get()) {
+                    FileManager.default.saveDataToCachesDirectory(jsonData, filename: Constants.currenciesFilename)
+                }
+                completion(result)
+            }
         }
     }
     

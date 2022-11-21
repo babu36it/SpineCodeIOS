@@ -40,13 +40,10 @@ struct SelectionListView<ViewModel: SelectionListable>: View {
                     ForEach($listViewModel.listItems, id: \.itemId) { item in
                         VStack(alignment: .leading) {
                             HStack(spacing: 10) {
-//                                Image(systemName: listViewModel.selectedItem?.itemId == item.itemId.wrappedValue ? ImageName.checkmarkSquareFill : ImageName.square)
-//                                    .resizable()
-//                                    .frame(width: 25, height: 25)
                                 Title3(title: item.title.wrappedValue)
                                 Spacer()
                                 if listViewModel.selectedItem?.itemId == item.itemId.wrappedValue {
-                                    Image(systemName: "checkmark.circle")
+                                    Image(systemName: "checkmark")
                                 }
                             }
                             Divider()

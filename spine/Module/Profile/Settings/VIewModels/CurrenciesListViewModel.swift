@@ -8,10 +8,6 @@
 import Foundation
 
 class CurrenciesListViewModel: ObservableObject {
-    private struct Constants {
-        static let currenciesFilename: String = "currencies.json"
-    }
-    
     let serviceProvider = CurrenciesListService(httpUtility: HttpUtility())
 
     @Published var selectedCurrency: CurrencyModel?
@@ -43,23 +39,16 @@ class CurrenciesListViewModel: ObservableObject {
     }
 
     func getCurrencies() {
-        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: Constants.currenciesFilename), let response: [CurrencyModel] = try? JSONDecoder().decode([CurrencyModel].self, from: jsonData) {
-            currencies = response
-        } else {
-            showLoader = true
-            serviceProvider.getCurrencies { result in
-                DispatchQueue.main.async { [weak self] in
-                    switch result {
-                    case .success(let apiRes):
-                        if let jsonData: Data = try? JSONEncoder().encode(apiRes.data) {
-                            FileManager.default.saveDataToCachesDirectory(jsonData, filename: Constants.currenciesFilename)
-                        }
-                        self?.currencies = apiRes.data
-                    case .failure(let error):
-                        print(error)
-                    }
-                    self?.showLoader = false
+        showLoader = true
+        serviceProvider.getCurrencies { result in
+            DispatchQueue.main.async { [weak self] in
+                switch result {
+                case .success(let apiRes):
+                    self?.currencies = apiRes.data
+                case .failure(let error):
+                    print(error)
                 }
+                self?.showLoader = false
             }
         }
     }
@@ -72,6 +61,7 @@ class CurrenciesListViewModel: ObservableObject {
                     switch result {
                     case .success(_):
                         completion(.success(true))
+                        AppUtility.shared.refreshUserInfo()
                     case .failure(let error):
                         print(error)
                         completion(.failure(error))

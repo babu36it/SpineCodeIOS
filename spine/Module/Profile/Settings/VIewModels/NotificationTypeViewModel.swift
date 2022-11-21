@@ -17,6 +17,18 @@ class PushNotificationViewModel: ObservableObject {
     var follows: Bool = false
     var impulses: Bool = false
     var anyPosts: Bool = false
+    
+    func update(with accountSettings: AccountSettingModel) {
+        notifications = accountSettings.mNotify.toBool() ?? false
+        likes = accountSettings.mLikeNotify.toBool() ?? false
+        comments = accountSettings.mCommentNotify.toBool() ?? false
+        updatesAndReminders = accountSettings.mUpdateAndReminders.toBool() ?? false
+        eventReminders = accountSettings.mSaveEventReminder.toBool() ?? false
+        messages = accountSettings.mMesage.toBool() ?? false
+        follows = accountSettings.mFollow.toBool() ?? false
+        impulses = accountSettings.mSpineImpulses.toBool() ?? false
+        anyPosts = accountSettings.mAnyPost.toBool() ?? false
+    }
 }
 
 class EmailNotificationViewModel: ObservableObject {
@@ -27,6 +39,16 @@ class EmailNotificationViewModel: ObservableObject {
     var podcasts: Bool = false
     var updates: Bool = false
     var surveys: Bool = false
+    
+    func update(with accountSettings: AccountSettingModel) {
+        notifications = accountSettings.eNotify.toBool() ?? false
+        eventAttach = accountSettings.eEventAttach.toBool() ?? false
+        messages = accountSettings.eMessage.toBool() ?? false
+        comments = accountSettings.eCommentReply.toBool() ?? false
+        podcasts = accountSettings.eEventPodcast.toBool() ?? false
+        updates = accountSettings.eUpdateFromSpine.toBool() ?? false
+        surveys = accountSettings.eSpineSurveys.toBool() ?? false
+    }
 }
 
 class NotificationTypeViewModel: ObservableObject {
@@ -38,23 +60,9 @@ class NotificationTypeViewModel: ObservableObject {
 
     @Published var accountSettings: AccountSettingModel? {
         didSet {
-            pushNotifications.notifications = accountSettings?.mNotify.toBool() ?? false
-            pushNotifications.likes = accountSettings?.mLikeNotify.toBool() ?? false
-            pushNotifications.comments = accountSettings?.mCommentNotify.toBool() ?? false
-            pushNotifications.updatesAndReminders = accountSettings?.mUpdateAndReminders.toBool() ?? false
-            pushNotifications.eventReminders = accountSettings?.mSaveEventReminder.toBool() ?? false
-            pushNotifications.messages = accountSettings?.mMesage.toBool() ?? false
-            pushNotifications.follows = accountSettings?.mFollow.toBool() ?? false
-            pushNotifications.impulses = accountSettings?.mSpineImpulses.toBool() ?? false
-            pushNotifications.anyPosts = accountSettings?.mAnyPost.toBool() ?? false
-        
-            emailNotifications.notifications = accountSettings?.eNotify.toBool() ?? false
-            emailNotifications.eventAttach = accountSettings?.eEventAttach.toBool() ?? false
-            emailNotifications.messages = accountSettings?.eMessage.toBool() ?? false
-            emailNotifications.comments = accountSettings?.eCommentReply.toBool() ?? false
-            emailNotifications.podcasts = accountSettings?.eEventPodcast.toBool() ?? false
-            emailNotifications.updates = accountSettings?.eUpdateFromSpine.toBool() ?? false
-            emailNotifications.surveys = accountSettings?.eSpineSurveys.toBool() ?? false
+            guard let accountSettings = accountSettings else { return }
+            pushNotifications.update(with: accountSettings)
+            emailNotifications.update(with: accountSettings)
         }
     }
     

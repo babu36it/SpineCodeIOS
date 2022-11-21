@@ -31,6 +31,8 @@ class EditProfileViewModel: ObservableObject {
 
     private var userDetails: UserDetailResponse? {
         didSet {
+            professionalAcc = userDetails?.data.account == "1" ? true : false
+            profileType = userDetails?.data.listingType == "1" ? .practitioner : .company
             getUserImage()
             getUserBackgroundImage()
         }

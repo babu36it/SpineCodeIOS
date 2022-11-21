@@ -28,59 +28,8 @@ struct EditProfileView: View {
                 ScrollView(showsIndicators: false) {
                     VStack {
                         ZStack(alignment: .bottom) {
-                            if let bgImage = editProfileViewModel.backgroundImages.first {
-                                Image(uiImage: bgImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: screenWidth - 30, height: screenWidth/3)
-                                    .cornerRadius(10)
-                                    .onTapGesture {
-                                        selectionType = .background
-                                        showAction = true
-                                    }
-                            } else if let bgImage = editProfileViewModel.backgroundImage {
-                                Image(uiImage: bgImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: screenWidth - 30, height: screenWidth/3)
-                                    .cornerRadius(10)
-                                    .onTapGesture {
-                                        selectionType = .background
-                                        showAction = true
-                                    }
-                            } else {
-                                Image(ImageName.podcastDetailBanner)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: screenWidth - 30, height: screenWidth/3)
-                                    .cornerRadius(10)
-                                    .onTapGesture {
-                                        selectionType = .background
-                                        showAction = true
-                                    }
-                            }
-                            if let image = editProfileViewModel.images.first {
-                                AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
-                                    .offset(y: 50)
-                                    .onTapGesture {
-                                        selectionType = .profile
-                                        showAction = true
-                                    }
-                            } else if let image: UIImage = editProfileViewModel.userImage {
-                                AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
-                                    .offset(y: 50)
-                                    .onTapGesture {
-                                        selectionType = .profile
-                                        showAction = true
-                                    }
-                            } else {
-                                CircularBorderedProfileView(image: "ic_background", size: 100, borderWidth: 3, showShadow: true, showBadge: false)
-                                    .offset(y: 50)
-                                    .onTapGesture {
-                                        selectionType = .profile
-                                        showAction = true
-                                    }
-                            }
+                            backgroundImage
+                            profileImage
                         }
                         .padding(.bottom, 50)
                         Title4(title: "ADD PROFILE IMAGE", fColor: .gray)
@@ -98,7 +47,8 @@ struct EditProfileView: View {
                                 .environmentObject(editProfileViewModel.companyProfile)
                         }
                     }
-                }.padding(.horizontal, 20)
+                }
+                .padding(.horizontal, 20)
             }
             .onAppear(perform: {
                 editProfileViewModel.getUserProfile()
@@ -141,6 +91,49 @@ struct EditProfileView: View {
                 editProfileViewModel.saveProfile()
             }//.opacity(0.3).disabled(true)
             )
+        }
+    }
+    
+    @ViewBuilder
+    private var profileImage: some View {
+        Group {
+            if let image = editProfileViewModel.images.first {
+                AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
+            } else if let image: UIImage = editProfileViewModel.userImage {
+                AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
+            } else {
+                CircularBorderedProfileView(image: "ic_background", size: 100, borderWidth: 3, showShadow: true, showBadge: false)
+            }
+        }
+        .offset(y: 50)
+        .onTapGesture {
+            selectionType = .profile
+            showAction = true
+        }
+    }
+    
+    @ViewBuilder
+    private var backgroundImage: some View {
+        Group {
+            if let bgImage = editProfileViewModel.backgroundImages.first {
+                Image(uiImage: bgImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } else if let bgImage = editProfileViewModel.backgroundImage {
+                Image(uiImage: bgImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } else {
+                Image(ImageName.podcastDetailBanner)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            }
+        }
+        .frame(width: screenWidth - 30, height: screenWidth/3)
+        .cornerRadius(10)
+        .onTapGesture {
+            selectionType = .background
+            showAction = true
         }
     }
 }

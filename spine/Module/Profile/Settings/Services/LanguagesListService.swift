@@ -8,6 +8,10 @@
 import Foundation
 
 class LanguagesListService {
+    private struct Constants {
+        static let languageFilename: String = "languages.json"
+    }
+
     private let httpUtility: HttpUtility
     
     init(httpUtility: HttpUtility) {
@@ -15,7 +19,7 @@ class LanguagesListService {
     }
     
     func getLanguages(completion: @escaping(_ result: Result<LanguageListResponse, CHError>) -> Void) {
-        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: "languages.json"), let response: LanguageListResponse = try? JSONDecoder().decode(LanguageListResponse.self, from: jsonData) {
+        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: Constants.languageFilename), let response: LanguageListResponse = try? JSONDecoder().decode(LanguageListResponse.self, from: jsonData) {
             completion(.success(response))
         } else {
             guard let languagesList = URL(string: APIEndPoint.languages.urlStr) else {
@@ -24,7 +28,7 @@ class LanguagesListService {
             }
             httpUtility.requestData(url: languagesList, resultType: LanguageListResponse.self) { result in
                 if let jsonData: Data = try? JSONEncoder().encode(result.get()) {
-                    FileManager.default.saveDataToCachesDirectory(jsonData, filename: "languages.json")
+                    FileManager.default.saveDataToCachesDirectory(jsonData, filename: Constants.languageFilename)
                 }
                 completion(result)
             }

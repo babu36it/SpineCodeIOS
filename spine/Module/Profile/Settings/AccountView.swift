@@ -10,14 +10,14 @@ import SwiftUI
 struct AccountView: View {
     @Environment(\.dismiss) var dismiss
     @AppStorage("isDarkMode") private var isDarkModeOn = false
-    @AppStorage("saveEvent") private var saveEvent = false    
+    
+    @StateObject private var accountViewVM: AccountViewViewModel = .init()
     
     var body: some View {
         VStack(spacing: 0) {
             
             LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)//.padding(.top, 10)
             List {
-                //LazyVStack {
                 NavigationLink(destination: ChangeEmailView()) {
                     NavTitle(title: "Change Email")
                 }
@@ -28,17 +28,23 @@ struct AccountView: View {
                 
                 NavigationLink(destination: SaveEventsInCalndrView()) {
                     NavTitle(title: "Save events to calender")
-                        .badge(saveEvent ? "On": "Off")
+                        .badge(accountViewVM.accountSettings?.eventCalenderStatus.toBool() == true ? "On": "Off")
                 }
                 
                 NavigationLink(destination: SelectionListView(listViewModel: LanguagesListViewModel())) {
                     NavTitle(title: "Language")
-                        .badge(AppUtility.shared.userInfo?.data?.languages)
+                        .badge(accountViewVM.language?.name)
                 }
-                
+                .onChange(of: AppUtility.shared.userInfo?.data?.defaultLanguageID) { _ in
+                    accountViewVM.getSelectedLanguage()
+                }
+
                 NavigationLink(destination: SelectionListView(listViewModel: CurrenciesListViewModel())) {
                     NavTitle(title: "Currency")
-                        .badge(AppUtility.shared.userInfo?.data?.defaultCurrencyID)
+                        .badge(accountViewVM.currency?.title)
+                }
+                .onChange(of: AppUtility.shared.userInfo?.data?.defaultCurrencyID) { _ in
+                    accountViewVM.getSelectedCurrency()
                 }
                 
                 Toggle("Dark mode", isOn: $isDarkModeOn)
@@ -53,12 +59,14 @@ struct AccountView: View {
                 NavigationLink(destination: DeactivateAccntView()) {
                     NavTitle(title: "Deactivate my account")
                 }
-                // }
-            }.listStyle(.plain)
-                //.frame(height: 250)
-                .padding(.top, 30)
-            
+            }
+            .listStyle(.plain)
+            .onAppear {
+                accountViewVM.loadAccountSettings()
+            }
+            .padding(.top, 30)
         }
+        .modifier(LoadingView(isLoading: $accountViewVM.showLoader))
         .navigationBarTitle("ACCOUNT", displayMode: .inline)
         .modifier(BackButtonModifier(action: {
             self.dismiss()
