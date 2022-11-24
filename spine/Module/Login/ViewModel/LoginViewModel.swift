@@ -51,7 +51,7 @@ extension LoginViewModel {
                 if res.status == true {
                     res.save()
                 }
-//                AppUtility.shared.refreshUserInfo()
+                AppUtility.shared.refreshUserInfo()
                 completion(response, true)
             } else  {
                 if let error = error {

@@ -15,6 +15,13 @@ class AddEventViewModel: ObservableObject {
     @Published private(set) var userEvents: [EventModel]?
     var eventTypes = [EventTypeModel]()
 
+    var draftEvent: EventModel?
+    
+    func didAppear() {
+        getEventTypes()
+        getUserEvents()
+    }
+    
     func getEventTypes() {
         eventService.getEventsTypes { result in
             DispatchQueue.main.async {

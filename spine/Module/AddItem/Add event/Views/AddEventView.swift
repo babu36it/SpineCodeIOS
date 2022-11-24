@@ -26,15 +26,24 @@ struct AddEventView: View {
                     }
                     
                     VStack(alignment: .leading, spacing: 30) {
-                        SubHeader3(title: "Drafts")
-                        ExistingEventView(publish: true, onTapped: {
-                            
-                        })
+                        if let draftEvent = addEventVM.draftEvent {
+                            SubHeader3(title: "Drafts")
+                            ExistingEventView(event: draftEvent, isDraft: true, onTapped: {
+                                
+                            })
+                        }
             
-                        SubHeader3(title: "Duplicate an existing event")
-                        ExistingEventView(onTapped: {
-                            
-                        })
+                        if let userEvents = addEventVM.userEvents {
+                            SubHeader3(title: "Duplicate an existing event")
+                            List {
+                                ForEach(userEvents) { event in
+                                    ExistingEventView(event: event, onTapped: {
+                                        
+                                    })
+                                }
+                            }
+                            .listStyle(.plain)
+                        }
                     }
                 }.padding(.horizontal, 20)
                 
@@ -48,7 +57,7 @@ struct AddEventView: View {
                 addEventVM.showAddEvent.toggle()
             }).edgesIgnoringSafeArea(.all)
         }.onAppear(perform: {
-            addEventVM.getEventTypes()
+            addEventVM.didAppear()
         })
         .animation(.default, value: addEventVM.showAddEvent)
         .navigationBarTitle(Text("ADD EVENT"), displayMode: .inline)
@@ -59,7 +68,7 @@ struct AddEventView: View {
 }
 
 struct AddEventButton: View {
-    var onTapped: ()-> Void
+    var onTapped: () -> Void
     
     var body: some View {
         Button {
@@ -83,20 +92,23 @@ struct AddEventButton: View {
 }
 
 struct ExistingEventView: View {
-    var publish: Bool = false
-    var onTapped: ()-> Void
+    let event: EventModel
+    var isDraft: Bool = false
+    let onTapped: ()-> Void
+
     var body: some View {
         Button {
             onTapped()
         } label: {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
-                    Header5(title: "Retreat")
-                    Title4(title: "Event name lorm ipsum dolor sit amet sdfsdf sdfsd")
+                    Header5(title: event.title ?? "")
+                    Title4(title: event.eventDescription ?? "")
                         .multilineTextAlignment(.leading)
-                    Title4(title: "9 May - 12 May 2021, 18:00")
-                    Title4(title: "Laos")
-                    if publish {
+                        .lineLimit(3)
+                    Title4(title: event.dateString)
+                    Title4(title: event.languageName ?? "")
+                    if isDraft {
                         SubHeader5(title: "Finish & publish event", fColor: .red)
                     }
                 }
@@ -105,7 +117,8 @@ struct ExistingEventView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 80, height: 70)
-            }.padding(.horizontal, 5)
+            }
+            .padding(.horizontal, 5)
         }
         .frame(maxWidth: .infinity)
         .padding( 10)
