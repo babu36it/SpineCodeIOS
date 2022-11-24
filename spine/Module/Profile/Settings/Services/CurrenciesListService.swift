@@ -24,11 +24,7 @@ class CurrenciesListService {
         static let currenciesFilename: String = "currencies.json"
     }
 
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
+    private let httpUtility: HttpUtility = .shared
     
     func getCurrencies(completion: @escaping(_ result: Result<CurrenciesListResponse, CHError>) -> Void) {
         if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: Constants.currenciesFilename), let response: CurrenciesListResponse = try? JSONDecoder().decode(CurrenciesListResponse.self, from: jsonData) {

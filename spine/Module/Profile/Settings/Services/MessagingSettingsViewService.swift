@@ -55,11 +55,7 @@ struct AccountSettingModel: Codable {
 }
 
 struct MessagingSettingsViewService {
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
+    private let httpUtility: HttpUtility = .shared
     
     func getMessageAuthorizationStatus(completion: @escaping(_ result: Result<AccountSettingResponseModel, CHError>) -> Void) {
         guard let updateAuthorization = URL(string: APIEndPoint.userAccountSettings.urlStr) else {

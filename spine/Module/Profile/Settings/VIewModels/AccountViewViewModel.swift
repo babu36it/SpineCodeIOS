@@ -8,7 +8,7 @@
 import Foundation
 
 class AccountViewViewModel: ObservableObject {
-    let serviceProvider = NotificationTypeService(httpUtility: HttpUtility())
+    let serviceProvider = NotificationTypeService()
     
     @Published var showLoader: Bool = false
     @Published var pushNotifications: PushNotificationViewModel = .init()
@@ -65,7 +65,7 @@ class AccountViewViewModel: ObservableObject {
     }
     
     private func language(for id: String, completion: @escaping (LanguageModel?) -> Void) {
-        LanguagesListService(httpUtility: HttpUtility()).getLanguages { result in
+        LanguagesListService().getLanguages { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let languageRes):
@@ -79,7 +79,7 @@ class AccountViewViewModel: ObservableObject {
     }
     
     private func currency(for id: String, completion: @escaping (CurrencyModel?) -> Void) {
-        CurrenciesListService(httpUtility: HttpUtility()).getCurrencies { result in
+        CurrenciesListService().getCurrencies { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let currenciesRes):

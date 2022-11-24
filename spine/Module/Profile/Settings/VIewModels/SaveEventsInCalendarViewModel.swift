@@ -8,7 +8,7 @@
 import SwiftUI
 
 class SaveEventsInCalendarViewModel: ObservableObject {
-    let serviceProvider = SaveEventsInCalendarService(httpUtility: HttpUtility())
+    let serviceProvider = SaveEventsInCalendarService()
 
     @Published var saveEvent: Bool = false
     @Published var showLoader: Bool = false

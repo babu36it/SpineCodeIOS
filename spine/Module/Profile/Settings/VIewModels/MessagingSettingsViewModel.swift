@@ -23,7 +23,7 @@ enum WhoCanMessage: Int, CaseIterable, Identifiable, CustomStringConvertible {
 }
 
 class MessagingSettingsViewModel: ObservableObject {
-    let serviceProvider = MessagingSettingsViewService(httpUtility: HttpUtility())
+    let serviceProvider = MessagingSettingsViewService()
 
     @Published var authorization: WhoCanMessage = .anyone {
         didSet {

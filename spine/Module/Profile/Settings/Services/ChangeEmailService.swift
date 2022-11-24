@@ -8,12 +8,8 @@
 import Foundation
 
 struct ChangeEmailService {
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
-    
+    private let httpUtility: HttpUtility = .shared
+
     func updateUserEmail(_ toEmail: String, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
         guard let updateEmail = URL(string: APIEndPoint.updateUserEmail.urlStr) else {
             completion(.failure(.invalidUrl))

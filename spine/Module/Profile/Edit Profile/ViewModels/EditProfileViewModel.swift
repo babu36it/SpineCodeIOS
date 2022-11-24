@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 class EditProfileViewModel: ObservableObject {
-    let serviceProvider = EditProfileService(httpUtility: HttpUtility())
+    let serviceProvider = EditProfileService()
     @State var practnrProfile = UserProfileViewModel()
     @State var companyProfile = UserProfileViewModel()
     @Published var images: [UIImage] = []

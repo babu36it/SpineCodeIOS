@@ -8,8 +8,8 @@
 import Foundation
 
 class PodcastInfoViewModel: ObservableObject {
-    let serviceProvider = RssDataServiceProvider(httpUtility: HttpUtility())
-    let addPodcastServiceProvider = AddPodcastServiceProvider(httpUtility: HttpUtility())
+    let serviceProvider = RssDataServiceProvider()
+    let addPodcastServiceProvider = AddPodcastServiceProvider()
     var selectedLanguage: ItemModel?
     var selectedCategory: ItemModel? {
         didSet {

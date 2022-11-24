@@ -24,20 +24,24 @@ enum APIEndPoint: String {
     case addPodcastsSubcategory = "/podcasts/addPodcastsSubcategory"
     case addPodcasts = "/podcasts/addPodcasts"
     
+    // profile
     case editProfile = "/profile/profileEdit"
     case userDetails = "/userDetails"
     case uploadProfilePic = "/profile/userProfilePic"
     case uploadBgProfilePic = "profile/userBgProfilePic"
     case updateUserEmail = "requestToChangeEmail"
     
+    // settings
     case updateLanguage = "profile/updateProfileLanguage"
     case updateCurrency = "profile/updateProfileCurrency"
-
     case mobileNotifications = "mobileAllNotification"
     case emailNotifications = "emailAllNotification"
     case messagingAuthorization = "eventMessagingAutho"
     case saveEventToCalendar = "saveEventToCalender"
     case userAccountSettings = "userAccountSetting"
+    
+    // events
+    case getUserEvents = "events/getUserEvents"
     
     var urlStr: String {
         return baseUrl + rawValue

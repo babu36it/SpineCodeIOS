@@ -8,7 +8,7 @@
 import SwiftUI
 
 class ChangeEmailViewModel: ObservableObject {
-    let serviceProvider = ChangeEmailService(httpUtility: HttpUtility())
+    let serviceProvider = ChangeEmailService()
     @Published var emailId: String = ""
     @Published var showAlert = false
     @Published var showLoader: Bool = false

@@ -8,7 +8,7 @@
 import Foundation
 
 class LanguagesListViewModel: ObservableObject {
-    let serviceProvider = LanguagesListService(httpUtility: HttpUtility())
+    let serviceProvider = LanguagesListService()
 
     @Published var selectedLanguage: LanguageModel?
     @Published var filteredLanguages: [LanguageModel]?

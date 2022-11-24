@@ -23,7 +23,11 @@ struct Media {
 
 struct HttpUtility {
     
-    func uploadFiles<T: Decodable>(_ mediaFiles: [Media], toURL url: URL, completion: @escaping(_ result: Result<T, CHError>) -> Void) {
+    static let shared: HttpUtility = .init()
+    
+    private init() { }
+    
+    func uploadFiles<T: Decodable>(_ mediaFiles: [Media], toURL url: URL, queue: DispatchQueue? = nil, completion: @escaping(_ result: Result<T, CHError>) -> Void) {
         if mediaFiles.isEmpty { return }
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.post.rawValue
@@ -41,22 +45,12 @@ struct HttpUtility {
         request.httpBody = dataBody
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, error) in
-            if let response = response as? HTTPURLResponse {
-                switch response.statusCode {
-                case 200:
-                    do {
-                        let results = try JSONDecoder().decode(T.self, from: data!)
-                        completion(.success(results))
-                    } catch let err1 {
-                        let resultURLStr: String = response.url?.absoluteString ?? ""
-                        debugPrint("Error while parsing- \(err1.localizedDescription)- \(resultURLStr)")
-                        completion(.failure(.parsingError))
-                    }
-                case 401:
-                    completion(.failure(.tokenExpired))
-                default:
-                    completion(.failure(.otherError))
+            if let queue = queue {
+                queue.async {
+                    self.handleAPIResponse(request: request, data: data, response: response, error: error, resultType: T.self, completion: completion)
                 }
+            } else {
+                handleAPIResponse(request: request, data: data, response: response, error: error, resultType: T.self, completion: completion)
             }
         }.resume()
     }
@@ -88,7 +82,7 @@ struct HttpUtility {
        return "Boundary-\(NSUUID().uuidString)"
     }
     
-    func requestData<T: Decodable>(refresh: Bool = false, httpMethod: HTTPMethod = .get, postData: [String:Any]? = nil, url: URL, resultType: T.Type, completion: @escaping(_ result: Result<T, CHError>)-> Void) {
+    func requestData<T: Decodable>(refresh: Bool = false, httpMethod: HTTPMethod = .get, postData: [String:Any]? = nil, url: URL, resultType: T.Type, queue: DispatchQueue? = nil, completion: @escaping(_ result: Result<T, CHError>)-> Void) {
         
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue
@@ -101,76 +95,61 @@ struct HttpUtility {
             request.httpBody = self.getPostString(params: data).data(using: .utf8)
         }
         
-        //        self.getData(request: request, resultType: resultType) { result in
-        //            completion(result)
-        //        }
         URLSession.shared.dataTask(with: request) { data, res, err in
-            let response = res as! HTTPURLResponse
-            let errCode = response.statusCode
-            
-            switch errCode {
-            case 200:
-                print("Success")
-                if err == nil && data != nil {
-                    do {
-                        let results = try JSONDecoder().decode(T.self, from: data!)
-                        completion(.success(results))
-                    } catch let err1 {
-                        let resultURLStr: String = res?.url?.absoluteString ?? ""
-                        debugPrint("Error while parsing- \(err1.localizedDescription)- \(resultURLStr)")
-                        completion(.failure(.parsingError))
-                    }
+            if let queue = queue {
+                queue.async {
+                    self.handleAPIResponse(request: request, data: data, response: res, error: err, resultType: resultType, completion: completion)
                 }
-                
-            case 401:
-                print("token time expired for request: \(request)") //delte existing token and refresh token
-                //call refresh token here
-                self.refreshToken { success in
-                    if success {
-                        completion(.failure(.tokenExpired))
-                    }
-                }
-                
-            default:
-                print("all other case for request: \(request)")
-                completion(.failure(.otherError))
+            } else {
+                handleAPIResponse(request: request, data: data, response: res, error: err, resultType: resultType, completion: completion)
             }
         }.resume()
     }
     
-    func getData<T: Decodable>(request: URLRequest, resultType: T.Type, completion: @escaping(_ result: Result<T, CHError>)-> Void){
+    func getData<T: Decodable>(request: URLRequest, resultType: T.Type, queue: DispatchQueue? = nil, completion: @escaping(_ result: Result<T, CHError>)-> Void){
         //status code 201 - is failed, only 200 -is success
         URLSession.shared.dataTask(with: request) { data, res, err in
-            let response = res as! HTTPURLResponse
-            let errCode = response.statusCode
-            
-            switch errCode {
-            case 200:
-                print("Success")
-                if err == nil && data != nil {
-                    do {
-                        let results = try JSONDecoder().decode(T.self, from: data!)
-                        completion(.success(results))
-                    } catch let err1 {
-                        debugPrint("Error while parsing- \(err1.localizedDescription)")
-                        completion(.failure(.parsingError))
-                    }
+            if let queue = queue {
+                queue.async {
+                    self.handleAPIResponse(request: request, data: data, response: res, error: err, resultType: resultType, completion: completion)
                 }
-                
-            case 401:
-                print("token time expired") //delte existing token and refresh token
-                //call refresh token here
-                self.refreshToken() { success in
-                    if success {
-                        completion(.failure(.tokenExpired))
-                    }
-                }
-                
-            default:
-                print("all other case")
-                completion(.failure(.otherError))
+            } else {
+                handleAPIResponse(request: request, data: data, response: res, error: err, resultType: resultType, completion: completion)
             }
         }.resume()
+    }
+    
+    private func handleAPIResponse<T: Decodable>(request: URLRequest, data: Data?, response: URLResponse?, error: Error?, resultType: T.Type, completion: @escaping(_ result: Result<T, CHError>)-> Void) {
+        let response = response as! HTTPURLResponse
+        let errCode = response.statusCode
+        
+        switch errCode {
+        case 200:
+            print("Success")
+            if error == nil && data != nil {
+                do {
+                    let results = try JSONDecoder().decode(T.self, from: data!)
+                    completion(.success(results))
+                } catch let err1 {
+                    let resultURLStr: String = response.url?.absoluteString ?? ""
+                    debugPrint("Error while parsing- \(err1.localizedDescription)- \(resultURLStr)")
+                    completion(.failure(.parsingError))
+                }
+            }
+            
+        case 401:
+            print("token time expired for request: \(request)") //delte existing token and refresh token
+            //call refresh token here
+            self.refreshToken { success in
+                if success {
+                    completion(.failure(.tokenExpired))
+                }
+            }
+            
+        default:
+            print("all other case for request: \(request)")
+            completion(.failure(.otherError))
+        }
     }
     
     func refreshToken(completion: @escaping(Bool) -> Void) {

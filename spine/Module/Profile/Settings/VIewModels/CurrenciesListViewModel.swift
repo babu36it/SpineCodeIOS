@@ -8,7 +8,7 @@
 import Foundation
 
 class CurrenciesListViewModel: ObservableObject {
-    let serviceProvider = CurrenciesListService(httpUtility: HttpUtility())
+    let serviceProvider = CurrenciesListService()
 
     @Published var selectedCurrency: CurrencyModel?
     @Published var filteredCurrencies: [CurrencyModel]?

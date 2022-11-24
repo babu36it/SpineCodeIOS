@@ -2,17 +2,13 @@
 //  AccountViewService.swift
 //  spine
 //
-//  Created by पंकज तेजावत on 19/11/22.
+//  Created by Mac on 19/11/22.
 //
 
 import Foundation
 
 struct AccountViewService {
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
+    private let httpUtility: HttpUtility = .shared
     
     func getAccountSettings(completion: @escaping(_ result: Result<AccountSettingResponseModel, CHError>) -> Void) {
         guard let accountSettings = URL(string: APIEndPoint.userAccountSettings.urlStr) else {

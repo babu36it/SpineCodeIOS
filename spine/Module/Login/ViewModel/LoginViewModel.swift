@@ -144,7 +144,7 @@ extension LoginViewModel {
     }
 
     func userDetails(completion: @escaping (_ response:signInResponseModel?,_ status: Bool) -> Void) {
-        EditProfileService(httpUtility: HttpUtility()).fetchUserDetails { result in
+        EditProfileService().fetchUserDetails { result in
             switch result {
             case .success(let userResponse):
                 if let jsonData: Data = try? JSONEncoder().encode(userResponse), let jsonString: String = String(data: jsonData, encoding: .utf8), let responseModel: signInResponseModel = .init(JSONString: jsonString) {

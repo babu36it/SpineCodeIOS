@@ -8,13 +8,15 @@
 import Foundation
 
 class AddEventViewModel: ObservableObject {
-    
-    let addEventServiceProvider = AddEventServiceProvider(httpUtility: HttpUtility())
-    var eventTypes = [EventTypeModel]()
+    private let eventService = AddEventServiceProvider()
+
     @Published var showAddEvent = false
-    
+
+    @Published private(set) var userEvents: [EventModel]?
+    var eventTypes = [EventTypeModel]()
+
     func getEventTypes() {
-        addEventServiceProvider.getEventsTypes { result in
+        eventService.getEventsTypes { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let value):
@@ -22,6 +24,18 @@ class AddEventViewModel: ObservableObject {
                 case .failure(let err):
                     print(err.rawValue)
                 }
+            }
+        }
+    }
+        
+    func getUserEvents() {
+        eventService.getUserEvents { [weak self] result in
+            switch result {
+            case .success(let success):
+                print(success)
+                self?.userEvents = success.data
+            case .failure(let failure):
+                print(failure)
             }
         }
     }

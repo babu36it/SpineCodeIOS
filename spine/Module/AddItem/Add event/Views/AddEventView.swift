@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddEventView: View {
     @Environment(\.dismiss) var dismiss
-    //@State var showAdd = false
+
     @StateObject var addEventVM = AddEventViewModel()
     
     var body: some View {
@@ -75,7 +75,6 @@ struct AddEventButton: View {
         .frame(height: 40)
         .padding(.leading, 10)
         .padding(5)
-        //.background(Color.white)
         .background(Color(UIColor.systemBackground))
         .cornerRadius(8)
         .shadow(color: Color.gray.opacity(0.7), radius: 5)

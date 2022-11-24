@@ -52,7 +52,7 @@ class EmailNotificationViewModel: ObservableObject {
 }
 
 class NotificationTypeViewModel: ObservableObject {
-    let serviceProvider = NotificationTypeService(httpUtility: HttpUtility())
+    let serviceProvider = NotificationTypeService()
     
     @Published var showLoader: Bool = false
     @Published var pushNotifications: PushNotificationViewModel = .init()

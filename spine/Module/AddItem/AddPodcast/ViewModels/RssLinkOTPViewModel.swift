@@ -8,8 +8,8 @@
 import Foundation
 
 class RssLinkOTPViewModel: ObservableObject {
-    let serviceProvider = RssEmailOTPVerificationServiceProvider(httpUtility: HttpUtility())
-    let validateRssserviceProvider = ValidateRssServiceProvider(httpUtility: HttpUtility())
+    let serviceProvider = RssEmailOTPVerificationServiceProvider()
+    let validateRssserviceProvider = ValidateRssServiceProvider()
     var verificationCode = ""
     @Published var isValidCode = false
     @Published var showLoader = false

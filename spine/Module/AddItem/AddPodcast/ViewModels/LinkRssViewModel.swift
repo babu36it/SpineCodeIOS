@@ -8,7 +8,7 @@
 import Foundation
 
 class LinkRssViewModel: ObservableObject {
-    let serviceProvider = ValidateRssServiceProvider(httpUtility: HttpUtility())
+    let serviceProvider = ValidateRssServiceProvider()
     @Published var searchText = ""
     @Published var status: RssStaus? //= .failure
     @Published var showLoader = false

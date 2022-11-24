@@ -12,11 +12,7 @@ class LanguagesListService {
         static let languageFilename: String = "languages.json"
     }
 
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
+    private let httpUtility: HttpUtility = .shared
     
     func getLanguages(completion: @escaping(_ result: Result<LanguageListResponse, CHError>) -> Void) {
         if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: Constants.languageFilename), let response: LanguageListResponse = try? JSONDecoder().decode(LanguageListResponse.self, from: jsonData) {

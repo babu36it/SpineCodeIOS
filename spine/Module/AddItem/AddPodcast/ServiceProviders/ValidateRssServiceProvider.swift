@@ -8,12 +8,8 @@
 import Foundation
 
 struct ValidateRssServiceProvider {
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
-    
+    private let httpUtility: HttpUtility = .shared
+        
     func validateRss(postData: [String:Any]?, completion: @escaping(_ result: Result<ValidateRssResponseModel, CHError>)-> Void) {
         guard let url = URL(string: APIEndPoint.validateRss.urlStr) else {
             completion(.failure(.invalidUrl))
@@ -28,12 +24,8 @@ struct ValidateRssServiceProvider {
 
 
 struct RssEmailOTPVerificationServiceProvider {
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
-    
+    private let httpUtility: HttpUtility = .shared
+
     func validateRssOTP(postData: [String:Any]?, completion: @escaping(_ result: Result<RssOtpResponseModel, CHError>)-> Void) {
         guard let url = URL(string: APIEndPoint.rssEmailOTPVerification.urlStr) else {
             completion(.failure(.invalidUrl))
@@ -46,11 +38,7 @@ struct RssEmailOTPVerificationServiceProvider {
 }
 
 struct RssDataServiceProvider {
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
+    private let httpUtility: HttpUtility = .shared
     
     func getRssData(postData: [String:Any]?, completion: @escaping(_ result: Result<RssDataResponseModel, CHError>)-> Void) {
         guard let url = URL(string: APIEndPoint.getRssData.urlStr) else {
@@ -64,12 +52,8 @@ struct RssDataServiceProvider {
 }
 
 struct AddPodcastServiceProvider {
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
-    
+    private let httpUtility: HttpUtility = .shared
+
     func getLanguageList(completion: @escaping(_ result: Result<LanguageListResponse, CHError>)-> Void) {
         
         //let urlStr = Helper.getUrlString(itemType: itemType)

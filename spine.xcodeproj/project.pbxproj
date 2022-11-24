@@ -179,6 +179,8 @@
 		2C5BADF42928113F00BB31D1 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADF32928113F00BB31D1 /* FileManager+Extensions.swift */; };
 		2C5BADF62928CFA100BB31D1 /* AccountViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADF52928CFA100BB31D1 /* AccountViewViewModel.swift */; };
 		2C5BADF82928CFAF00BB31D1 /* AccountViewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADF72928CFAF00BB31D1 /* AccountViewService.swift */; };
+		2C5BADFD292D48A800BB31D1 /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADFC292D48A800BB31D1 /* EventModel.swift */; };
+		2C5BADFF292D494E00BB31D1 /* EventsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADFE292D494E00BB31D1 /* EventsServices.swift */; };
 		2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */; };
 		2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */; };
 		2C7B1FBA29202C4600E06E40 /* MessagingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */; };
@@ -425,6 +427,8 @@
 		2C5BADF32928113F00BB31D1 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		2C5BADF52928CFA100BB31D1 /* AccountViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewViewModel.swift; sourceTree = "<group>"; };
 		2C5BADF72928CFAF00BB31D1 /* AccountViewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewService.swift; sourceTree = "<group>"; };
+		2C5BADFC292D48A800BB31D1 /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
+		2C5BADFE292D494E00BB31D1 /* EventsServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsServices.swift; sourceTree = "<group>"; };
 		2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailService.swift; sourceTree = "<group>"; };
 		2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -881,6 +885,9 @@
 		180C16B12856CB000072D0DF /* Events */ = {
 			isa = PBXGroup;
 			children = (
+				2C5BADFB292D489A00BB31D1 /* Models */,
+				2C5BADF9292D489A00BB31D1 /* Services */,
+				2C5BADFA292D489A00BB31D1 /* VIewModels */,
 				180C16B22856CB000072D0DF /* EventsHomeView.swift */,
 				048672582861D1D500582275 /* EventFilterView.swift */,
 				0486725C2861FD0D00582275 /* MultiSelectionCalenderView.swift */,
@@ -1031,6 +1038,29 @@
 				2C5BADED292587E400BB31D1 /* CountryPhoneModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		2C5BADF9292D489A00BB31D1 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2C5BADFE292D494E00BB31D1 /* EventsServices.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2C5BADFA292D489A00BB31D1 /* VIewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = VIewModels;
+			sourceTree = "<group>";
+		};
+		2C5BADFB292D489A00BB31D1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2C5BADFC292D48A800BB31D1 /* EventModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		2C7B1FB3291FFA7700E06E40 /* VIewModels */ = {
@@ -1549,6 +1579,7 @@
 				04830700286C992500F677CC /* PodcastList.swift in Sources */,
 				2C47FAE1291AE1E200F7EE46 /* EditProfileService.swift in Sources */,
 				18829CF728199608001C4F8F /* RegisterVC.swift in Sources */,
+				2C5BADFD292D48A800BB31D1 /* EventModel.swift in Sources */,
 				048672552861A54500582275 /* MapView.swift in Sources */,
 				04894D23286D9F5500CF4860 /* CustomTextField.swift in Sources */,
 				048850EC28A7AED500A96385 /* SingleImageOrVideoPickerView.swift in Sources */,
@@ -1697,6 +1728,7 @@
 				04894D27286DF8FC00CF4860 /* EmployeeProfileView.swift in Sources */,
 				180C16CA2856CB140072D0DF /* MusicPlayerView.swift in Sources */,
 				048198CE286F5C8900AFC6AA /* EditProfileView.swift in Sources */,
+				2C5BADFF292D494E00BB31D1 /* EventsServices.swift in Sources */,
 				04973539289AB8BB0019548A /* VerifyAccountView.swift in Sources */,
 				04887742285A2A4200C4022B /* Enums.swift in Sources */,
 				189D8B94282E8C1E00C1126C /* StoriesVC.swift in Sources */,

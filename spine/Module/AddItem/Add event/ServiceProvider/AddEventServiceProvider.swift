@@ -8,11 +8,7 @@
 import Foundation
 
 struct AddEventServiceProvider {
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
+    private let httpUtility: HttpUtility = .shared
     
     func getEventsTypes(completion: @escaping(_ result: Result<EventTypeResponseModel, CHError>)-> Void) {
         guard let url = URL(string: APIEndPoint.getEventTypes.urlStr) else {
@@ -24,6 +20,15 @@ struct AddEventServiceProvider {
         }
     }
     
+    func getUserEvents(completion: @escaping(_ result: Result<UserEventResponseModel, CHError>)-> Void) {
+        guard let url = URL(string: APIEndPoint.getUserEvents.urlStr) else {
+            completion(.failure(.invalidUrl))
+            return
+        }
+        httpUtility.requestData(url: url, resultType: UserEventResponseModel.self) { result in
+            completion(result)
+        }
+    }
 }
 
 struct EventTypeResponseModel: Codable {

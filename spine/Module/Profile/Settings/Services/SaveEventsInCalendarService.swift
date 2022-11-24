@@ -8,11 +8,7 @@
 import Foundation
 
 struct SaveEventsInCalendarService {
-    private let httpUtility: HttpUtility
-    
-    init(httpUtility: HttpUtility) {
-        self.httpUtility = httpUtility
-    }
+    private let httpUtility: HttpUtility = .shared
     
     func getAccountSettings(completion: @escaping(_ result: Result<AccountSettingResponseModel, CHError>) -> Void) {
         guard let accountSettings = URL(string: APIEndPoint.userAccountSettings.urlStr) else {
