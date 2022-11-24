@@ -30,7 +30,7 @@ struct OTPVC: View {
     var emailId: String?
     var password: String?
     
-    var viewModel : LoginViewModel? = LoginViewModel()
+    var viewModel : LoginViewModel? = LoginViewModel.shared
     
     var btnBack: some View {
         Button(action: {
@@ -160,8 +160,9 @@ struct OTPVC: View {
                         ShowToast.show(toatMessage: "Error in verifying OTP. Please retry later.")
                         return
                     }
-                    viewModel?.signIn(emailId: emailId, password: password, deviceToken: "saaadasd", completion: { response, result in
+                    viewModel?.signIn(emailId: emailId, password: password, completion: { response, result in
                         if response?.status == true {
+                            AppUtility.shared.saveUserCredentials(emailId: emailId, password: password)
                             AppUtility.shared.redirectToMainScreen()
                             if let message  = response?.message{
                                 ShowToast.show(toatMessage: message)

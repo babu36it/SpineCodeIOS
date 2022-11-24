@@ -31,7 +31,7 @@ class MobileOTPViewModel: ObservableObject {
         let request = mobileVerificationRequestModel()
         request.mobile = phoneNumber
         request.userID = userID
-        LoginViewModel().mobileVerificationCode(request) { [weak self] response, status in
+        LoginViewModel.shared.mobileVerificationCode(request) { [weak self] response, status in
             if response?.status == true {
                 completion(true, nil)
             } else {

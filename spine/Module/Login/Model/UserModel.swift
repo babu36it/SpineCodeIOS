@@ -79,7 +79,7 @@ extension signInResponseModel {
     }
     
     class func retrieve() -> signInResponseModel? {
-        if let jsonData: Data = KeychainHelper.shared.read(forKey: "UserInformation"), let jsonString: String = String(data: jsonData, encoding: .utf8) {
+        if let jsonData: Data = KeychainHelper.shared.readData(forKey: "UserInformation"), let jsonString: String = String(data: jsonData, encoding: .utf8) {
             return signInResponseModel(JSONString: jsonString)
         }
         return nil

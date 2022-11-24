@@ -7,6 +7,25 @@ import Foundation
 import UIKit
 import SwiftUI
 
+struct UserCredentials: Codable {
+    let email: String
+    let password: String
+    
+    static func retrieve() -> UserCredentials? {
+        KeychainHelper.shared.read(forKey: "UserCredentials")
+    }
+    
+    static func remove() {
+        KeychainHelper.shared.delete(forKey: "UserCredentials")
+    }
+
+    func save() {
+        if let data: Data = try? JSONEncoder().encode(self) {
+            KeychainHelper.shared.save(data, forKey: "UserCredentials")
+        }
+    }
+}
+
 class AppUtility {
     static let shared = AppUtility()
     var apiResponseMessage : String = ""
@@ -15,11 +34,13 @@ class AppUtility {
     var customValue        : String = ""
     
     private(set) var userInfo: signInResponseModel?
+    private(set) var userCredentials: UserCredentials?
+    
     init() {
         if UserDefaults.standard.bool(forKey: "LaunchedSpine") {
-            userInfo = signInResponseModel.retrieve()
+            restoreUserSession()
         } else {
-            signInResponseModel.remove()
+            clearUserSession()
             UserDefaults.standard.set(true, forKey: "LaunchedSpine")
         }
     }
@@ -36,12 +57,18 @@ class AppUtility {
 //        return jsonString
 //    }
     
+    func saveUserCredentials(emailId: String, password: String) {
+        let userCred: UserCredentials = .init(email: emailId, password: password)
+        userCred.save()
+        userCredentials = userCred
+    }
+    
     func updateUserInfo(_ updatedUser: signInResponseModel) {
         userInfo = updatedUser
     }
     
     func refreshUserInfo() {
-        LoginViewModel().userDetails { response, status in
+        LoginViewModel.shared.userDetails { response, status in
             DispatchQueue.main.async { [weak self] in
                 if let response = response {
                     response.token = self?.userInfo?.token
@@ -51,6 +78,16 @@ class AppUtility {
                 }
             }
         }
+    }
+    
+    private func restoreUserSession() {
+        userInfo = signInResponseModel.retrieve()
+        userCredentials = UserCredentials.retrieve()
+    }
+    
+    private func clearUserSession() {
+        signInResponseModel.remove()
+        UserCredentials.remove()
     }
 }
 
@@ -112,6 +149,7 @@ extension AppUtility {
     }
     
     func redirectToLoginScreen() {
+        clearUserSession()
         if let window = applicationKeyWindow {
             let loginView = LoginVC(isRootView: true)
             window.rootViewController = UINavigationController(rootViewController: UIHostingController(rootView: loginView))

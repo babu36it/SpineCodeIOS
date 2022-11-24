@@ -34,7 +34,7 @@ struct RegisterVC: View {
     
     var isRootView: Bool = false
 
-    var viewModel : LoginViewModel? = LoginViewModel()
+    var viewModel : LoginViewModel? = LoginViewModel.shared
     
     var loginManager = LoginManager()
     let readPermissions =  ["public_profile", "email", "user_friends","user_birthday"]

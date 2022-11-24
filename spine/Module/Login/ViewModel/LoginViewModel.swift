@@ -7,20 +7,43 @@ import Foundation
 import ObjectMapper
 
 class LoginViewModel {
-    func signIn(emailId: String, password: String, deviceToken: String, deviceType: String = "iPhone", completion: @escaping (_ response:signInResponseModel?,_ result: Bool) -> Void) {
+    typealias SignInResponse = (_ response: signInResponseModel?,_ result: Bool) -> Void
+    
+    private var isSigningIn: Bool = false
+    private var completionHandlers: [SignInResponse] = []
+    
+    static let shared: LoginViewModel = .init()
+    
+    private init() { }
+    
+    func signIn(emailId: String, password: String, deviceToken: String = "saaadasd", deviceType: String = "iPhone", completion: @escaping SignInResponse) {
         let request = signInRequestModel()
         request.email = emailId
         request.password = password
-        request.devicetoken = "saaadasd"
-        request.devicetype = "iPhone"
+        request.devicetoken = deviceToken
+        request.devicetype = deviceType
         
-        signIn(request, completion: completion)
+        if !isSigningIn {
+            isSigningIn = true
+            signIn(request) { [weak self] res, result in
+                guard let self = self else { return }
+                completion(res, result)
+                
+                while !self.completionHandlers.isEmpty {
+                    let handler = self.completionHandlers.removeLast()
+                    handler(res, result)
+                }
+                self.isSigningIn = false
+            }
+        } else {
+            completionHandlers.append(completion)
+        }
     }
 }
 
 extension LoginViewModel {
     // MARK: - signIn Webservice
-    func signIn(_ request: signInRequestModel, completion: @escaping (_ response:signInResponseModel?,_ result: Bool) -> Void) {
+    private func signIn(_ request: signInRequestModel, completion: @escaping (_ response:signInResponseModel?,_ result: Bool) -> Void) {
         ShowHud.show()
         AlamofireClient<signInResponseModel>.responseObjectNew(APIRequest(.signin(parameters: request.toJSON()))) { (response, error) in
             ShowHud.hide()
@@ -28,7 +51,7 @@ extension LoginViewModel {
                 if res.status == true {
                     res.save()
                 }
-                AppUtility.shared.refreshUserInfo()
+//                AppUtility.shared.refreshUserInfo()
                 completion(response, true)
             } else  {
                 if let error = error {

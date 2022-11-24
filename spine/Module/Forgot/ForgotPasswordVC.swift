@@ -25,7 +25,7 @@ struct ForgotPasswordVC: View {
     @State var isSuccess = true
     @State private var selection : Int? = 0
     
-    var viewModel : LoginViewModel? = LoginViewModel()
+    var viewModel : LoginViewModel? = LoginViewModel.shared
     var btnBack: some View { Button(action: {
         self.presentationMode.wrappedValue.dismiss()
     }) {

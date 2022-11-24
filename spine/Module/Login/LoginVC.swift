@@ -27,7 +27,7 @@ struct LoginVC: View {
     @State var userLoginID = ""
     @State var verificationCode = ""
     
-    var viewModel : LoginViewModel? = LoginViewModel()
+    var viewModel : LoginViewModel? = LoginViewModel.shared
     
     var loginManager = LoginManager()
     let readPermissions =  ["public_profile", "email", "user_friends","user_birthday"]
@@ -196,8 +196,9 @@ struct LoginVC: View {
 //MARK:- Service Call
 extension LoginVC {
     func doLogin() {
-        viewModel?.signIn(emailId: self._emailId.wrappedValue, password: self._password.wrappedValue, deviceToken: "saaadasd") { (response, status) in
+        viewModel?.signIn(emailId: self._emailId.wrappedValue, password: self._password.wrappedValue) { (response, status) in
             if response?.status == true {
+                AppUtility.shared.saveUserCredentials(emailId: emailId, password: password)
                 AppUtility.shared.redirectToMainScreen()
                 if let message  = response?.message{
                     ShowToast.show(toatMessage: message)

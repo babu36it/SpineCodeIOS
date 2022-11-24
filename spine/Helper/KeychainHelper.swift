@@ -44,7 +44,7 @@ final class KeychainHelper {
         }
     }
     
-    func read(forKey key: String) -> Data? {
+    func readData(forKey key: String) -> Data? {
         
         let query = [
             kSecAttrService: key,
@@ -73,8 +73,7 @@ final class KeychainHelper {
 }
 
 extension KeychainHelper {
-    
-    func save<T>(_ item: T, forKey key: String) where T: Codable {
+    func save<T: Codable>(_ item: T, forKey key: String) {
         do {
             // Encode as JSON data and save in keychain
             let data = try JSONEncoder().encode(item)
@@ -85,16 +84,16 @@ extension KeychainHelper {
         }
     }
     
-    func read<T>(forKey key: String, type: T.Type) -> T? where T : Codable {
+    func read<T: Decodable>(forKey key: String) -> T? {
         
         // Read item data from keychain
-        guard let data = read(forKey: key) else {
+        guard let data = readData(forKey: key) else {
             return nil
         }
         
         // Decode JSON data to object
         do {
-            let item = try JSONDecoder().decode(type, from: data)
+            let item = try JSONDecoder().decode(T.self, from: data)
             return item
         } catch {
             assertionFailure("Fail to decode item for keychain: \(error)")

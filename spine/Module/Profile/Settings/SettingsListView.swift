@@ -68,7 +68,6 @@ struct SettingsListView: View {
             })
             
             Button("LOGOUT"){
-                signInResponseModel.remove()
                 AppUtility.shared.redirectToLoginScreen()
             }
             .padding()
