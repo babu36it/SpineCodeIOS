@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct AddEventType: View {
-    
+struct AddEventTypeView: View {
     @EnvironmentObject var addEventVM: AddEventViewModel
+    var onSelect: (EventTypeModel) -> Void
     
     private let safeAreaBottomInset: CGFloat = AppUtility.shared.applicationKeyWindow?.safeAreaInsets.bottom ?? 0
     
@@ -18,11 +18,12 @@ struct AddEventType: View {
             Text("").frame(width: 80, height: 4, alignment: .center).background(Color.lightBrown)
             Text("What kind of event is it?").bold().padding()
             List {
-                ForEach(addEventVM.eventTypes) { event in
-                    NavigationLink(destination: EventDetailsView(eventType: event)) {
-                        EventTypeRow(eventType: event)
-                    }
-                    .padding(.vertical, 2)
+                ForEach(addEventVM.eventTypes) { eventType in
+                    EventTypeRow(eventType: eventType)
+                        .padding(.vertical, 2)
+                        .onTapGesture {
+                            onSelect(eventType)
+                        }
                 }
             }
             .listStyle(.plain)

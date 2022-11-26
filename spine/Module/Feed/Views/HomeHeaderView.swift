@@ -211,7 +211,6 @@ struct CustomDivider: View {
     }
 }
 
-
 struct CustomDotView: View {
     var height: CGFloat = 20
     var color: Color = Color.orange1

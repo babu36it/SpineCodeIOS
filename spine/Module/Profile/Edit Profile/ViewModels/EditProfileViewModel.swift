@@ -26,37 +26,19 @@ class EditProfileViewModel: ObservableObject {
     @Published var showLoader = false
     
     @Published var showAlert = false
-    @Published var userImage: UIImage?
-    @Published var backgroundImage: UIImage?
+
+    var userImage: String? {
+        userDetails?.userImage
+    }
+    
+    var backgroundImage: String? {
+        userDetails?.bgImage
+    }
 
     private var userDetails: UserDetailResponse? {
         didSet {
-            professionalAcc = userDetails?.data.account == "1" ? true : false
-            profileType = userDetails?.data.listingType == "1" ? .practitioner : .company
-            getUserImage()
-            getUserBackgroundImage()
-        }
-    }
-    
-    private var imageCancellable: AnyCancellable?
-    private func getUserImage() {
-        if let userDetails: UserDetailResponse = userDetails, let imageURL: URL = .init(string: "\(userDetails.image)\(userDetails.data.userImage)") {
-            imageCancellable?.cancel()
-            let imagePublisher = imageDownloadTask(with: imageURL)
-            imageCancellable = imagePublisher.sink { [weak self] imgObj in
-                self?.userImage = imgObj
-            }
-        }
-    }
-    
-    private var bgImageCancellable: AnyCancellable?
-    private func getUserBackgroundImage() {
-        if let userDetails: UserDetailResponse = userDetails, let imageURL: URL = .init(string: "\(userDetails.image)\(userDetails.data.bgImage)") {
-            bgImageCancellable?.cancel()
-            let imagePublisher = imageDownloadTask(with: imageURL)
-            bgImageCancellable = imagePublisher.sink { [weak self] imgObj in
-                self?.backgroundImage = imgObj
-            }
+            professionalAcc = userDetails?.data?.account == "1" ? true : false
+            profileType = userDetails?.data?.listingType == "1" ? .practitioner : .company
         }
     }
 
@@ -76,8 +58,10 @@ class EditProfileViewModel: ObservableObject {
                 switch result {
                 case .success(let value):
                     self.userDetails = value
-                    self.update(userProfile: self.practnrProfile, with: value.data)
-                    self.update(userProfile: self.companyProfile, with: value.data)
+                    if let data: UserDetailResponseData = value.data {
+                        self.update(userProfile: self.practnrProfile, with: data)
+                        self.update(userProfile: self.companyProfile, with: data)
+                    }
                 case .failure(let error):
                     print("error")
                     if error == .tokenExpired {
@@ -196,34 +180,34 @@ class EditProfileViewModel: ObservableObject {
 
 extension EditProfileViewModel {
     func update(userProfile: UserProfileViewModel, with profileResponse: UserDetailResponseData) {
-        userProfile.name = profileResponse.name
-        userProfile.displayName = profileResponse.displayName
-        userProfile.aboutMe = profileResponse.bio
-        userProfile.interestedIn = profileResponse.interested
+        userProfile.name = profileResponse.name ?? ""
+        userProfile.displayName = profileResponse.displayName ?? ""
+        userProfile.aboutMe = profileResponse.bio ?? ""
+        userProfile.interestedIn = profileResponse.interested ?? ""
 //        userProfile.categories = profileResponse.categories
 //        userProfile.donationLink = profileResponse.donationLink
-        userProfile.offerDescription = profileResponse.offerDesciption
-        userProfile.perfArea = profileResponse.keyPerfomance
-        userProfile.diseasePattrns = profileResponse.deseasePattern
-        userProfile.category = profileResponse.category
-        userProfile.language = profileResponse.languages
-        userProfile.qualification = profileResponse.qualification
+        userProfile.offerDescription = profileResponse.offerDesciption ?? ""
+        userProfile.perfArea = profileResponse.keyPerfomance ?? ""
+        userProfile.diseasePattrns = profileResponse.deseasePattern ?? ""
+        userProfile.category = profileResponse.category ?? ""
+        userProfile.language = profileResponse.languages ?? ""
+        userProfile.qualification = profileResponse.qualification ?? ""
             
-        userProfile.companyName = profileResponse.companyName
-        userProfile.street1 = profileResponse.street1
-        userProfile.street2 = profileResponse.street2
-        userProfile.street3 = profileResponse.street3
-        userProfile.city = profileResponse.city
-        userProfile.postCode = profileResponse.postcode
-        userProfile.country = profileResponse.country
+        userProfile.companyName = profileResponse.companyName ?? ""
+        userProfile.street1 = profileResponse.street1 ?? ""
+        userProfile.street2 = profileResponse.street2 ?? ""
+        userProfile.street3 = profileResponse.street3 ?? ""
+        userProfile.city = profileResponse.city ?? ""
+        userProfile.postCode = profileResponse.postcode ?? ""
+        userProfile.country = profileResponse.country ?? ""
 //        userProfile.googleListing = profileResponse.googleListing
-        userProfile.metaverseAddrs = profileResponse.metaverseAddress
-        userProfile.website = profileResponse.website
-        userProfile.email = profileResponse.email
+        userProfile.metaverseAddrs = profileResponse.metaverseAddress ?? ""
+        userProfile.website = profileResponse.website ?? ""
+        userProfile.email = profileResponse.email ?? ""
             
 //        userProfile.phoneCode = profileResponse.phoneCode
-        userProfile.phoneNumber = profileResponse.businessPhone
+        userProfile.phoneNumber = profileResponse.businessPhone ?? ""
 //        userProfile.mobileCode = profileResponse.mobileCode
-        userProfile.mobileNumber = profileResponse.mobile
+        userProfile.mobileNumber = profileResponse.mobile ?? ""
     }
 }

@@ -43,10 +43,3 @@ struct DateSelectionView: View {
         }
     }
 }
-
-
-//struct DateSelectionView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DateSelectionView()
-//    }
-//}

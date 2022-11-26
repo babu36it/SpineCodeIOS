@@ -10,6 +10,8 @@ import SwiftUI
 struct AddEventView: View {
     @Environment(\.dismiss) var dismiss
 
+    @State var showAddEventTypes = false
+    @State var showAddEvent = false
     @StateObject var addEventVM = AddEventViewModel()
     
     var body: some View {
@@ -17,53 +19,81 @@ struct AddEventView: View {
             VStack {
                 LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4).padding(.top, 10)
                     .padding(.bottom, 40)
-                VStack(spacing: 50) {
-                    VStack(alignment: .leading, spacing: 30) {
-                        SubHeader3(title: "How would you like to start?")
-                        AddEventButton(onTapped: {
-                            addEventVM.showAddEvent = true
+                
+                VStack(alignment: .leading, spacing: 30) {
+                    SubHeader3(title: "How would you like to start?")
+                    AddEventButton(onTapped: {
+                        showAddEventTypes = true
+                    })
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 30)
+                
+                VStack(alignment: .leading, spacing: 30) {
+                    if let draftEvent = addEventVM.draftEvent {
+                        SubHeader3(title: "Drafts")
+                            .padding(.horizontal, 20)
+
+                        ExistingEventView(event: draftEvent, imagePath: addEventVM.imagePath, isDraft: true, onTapped: { event in
+                            addEventVM.selectedEvent = event
+                            showAddEvent = true
+                            showAddEventTypes.toggle()
                         })
                     }
-                    
-                    VStack(alignment: .leading, spacing: 30) {
-                        if let draftEvent = addEventVM.draftEvent {
-                            SubHeader3(title: "Drafts")
-                            ExistingEventView(event: draftEvent, isDraft: true, onTapped: {
-                                
-                            })
-                        }
-            
-                        if let userEvents = addEventVM.userEvents {
-                            SubHeader3(title: "Duplicate an existing event")
-                            List {
-                                ForEach(userEvents) { event in
-                                    ExistingEventView(event: event, onTapped: {
-                                        
-                                    })
-                                }
+        
+                    if let userEvents = addEventVM.userEvents {
+                        SubHeader3(title: "Duplicate an existing event")
+                            .padding(.horizontal, 20)
+
+                        List {
+                            ForEach(userEvents) { event in
+                                ExistingEventView(event: event, imagePath: addEventVM.imagePath, onTapped: { event in
+                                    addEventVM.selectedEvent = event
+                                    showAddEvent = true
+                                })
                             }
-                            .listStyle(.plain)
                         }
+                        .listStyle(.plain)
                     }
-                }.padding(.horizontal, 20)
+                }
                 
                 Spacer()
             }
+            
             VStack {
                 Spacer()
-                AddEventType().environmentObject(addEventVM)
-                    .offset(y: addEventVM.showAddEvent ? 0: UIScreen.main.bounds.height)
-            }.background((addEventVM.showAddEvent ? Color.black.opacity(0.3) : Color.clear).onTapGesture {
-                addEventVM.showAddEvent.toggle()
-            }).edgesIgnoringSafeArea(.all)
-        }.onAppear(perform: {
+                AddEventTypeView(onSelect: { eventType in
+                    let eventModel: EventModel = EventModel()
+                    eventModel.type = eventType.id
+                    addEventVM.selectedEvent = eventModel
+                    showAddEvent = true
+                })
+                .environmentObject(addEventVM)
+                .offset(y: showAddEventTypes ? 0: UIScreen.main.bounds.height)
+            }
+            .background((showAddEventTypes ? Color.black.opacity(0.3) : Color.clear).onTapGesture {
+                showAddEventTypes.toggle()
+            })
+            .edgesIgnoringSafeArea(.all)
+        }
+        .onAppear(perform: {
             addEventVM.didAppear()
         })
-        .animation(.default, value: addEventVM.showAddEvent)
+        .animation(.default, value: showAddEventTypes)
         .navigationBarTitle(Text("ADD EVENT"), displayMode: .inline)
         .modifier(BackButtonModifier(action: {
             self.dismiss()
         }))
+
+        NavigationLink(isActive: $showAddEvent) {
+            if let selectedEvent: EventModel = addEventVM.selectedEvent, let selectedEventTypeID: String = selectedEvent.type, let eventType: EventTypeModel = addEventVM.eventTypes.first(where: { $0.id == selectedEventTypeID }) {
+                EventDetailsView(eventType: eventType)
+                    .environmentObject(addEventVM)
+                    .environmentObject(selectedEvent)
+            }
+        } label: {
+            EmptyView()
+        }
     }
 }
 
@@ -93,30 +123,37 @@ struct AddEventButton: View {
 
 struct ExistingEventView: View {
     let event: EventModel
+    let imagePath: String?
     var isDraft: Bool = false
-    let onTapped: ()-> Void
+    let onTapped: (EventModel)-> Void
 
     var body: some View {
         Button {
-            onTapped()
+            onTapped(event)
         } label: {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
-                    Header5(title: event.title ?? "")
-                    Title4(title: event.eventDescription ?? "")
+                    Header5(title: event.title)
+                    Title4(title: event.eventDescription)
                         .multilineTextAlignment(.leading)
                         .lineLimit(3)
                     Title4(title: event.dateString)
-                    Title4(title: event.languageName ?? "")
+                    Title4(title: event.languageName)
                     if isDraft {
                         SubHeader5(title: "Finish & publish event", fColor: .red)
                     }
                 }
                 Spacer()
-                Image(ImageName.ic_launch)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 80, height: 70)
+                Group {
+                    if let imagePath: String = event.imageURL(for: imagePath) {
+                        RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
+                    } else {
+                        Image(ImageName.ic_launch)
+                            .resizable()
+                    }
+                }
+                .frame(width: 80, height: 70)
+                .aspectRatio(contentMode: .fill)
             }
             .padding(.horizontal, 5)
         }

@@ -8,12 +8,18 @@
 import SwiftUI
 
 struct EventDetailPreviewView: View {
+    @Environment(\.dismiss) var dismiss
+
+    @EnvironmentObject var addEventVM: AddEventViewModel
+    @EnvironmentObject var eventModel: EventModel
+
     let eventType: EventTypeModel
     let images: [UIImage]
+
     @State var showMoreAction = false
-    let screenWidth = UIScreen.main.bounds.size.width
-    @Environment(\.dismiss) var dismiss
     @State var showConfirmation = false
+
+    let screenWidth = UIScreen.main.bounds.size.width
     var todayDate = Date()
     
     var body: some View {
@@ -24,97 +30,96 @@ struct EventDetailPreviewView: View {
                     DateBadge(date: todayDate).padding(20)
                 }
                 ScrollView {
-                VStack(alignment: .leading, spacing: 10) {
-                    PodcastTitle(title: "ONLINE EVENT", fSize: 12, linelimit: 1, fontWeight: .black, fColor: .white)
-                    PodcastTitle(title: "Sahaja Yoga online Meditation", fSize: 20, linelimit: 2, fontWeight: .heavy, fColor: .white).padding(.trailing, 30)
-                    EventDetailPreviewRow(image: "Calender", title: "Sat, 09 May 2020", subtitle: "18:00-19:00 CEST", arrow: true)
-                    EventDetailPreviewRow(image: "E_location", title: "Online", subtitle: "Link visible for attendees")
-                    EventDetailPreviewRow(image: "E_Arrow_NE", title: "Website")
-                    EventDetailPreviewRow(image: "E_mic", title: "Hosted in", subtitle: "German")
-                }.padding(20)
+                    VStack(alignment: .leading, spacing: 10) {
+                        PodcastTitle(title: eventType.name.uppercased(), fSize: 12, linelimit: 1, fontWeight: .black, fColor: .white)
+                        PodcastTitle(title: eventModel.title, fSize: 20, linelimit: 2, fontWeight: .heavy, fColor: .white).padding(.trailing, 30)
+                        EventDetailPreviewRow(image: "Calender", title: eventModel.eventDurationDateString, subtitle: eventModel.eventDurationTimeString, arrow: true)
+                        EventDetailPreviewRow(image: "E_location", title: "Online", subtitle: "Link visible for attendees")
+                        EventDetailPreviewRow(image: "E_Arrow_NE", title: "Website", subtitle: eventModel.linkOfEvent)
+                        EventDetailPreviewRow(image: "E_mic", title: "Hosted in", subtitle: eventModel.location)
+                    }
+                    .padding(20)
                     .frame(maxWidth: .infinity)
                     .background(Color.lightBrown)
                     
                     AboutEventTextView(msgTapped: {
                         
                     })
-                
+                    
                     ZStack {
                         Rectangle()
                             .foregroundColor(.white)
                             .frame(height: 50)
                             .shadow(color: .lightGray1, radius: 5)
                         HStack {
-                            Text("FREE")
+                            let eventType: String = (Int(eventModel.fee) ?? 0) > 0 ? "PAID" : "FREE"
+                            Text(eventType)
                             Spacer()
                             LargeButton(disable: true, title: "REQUEST TO ATTEND ONLINE", width: 200, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
                                 print("")
                             }
-                        }.padding(.horizontal)
-                    }
-                    VStack(spacing: 20) {
-                    
-                    Text("Would you like to promote your post, click here")
-                            .font(.Poppins(type: .regular, size: 14))
-                        .underline()
-                    HStack {
-                        Button("EDIT"){
-                            
-                        }.foregroundColor(.lightBrown)
-                        Spacer()
-                        LargeButton(disable: false, title: "PUBLISH", width: 220, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
-                            showConfirmation = true
                         }
-                        
+                        .padding(.horizontal)
                     }
-                }.padding()
-            }
+                    
+                    VStack(spacing: 20) {
+                        Text("Would you like to promote your post, click here")
+                            .font(.Poppins(type: .regular, size: 14))
+                            .underline()
+                        HStack {
+                            Button("EDIT") {
+                                dismiss()
+                            }
+                            .foregroundColor(.lightBrown)
+                            Spacer()
+                            LargeButton(disable: false, title: "PUBLISH", width: 220, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
+                                showConfirmation = true
+                            }
+                            
+                        }
+                    }
+                    .padding()
+                }
                 //Spacer()
-            }.edgesIgnoringSafeArea(.top)
-                .confirmationDialog("", isPresented: $showMoreAction, actions: {
-                    Button("Follow"){
-                        
-                    }
-                    Button("Report Post"){
-                        
-                    }
-                })
-                .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: Button(action : {
-                    self.dismiss()
-                }){
-                    NavBarButtonImage(image: "ic_close", size: 25)
-                        .foregroundColor(.white)
-                })
-                .navigationBarItems(trailing: Button(action : {
-                    print("More")
-                    showMoreAction = true
-                }){
-                    NavBarButtonImage(image: "More")
-                })
-                .navigationBarItems(trailing: Button(action : {
-                    print("Share")
-                }){
-                    NavBarButtonImage(image: "ic_bookmark", size: 22)
-                })
-                .navigationBarItems(trailing: Button(action : {
-                    print("Share")
-                }){
-                    NavBarButtonImage(image: "directArrow")
-                })
+            }
+            .edgesIgnoringSafeArea(.top)
+            .confirmationDialog("", isPresented: $showMoreAction, actions: {
+                Button("Follow"){
+                    
+                }
+                Button("Report Post"){
+                    
+                }
+            })
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading: Button(action : {
+                self.dismiss()
+            }){
+                NavBarButtonImage(image: "ic_close", size: 25)
+                    .foregroundColor(.white)
+            })
+            .navigationBarItems(trailing: Button(action : {
+                print("More")
+                showMoreAction = true
+            }){
+                NavBarButtonImage(image: "More")
+            })
+            .navigationBarItems(trailing: Button(action : {
+                print("Share")
+            }){
+                NavBarButtonImage(image: "ic_bookmark", size: 22)
+            })
+            .navigationBarItems(trailing: Button(action : {
+                print("Share")
+            }){
+                NavBarButtonImage(image: "directArrow")
+            })
         }
         .fullScreenCover(isPresented: $showConfirmation, content: {
             EventConfirmationView()
         })
     }
 }
-
-//struct EventDetailPreviewView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        EventDetailPreviewView(eventType: .local, images: [])
-//    }
-//}
-
 
 struct EventDetailPreviewRow: View {
     let image: String
@@ -146,7 +151,6 @@ struct EventDetailPreviewRow: View {
                 Image(systemName: ImageName.chevronRight)
                     .foregroundColor(.white)
             }
-            
         }
     }
 }
@@ -156,7 +160,7 @@ struct DateBadge: View {
     var body: some View {
         VStack {
             SubHeader6(title: "\(date.day)", fColor: .white)
-            SubHeader6(title: "\(date.day)", fColor: .white)
+            SubHeader6(title: "\(date.month)", fColor: .white)
         }.frame(width: 30)
         //.foregroundColor(.white)
         .padding(5)
@@ -175,8 +179,6 @@ struct BadgeLabel: View {
     }
 }
 
-
-
 struct EventPreviewText: View {
     let text: String
     let fSize: CGFloat
@@ -186,6 +188,3 @@ struct EventPreviewText: View {
             .font(.custom("Poppins", size: fSize)).fontWeight(fontWeight)
     }
 }
-
-
-

@@ -94,7 +94,7 @@
 		048AD9F428A52FBA0091BC60 /* PaymentConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048AD9F328A52FBA0091BC60 /* PaymentConfirmView.swift */; };
 		048B0D5C2909167F003C7BA7 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B0D5B2909167F003C7BA7 /* Helper.swift */; };
 		048C0EB7288D020100EB362C /* QuestionAndThoughtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048C0EB6288D020100EB362C /* QuestionAndThoughtView.swift */; };
-		0491885C2858D07A002343CA /* AddEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049188592858D079002343CA /* AddEventType.swift */; };
+		0491885C2858D07A002343CA /* AddEventTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049188592858D079002343CA /* AddEventTypeView.swift */; };
 		0491885D2858D07A002343CA /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491885A2858D079002343CA /* EventDetailsView.swift */; };
 		0491885E2858D07A002343CA /* AddEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491885B2858D07A002343CA /* AddEventView.swift */; };
 		0491886128590749002343CA /* SubCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491886028590749002343CA /* SubCategoryView.swift */; };
@@ -181,6 +181,7 @@
 		2C5BADF82928CFAF00BB31D1 /* AccountViewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADF72928CFAF00BB31D1 /* AccountViewService.swift */; };
 		2C5BADFD292D48A800BB31D1 /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADFC292D48A800BB31D1 /* EventModel.swift */; };
 		2C5BADFF292D494E00BB31D1 /* EventsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADFE292D494E00BB31D1 /* EventsServices.swift */; };
+		2C5BAE0329311DC900BB31D1 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BAE0229311DC900BB31D1 /* RemoteImage.swift */; };
 		2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */; };
 		2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */; };
 		2C7B1FBA29202C4600E06E40 /* MessagingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */; };
@@ -342,7 +343,7 @@
 		048AD9F328A52FBA0091BC60 /* PaymentConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentConfirmView.swift; sourceTree = "<group>"; };
 		048B0D5B2909167F003C7BA7 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		048C0EB6288D020100EB362C /* QuestionAndThoughtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAndThoughtView.swift; sourceTree = "<group>"; };
-		049188592858D079002343CA /* AddEventType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventType.swift; sourceTree = "<group>"; };
+		049188592858D079002343CA /* AddEventTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventTypeView.swift; sourceTree = "<group>"; };
 		0491885A2858D079002343CA /* EventDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
 		0491885B2858D07A002343CA /* AddEventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventView.swift; sourceTree = "<group>"; };
 		0491886028590749002343CA /* SubCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryView.swift; sourceTree = "<group>"; };
@@ -429,6 +430,7 @@
 		2C5BADF72928CFAF00BB31D1 /* AccountViewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewService.swift; sourceTree = "<group>"; };
 		2C5BADFC292D48A800BB31D1 /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		2C5BADFE292D494E00BB31D1 /* EventsServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsServices.swift; sourceTree = "<group>"; };
+		2C5BAE0229311DC900BB31D1 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 		2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailService.swift; sourceTree = "<group>"; };
 		2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 				049D653628A3FCE600124805 /* CustomImageView.swift */,
 				048AD9F128A50F8B0091BC60 /* CustomLabels.swift */,
 				04973536289A90150019548A /* CustomButtons.swift */,
+				2C5BAE0229311DC900BB31D1 /* RemoteImage.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -642,7 +645,7 @@
 			isa = PBXGroup;
 			children = (
 				0491885B2858D07A002343CA /* AddEventView.swift */,
-				049188592858D079002343CA /* AddEventType.swift */,
+				049188592858D079002343CA /* AddEventTypeView.swift */,
 				0491885A2858D079002343CA /* EventDetailsView.swift */,
 				0488773D2859A73900C4022B /* AboutEventView.swift */,
 				04A3D3FD285AEF5A00827941 /* EventDetailPreviewView.swift */,
@@ -1545,7 +1548,7 @@
 				18D5E3792824EC670075F5A2 /* APIRequest.swift in Sources */,
 				04A3D3FE285AEF5A00827941 /* EventDetailPreviewView.swift in Sources */,
 				180C16C22856CB140072D0DF /* PodcastConfirmationView.swift in Sources */,
-				0491885C2858D07A002343CA /* AddEventType.swift in Sources */,
+				0491885C2858D07A002343CA /* AddEventTypeView.swift in Sources */,
 				66A237D7281709FC00CA3763 /* Constant.swift in Sources */,
 				0482B61328714AAA006017E9 /* StandardUser.swift in Sources */,
 				189D8B90282E2FD300C1126C /* FollowingFeedListVC.swift in Sources */,
@@ -1698,6 +1701,7 @@
 				0499F75528721605003CE532 /* SettingsListView.swift in Sources */,
 				04983D8829113D9C0054F887 /* DateComponentsFormatter+Extension.swift in Sources */,
 				048198CC286ECF4500AFC6AA /* AboutProfileView.swift in Sources */,
+				2C5BAE0329311DC900BB31D1 /* RemoteImage.swift in Sources */,
 				04D1D551287C043300A62CA4 /* FeedHomeView.swift in Sources */,
 				04B779C12886B6A8009EB505 /* PractitionersDetailsView.swift in Sources */,
 				66A237372817093A00CA3763 /* UIColor+Extension.swift in Sources */,

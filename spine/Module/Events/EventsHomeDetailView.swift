@@ -163,13 +163,11 @@ struct CustomAlert: View {
             Button("show"){
                showAdd = true
             }
-            
-           // SendInvitationAlertView(showAdd: $showAdd)
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action : {
             self.dismiss()
-        }){
+        }) {
             Image(systemName: ImageName.chevronLeft)
                 .foregroundColor(.primary)
         }.disabled(showAdd))
@@ -181,8 +179,6 @@ struct CustomAlert_Previews: PreviewProvider {
         CustomAlert()
     }
 }
-
-
 
 struct AttendingListScrollView: View {
     @State var showAttendees = false
@@ -210,14 +206,15 @@ struct AttendingListScrollView: View {
                 
             }
             
-        }.padding(.horizontal, 20)
-            .padding(.vertical, 10)
-        
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
     }
 }
 
 struct AboutEventTextView: View {
-    var msgTapped: ()-> Void
+    let msgTapped: ()-> Void
+    
     var body: some View {
         VStack(spacing: 20) {
             HStack(spacing: 15) {
@@ -230,16 +227,16 @@ struct AboutEventTextView: View {
                 LargeButton(title: "MESSAGE", width: 100, height: 30, bColor: .lightGray1, fSize: 14, fColor: .lightBrown) {
                     msgTapped()
                 }
-            }//.padding(.horizontal, 10)
+            }
             VStack(alignment: .leading, spacing: 10) {
                 Title4(title: "ABOUT THE EVENT")
                 Title4(title: C.PlaceHolder.aboutEventprvTxt)
-                    //.frame(height: 200)
                     .lineLimit(10)
                     .foregroundColor(.lightBlackText)
             }
             
-        }.padding(20)
-            .padding(.top, -10)
+        }
+        .padding(20)
+        .padding(.top, -10)
     }
 }

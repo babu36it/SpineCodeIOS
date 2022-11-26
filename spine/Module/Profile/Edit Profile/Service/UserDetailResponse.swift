@@ -8,31 +8,31 @@
 import Foundation
 
 struct UserDetailResponse: Codable {
-    let status: Bool
-    let data: UserDetailResponseData
-    let image: String
-    let message: String
+    let status: Bool?
+    let data: UserDetailResponseData?
+    let image: String?
+    let message: String?
 }
 
 struct UserDetailResponseData: Codable {
-    let usersID, name, town, email: String
-    let password, verificationPin, status, account: String
-    let facebookID, facebookImage, socialLogin, deviceToken: String
-    let lastLogin, verifyEmail, mobile, verifyMobile: String
-    let referralCode, createdOn, updatedOn, notifyDeviceToken: String
-    let userLatitude, userLongitude, notifyDeviceType, accountMode: String
-    let bgImage, displayName, bio, category: String
-    let website, contactEmail, businessPhone, businessAddress: String
-    let address, isDelete, recoveryToken, impulseFollow: String
-    let listingType, interested, offerDesciption, keyPerfomance: String
-    let deseasePattern, languages, qualification, companyName: String
-    let street1, street2, street3, city: String
-    let postcode, country, metaverseAddress, businessMobile: String
-    let businessPhoneCode, businessMobileCode, defaultLanguageID, defaultCurrencyID: String
-    let verifyAccountStatus, documents, googleListing, wikipedia: String
-    let otherLink: String
-    let categoryName, followersRecordsCount, followingRecordsCount, postRecordsCount: String
-    let eventRecordsCount, podRecordsCount, userImage: String
+    let usersID, name, town, email: String?
+    let password, verificationPin, status, account: String?
+    let facebookID, facebookImage, socialLogin, deviceToken: String?
+    let lastLogin, verifyEmail, mobile, verifyMobile: String?
+    let referralCode, createdOn, updatedOn, notifyDeviceToken: String?
+    let userLatitude, userLongitude, notifyDeviceType, accountMode: String?
+    let _bgImage, displayName, bio, category: String?
+    let website, contactEmail, businessPhone, businessAddress: String?
+    let address, isDelete, recoveryToken, impulseFollow: String?
+    let listingType, interested, offerDesciption, keyPerfomance: String?
+    let deseasePattern, languages, qualification, companyName: String?
+    let street1, street2, street3, city: String?
+    let postcode, country, metaverseAddress, businessMobile: String?
+    let businessPhoneCode, businessMobileCode, defaultLanguageID, defaultCurrencyID: String?
+    let verifyAccountStatus, documents, googleListing, wikipedia: String?
+    let otherLink: String?
+    let categoryName, followersRecordsCount, followingRecordsCount, postRecordsCount: String?
+    let eventRecordsCount, podRecordsCount, _userImage: String?
 
     enum CodingKeys: String, CodingKey {
         case name, town, email, password, status, account, bio, category, website, mobile, documents, city, postcode, country, languages, qualification, interested, address, wikipedia
@@ -53,7 +53,7 @@ struct UserDetailResponseData: Codable {
         case userLongitude = "user_longitude"
         case notifyDeviceType = "notify_device_type"
         case accountMode = "account_mode"
-        case bgImage = "bg_image"
+        case _bgImage = "bg_image"
         case displayName = "display_name"
         case contactEmail = "contact_email"
         case businessPhone = "business_phone"
@@ -84,6 +84,21 @@ struct UserDetailResponseData: Codable {
         case postRecordsCount = "post_records_count"
         case eventRecordsCount = "event_records_count"
         case podRecordsCount = "pod_records_count"
-        case userImage = "user_image"
+        case _userImage = "user_image"
+    }
+}
+
+extension UserDetailResponse {
+    var userImage: String? {
+        if let image = image, let _userImage = data?._userImage {
+            return "\(image)\(_userImage)"
+        }
+        return nil
+    }
+    var bgImage: String? {
+        if let image = image, let _bgImage = data?._bgImage {
+            return "\(image)\(_bgImage)"
+        }
+        return nil
     }
 }

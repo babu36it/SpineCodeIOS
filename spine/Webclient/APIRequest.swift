@@ -78,8 +78,6 @@ enum APIAddress: URLRequestConvertible {
             return "login/reSendOtp/"
         case .userDetails:
             return "userDetails"
-         default:
-            return ""
         }
     }
 
@@ -147,8 +145,6 @@ enum MediaType : Int {
             return "mp3"
         case .file:
             return "com.adobe.pdf"
-        default:
-            return ""
         }
     }
 }

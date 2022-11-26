@@ -14,20 +14,48 @@ struct UserEventResponseModel: Decodable {
     let message: String?
 }
 
-struct EventModel: Decodable, Identifiable {
-    let id, userID, title, file: String?
-    let multiple, type, startTime, startDate: String?
-    let endTime, endDate, acctualStartDatetime, acctualEndDatetime: String?
-    let timezone, location, latitude, longitude: String?
-    let linkOfEvent, joinEventLink: String?
-    let eventDescription, eventCategories, eventSubcategories, fee: String?
-    let feeCurrency, bookingURL, maxAttendees, language: String?
-    let acceptParticipants, allowComments, status, createdOn: String?
-    let updatedOn, languageName, userName, useDisplayName: String?
-    let hostedProfilePic: String?
-    let currencyCountry, currencyName, currencyCode, currencySymbol: String?
-    let typeName: String?
-
+class EventModel: ObservableObject, Decodable, Identifiable {
+    var id: String = ""
+    var userID: String = ""
+    var title: String = ""
+    var file: String = ""
+    var multiple: String = ""
+    var type: String = ""
+    var startTime: String = ""
+    var startDate: String = ""
+    var endTime: String = ""
+    var endDate: String = ""
+    var acctualStartDatetime: String = ""
+    var acctualEndDatetime: String = ""
+    var timezone: String = ""
+    var location: String = ""
+    var latitude: String = ""
+    var longitude: String = ""
+    var linkOfEvent: String = ""
+    var joinEventLink: String = ""
+    var eventDescription: String = ""
+    var eventCategories: String = ""
+    var eventSubcategories: String = ""
+    var fee: String = ""
+    var feeCurrency: String = ""
+    var bookingURL: String = ""
+    var maxAttendees: String = ""
+    var language: String = ""
+    var acceptParticipants: String = ""
+    var allowComments: String = ""
+    var status: String = ""
+    var createdOn: String = ""
+    var updatedOn: String = ""
+    var languageName: String = ""
+    var userName: String = ""
+    var useDisplayName: String = ""
+    var hostedProfilePic: String = ""
+    var currencyCountry: String = ""
+    var currencyName: String = ""
+    var currencyCode: String = ""
+    var currencySymbol: String = ""
+    var typeName: String = ""
+    
     enum CodingKeys: String, CodingKey {
         case id, fee, title, file, multiple, type, timezone, location, latitude, longitude, status, language
         case userID = "user_id"
@@ -59,24 +87,147 @@ struct EventModel: Decodable, Identifiable {
         case currencySymbol = "currency_symbol"
         case typeName = "type_name"
     }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decodeIfPresent(String.self, forKey: .id) ?? ""
+        userID = try container.decodeIfPresent(String.self, forKey: .userID) ?? ""
+        title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
+        file = try container.decodeIfPresent(String.self, forKey: .file) ?? ""
+        multiple = try container.decodeIfPresent(String.self, forKey: .multiple) ?? ""
+        type = try container.decodeIfPresent(String.self, forKey: .type) ?? ""
+        startTime = try container.decodeIfPresent(String.self, forKey: .startTime) ?? ""
+        startDate = try container.decodeIfPresent(String.self, forKey: .startDate) ?? ""
+        endTime = try container.decodeIfPresent(String.self, forKey: .endTime) ?? ""
+        endDate = try container.decodeIfPresent(String.self, forKey: .endDate) ?? ""
+        acctualStartDatetime = try container.decodeIfPresent(String.self, forKey: .acctualStartDatetime) ?? ""
+        acctualEndDatetime = try container.decodeIfPresent(String.self, forKey: .acctualEndDatetime) ?? ""
+        timezone = try container.decodeIfPresent(String.self, forKey: .timezone) ?? ""
+        location = try container.decodeIfPresent(String.self, forKey: .location) ?? ""
+        latitude = try container.decodeIfPresent(String.self, forKey: .latitude) ?? ""
+        longitude = try container.decodeIfPresent(String.self, forKey: .longitude) ?? ""
+        linkOfEvent = try container.decodeIfPresent(String.self, forKey: .linkOfEvent) ?? ""
+        joinEventLink = try container.decodeIfPresent(String.self, forKey: .joinEventLink) ?? ""
+        eventDescription = try container.decodeIfPresent(String.self, forKey: .eventDescription) ?? ""
+        eventCategories = try container.decodeIfPresent(String.self, forKey: .eventCategories) ?? ""
+        eventSubcategories = try container.decodeIfPresent(String.self, forKey: .eventSubcategories) ?? ""
+        fee = try container.decodeIfPresent(String.self, forKey: .fee) ?? ""
+        feeCurrency = try container.decodeIfPresent(String.self, forKey: .feeCurrency) ?? ""
+        bookingURL = try container.decodeIfPresent(String.self, forKey: .bookingURL) ?? ""
+        maxAttendees = try container.decodeIfPresent(String.self, forKey: .maxAttendees) ?? ""
+        language = try container.decodeIfPresent(String.self, forKey: .language) ?? ""
+        acceptParticipants = try container.decodeIfPresent(String.self, forKey: .acceptParticipants) ?? ""
+        allowComments = try container.decodeIfPresent(String.self, forKey: .allowComments) ?? ""
+        status = try container.decodeIfPresent(String.self, forKey: .status) ?? ""
+        createdOn = try container.decodeIfPresent(String.self, forKey: .createdOn) ?? ""
+        updatedOn = try container.decodeIfPresent(String.self, forKey: .updatedOn) ?? ""
+        languageName = try container.decodeIfPresent(String.self, forKey: .languageName) ?? ""
+        userName = try container.decodeIfPresent(String.self, forKey: .userName) ?? ""
+        useDisplayName = try container.decodeIfPresent(String.self, forKey: .useDisplayName) ?? ""
+        hostedProfilePic = try container.decodeIfPresent(String.self, forKey: .hostedProfilePic) ?? ""
+        currencyCountry = try container.decodeIfPresent(String.self, forKey: .currencyCountry) ?? ""
+        currencyName = try container.decodeIfPresent(String.self, forKey: .currencyName) ?? ""
+        currencyCode = try container.decodeIfPresent(String.self, forKey: .currencyCode) ?? ""
+        currencySymbol = try container.decodeIfPresent(String.self, forKey: .currencySymbol) ?? ""
+        typeName = try container.decodeIfPresent(String.self, forKey: .typeName) ?? ""
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(userID, forKey: .userID)
+        try container.encode(title, forKey: .title)
+        try container.encode(file, forKey: .file)
+        try container.encode(multiple, forKey: .multiple)
+        try container.encode(type, forKey: .type)
+        try container.encode(startTime, forKey: .startTime)
+        try container.encode(startDate, forKey: .startDate)
+        try container.encode(endTime, forKey: .endTime)
+        try container.encode(endDate, forKey: .endDate)
+        try container.encode(acctualStartDatetime, forKey: .acctualStartDatetime)
+        try container.encode(acctualEndDatetime, forKey: .acctualEndDatetime)
+        try container.encode(timezone, forKey: .timezone)
+        try container.encode(location, forKey: .location)
+        try container.encode(latitude, forKey: .latitude)
+        try container.encode(longitude, forKey: .longitude)
+        try container.encode(linkOfEvent, forKey: .linkOfEvent)
+        try container.encode(joinEventLink, forKey: .joinEventLink)
+        try container.encode(eventDescription, forKey: .eventDescription)
+        try container.encode(eventCategories, forKey: .eventCategories)
+        try container.encode(eventSubcategories, forKey: .eventSubcategories)
+        try container.encode(fee, forKey: .fee)
+        try container.encode(feeCurrency, forKey: .feeCurrency)
+        try container.encode(bookingURL, forKey: .bookingURL)
+        try container.encode(maxAttendees, forKey: .maxAttendees)
+        try container.encode(language, forKey: .language)
+        try container.encode(acceptParticipants, forKey: .acceptParticipants)
+        try container.encode(allowComments, forKey: .allowComments)
+        try container.encode(status, forKey: .status)
+        try container.encode(createdOn, forKey: .createdOn)
+        try container.encode(updatedOn, forKey: .updatedOn)
+        try container.encode(languageName, forKey: .languageName)
+        try container.encode(userName, forKey: .userName)
+        try container.encode(useDisplayName, forKey: .useDisplayName)
+        try container.encode(hostedProfilePic, forKey: .hostedProfilePic)
+        try container.encode(currencyCountry, forKey: .currencyCountry)
+        try container.encode(currencyName, forKey: .currencyName)
+        try container.encode(currencyCode, forKey: .currencyCode)
+        try container.encode(currencySymbol, forKey: .currencySymbol)
+        try container.encode(typeName, forKey: .typeName)
+    }
+    
+    init() { }
 }
 
 extension EventModel {
+    var eventDurationDateString: String {
+        var dtStr: String = ""
+        if let startDate: Date = startDate.toDate(format: "yyyy-MM-dd") {
+            dtStr = startDate.toString(format: "EEE, dd MMM yyyy")
+        }
+        if let endDate: Date = endDate.toDate(format: "yyyy-MM-dd") {
+            dtStr.append(" - ")
+            dtStr.append(endDate.toString(format: "EEE, dd MMM yyyy"))
+        }
+        return dtStr
+    }
+    
+    var eventDurationTimeString: String {
+        var dtStr: String = ""
+        if let startTime: Date = startTime.toDate(format: "HH:mm:ss") {
+            dtStr.append(startTime.toString(format: "HH:mm"))
+        }
+        dtStr.append(" - ")
+        if let endTime: Date = endTime.toDate(format: "HH:mm:ss") {
+            dtStr.append(endTime.toString(format: "HH:mm"))
+        }
+        dtStr.append(" \(timezone)")
+        return dtStr
+    }
+    
     var dateString: String {
         var dtStr: String = ""
-        if let startDate: Date = startDate?.toDate(format: "yyyy-MM-dd") {
+        if let startDate: Date = startDate.toDate(format: "yyyy-MM-dd") {
             dtStr = startDate.toString(format: "dd MMM")
         }
         
-        if let endDate: Date = endDate?.toDate(format: "yyyy-MM-dd") {
+        if let endDate: Date = endDate.toDate(format: "yyyy-MM-dd") {
             dtStr.append(" - ")
             dtStr.append(endDate.toString(format: "dd MMM yyyy"))
         }
         
-        if let endTime: Date = endTime?.toDate(format: "HH:mm:ss") {
+        if let endTime: Date = endTime.toDate(format: "HH:mm:ss") {
             dtStr.append(", ")
             dtStr.append(endTime.toString(format: "HH:mm"))
         }
         return dtStr
+    }
+    
+    func imageURL(for path: String?) -> String? {
+        if let path = path, !file.isEmpty {
+            return "\(path)\(file)"
+        }
+        return nil
     }
 }

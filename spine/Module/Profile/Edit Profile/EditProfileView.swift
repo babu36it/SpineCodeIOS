@@ -94,13 +94,18 @@ struct EditProfileView: View {
         }
     }
     
+    let imageRadius: CGFloat = 100
+    let badgeOffsetValue: CGFloat = sqrt(100*100 / 2) / 2
+    
     @ViewBuilder
     private var profileImage: some View {
         Group {
             if let image = editProfileViewModel.images.first {
                 AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
-            } else if let image: UIImage = editProfileViewModel.userImage {
-                AddCircularBorderedProfileView(image: image, size: 100, borderWidth: 3, showShadow: true, showBadge: true)
+            } else if let image: String = editProfileViewModel.userImage {
+                RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: image))
+                    .profileImage(radius: 100, borderWidth: 3, shadowRadius: 5, badgeSize: CGSize(width: 12, height: 12), badgeColor: .orange1, badgeOffset: CGSize(width: badgeOffsetValue, height: -badgeOffsetValue))
+                    .aspectRatio(contentMode: .fill)
             } else {
                 CircularBorderedProfileView(image: "ic_background", size: 100, borderWidth: 3, showShadow: true, showBadge: false)
             }
@@ -120,8 +125,7 @@ struct EditProfileView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
             } else if let bgImage = editProfileViewModel.backgroundImage {
-                Image(uiImage: bgImage)
-                    .resizable()
+                RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: bgImage))
                     .aspectRatio(contentMode: .fill)
             } else {
                 Image(ImageName.podcastDetailBanner)

@@ -181,8 +181,8 @@ extension AppUtility {
 extension AppUtility {
     
     func showCustomAlert(alertType: AlertType, message: String, actionButtonTitle: String?, cancelButtonTitle: String, buttonActionCompletion: AlertButtonActionCompletion?) {
-        DispatchQueue.main.async {
-            guard let window = UIApplication.shared.windows.first else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let window = self?.applicationKeyWindow else { return }
             let alert = CustomAlertView(alertType: alertType, message: message, actionButtonTitle: actionButtonTitle, cancelButtonTitle: cancelButtonTitle, buttonActionCompletion: { action in
                 window.rootViewController?.dismiss(animated: false, completion: {
                     buttonActionCompletion?(action)
@@ -216,7 +216,8 @@ class ShowHud:NSObject
     static var loadingIndicator:UIActivityIndicatorView={
         let loading = UIActivityIndicatorView()
         loading.translatesAutoresizingMaskIntoConstraints = false
-        loading.style = UIActivityIndicatorView.Style.whiteLarge
+        loading.style = UIActivityIndicatorView.Style.large
+        loading.tintColor = .white
         loading.backgroundColor = .clear
         loading.layer.cornerRadius = 16
         loading.layer.masksToBounds = true
@@ -226,14 +227,13 @@ class ShowHud:NSObject
     static var timerToHideHud:Timer?
     static var timerToShowHud:Timer?
     
-    class func show()
-    {
+    class func show() {
         ShowHud.timerToHideHud?.invalidate()
-        UIApplication.shared.resignFirstResponder()
+        DispatchQueue.main.async {
+            UIApplication.shared.resignFirstResponder()
+        }
         
         ShowHud.timerToShowHud = Timer.scheduledTimer(timeInterval: 0.5, target: ShowHud.self, selector: #selector(ShowHud.showHudAfterOneSecond), userInfo: nil, repeats: false)
-        
-        
     }
     
     class func hide(){
@@ -243,38 +243,32 @@ class ShowHud:NSObject
     }
     
     @objc class func hideAfterOneSecond(){
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         ShowHud.loadingIndicator.stopAnimating()
         ShowHud.disablerView.removeFromSuperview()
         timerToHideHud?.invalidate()
     }
     @objc class func showHudAfterOneSecond(){
-        if  let keyWindow = UIApplication.shared.windows.first
+        if  let keyWindow = AppUtility.shared.applicationKeyWindow, !ShowHud.loadingIndicator.isAnimating
         {
-            if !ShowHud.loadingIndicator.isAnimating
-            {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = true
-                
-                keyWindow.addSubview(disablerView)
-                disablerView.rightAnchor.constraint(equalTo: keyWindow.rightAnchor).isActive = true
-                disablerView.leftAnchor.constraint(equalTo: keyWindow.leftAnchor).isActive = true
-                disablerView.topAnchor.constraint(equalTo: keyWindow.topAnchor).isActive = true
-                disablerView.bottomAnchor.constraint(equalTo: keyWindow.bottomAnchor).isActive = true
-                ShowHud.loadingIndicator.startAnimating()
-                
-                disablerView.addSubview(containerView)
-                
-                containerView.centerXAnchor.constraint(equalTo: disablerView.centerXAnchor).isActive = true
-                containerView.centerYAnchor.constraint(equalTo: disablerView.centerYAnchor).isActive = true
-                let squareSize:CGFloat =  100
-                containerView.widthAnchor.constraint(equalToConstant: squareSize).isActive = true
-                containerView.heightAnchor.constraint(equalToConstant: squareSize).isActive = true
-                
-                
-                containerView.addSubview(loadingIndicator)
-                loadingIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-                loadingIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-            }
+            keyWindow.addSubview(disablerView)
+            disablerView.rightAnchor.constraint(equalTo: keyWindow.rightAnchor).isActive = true
+            disablerView.leftAnchor.constraint(equalTo: keyWindow.leftAnchor).isActive = true
+            disablerView.topAnchor.constraint(equalTo: keyWindow.topAnchor).isActive = true
+            disablerView.bottomAnchor.constraint(equalTo: keyWindow.bottomAnchor).isActive = true
+            ShowHud.loadingIndicator.startAnimating()
+            
+            disablerView.addSubview(containerView)
+            
+            containerView.centerXAnchor.constraint(equalTo: disablerView.centerXAnchor).isActive = true
+            containerView.centerYAnchor.constraint(equalTo: disablerView.centerYAnchor).isActive = true
+            let squareSize:CGFloat =  100
+            containerView.widthAnchor.constraint(equalToConstant: squareSize).isActive = true
+            containerView.heightAnchor.constraint(equalToConstant: squareSize).isActive = true
+            
+            
+            containerView.addSubview(loadingIndicator)
+            loadingIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+            loadingIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         }
     }
     
@@ -285,7 +279,7 @@ class ShowToast: NSObject {
     class func show(toatMessage:String)
     {
         
-        if  let keyWindow = UIApplication.shared.windows.first
+        if  let keyWindow = AppUtility.shared.applicationKeyWindow
         {
             ShowHud.hide()
             if lastToastLabelReference != nil

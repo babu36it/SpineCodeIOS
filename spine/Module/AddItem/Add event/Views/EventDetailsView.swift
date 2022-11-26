@@ -8,30 +8,35 @@
 import SwiftUI
 
 struct EventDetailsView: View {
-    let eventType: EventTypeModel
     @Environment(\.dismiss) var dismiss
-    @State var eventTitle: String = ""
-    @State var startDate: Date = Date()
-    @State var startTime: Date = Date()
-    @State var endDate: Date = Date()
-    @State var endTime: Date = Date().addingTimeInterval(3600)
-    @State var selectedTimeZone = ""
-    @State var selectedLocation = ""
-    @State var eventWebsiteLink: String = ""
-    @State var onlineEventLink: String = ""
-    @State var aboutText: String = ""
-    @State var isPaid = false
-    @State var bookEventLink: String = ""
-    @State var selectedCurrency: String = ""
-    @State var amount: String = "0"
-    @State var attendees: String = ""
-    @State var selectedLanguage = ""
-    @State var acceptParticipants = false
-    @State var allowComments = false
-    @State var selectedCategory = ""
-    @State var categories = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6","Item 7"]
-    @State var selectedCategories: [String] = []
-    @State var showPreview = false
+    @EnvironmentObject var addEventVM: AddEventViewModel
+    @EnvironmentObject var eventModel: EventModel
+
+    let eventType: EventTypeModel
+
+    @State private var startDate: Date = Date()
+    @State private var startTime: Date = Date()
+    @State private var endDate: Date = Date()
+    @State private var endTime: Date = Date().addingTimeInterval(3600)
+    @State private var acceptParticipants = false
+    @State private var allowComments = false
+    @State private var isPaid = false
+    @State private var showPreview = false
+
+//    @State var eventTitle: String = ""
+//    @State var selectedTimeZone = ""
+//    @State var selectedLocation = ""
+//    @State var eventWebsiteLink: String = ""
+//    @State var onlineEventLink: String = ""
+//    @State var aboutText: String = ""
+//    @State var bookEventLink: String = ""
+//    @State var selectedCurrency: String = ""
+//    @State var amount: String = "0"
+//    @State var attendees: String = ""
+//    @State var selectedLanguage = ""
+//    @State var selectedCategory = ""
+    @State private var categories = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6","Item 7"]
+    @State private var selectedCategories: [String] = []
     @State private var images = [UIImage]()
     
     var body: some View {
@@ -45,55 +50,81 @@ struct EventDetailsView: View {
             VStack(spacing: 30) {
                 VStack(alignment: .leading) {
                     EventDetailTitle(text: "Event Title*")
-                    CustomTextFieldWithCount(searchText: $eventTitle, placeholder: "Enter title", count: 40)
+                    CustomTextFieldWithCount(searchText: $eventModel.title, placeholder: "Enter title", count: 40)
                 }
                 
                 HStack {
                     VStack(alignment: .leading) {
                         EventDetailTitle(text: "Start*")
-                        DateSelectionView(type: .date, selectedDate: $startDate, size: 15).padding(.vertical,2)
-                        DateSelectionView(type: .time, selectedDate: $startTime, size: 15).padding(.vertical,2)
+                        let dateBinding: Binding<Date> = .init {
+                            startDate
+                        } set: { newValue in
+                            startDate = newValue
+                            eventModel.startDate = startDate.toString("yyyy-MM-dd")
+                        }
+                        DateSelectionView(type: .date, selectedDate: dateBinding, size: 15).padding(.vertical,2)
+                        
+                        let timeBinding: Binding<Date> = .init {
+                            startTime
+                        } set: { newValue in
+                            startTime = newValue
+                            eventModel.startTime = startTime.toString("HH:mm")
+                        }
+                        DateSelectionView(type: .time, selectedDate: timeBinding, size: 15).padding(.vertical,2)
                     }.frame(width: 160)
                     Spacer()
                     VStack(alignment: .leading) {
                         EventDetailTitle(text: "End*")
-                        DateSelectionView(type: .date, selectedDate: $endDate, size: 15).padding(.vertical,2)
-                        DateSelectionView(type: .time, selectedDate: $endTime, size: 15).padding(.vertical,2)
+                        let dateBinding: Binding<Date> = .init {
+                            endDate
+                        } set: { newValue in
+                            endDate = newValue
+                            eventModel.startDate = endDate.toString("yyyy-MM-dd")
+                        }
+                        DateSelectionView(type: .date, selectedDate: dateBinding, size: 15).padding(.vertical,2)
+
+                        let timeBinding: Binding<Date> = .init {
+                            endTime
+                        } set: { newValue in
+                            endTime = newValue
+                            eventModel.endTime = endTime.toString("HH:mm")
+                        }
+                        DateSelectionView(type: .time, selectedDate: timeBinding, size: 15).padding(.vertical,2)
                     }.frame(width: 160)
                     
                 }
                 
                 VStack(alignment: .leading) {
                     EventDetailTitle(text: "Timezone*")
-                    NavigationLink(destination: ItemSelectionView(selectedItem: $selectedTimeZone, itemType: .timezone)) {
-                        CustomNavigationView(selectedItem: $selectedTimeZone, placeholder: C.PlaceHolder.timeZone)
+                    NavigationLink(destination: ItemSelectionView(selectedItem: $eventModel.timezone, itemType: .timezone)) {
+                        CustomNavigationView(selectedItem: $eventModel.timezone, placeholder: C.PlaceHolder.timeZone)
                     }
                 }
                 
                 if eventType.name == "Local Events" {
                     VStack(alignment: .leading) {
                         EventDetailTitle(text: "Location*")
-                        NavigationLink(destination: ItemSelectionView(selectedItem: $selectedLocation, itemType: .location)) {
-                            CustomNavigationView(selectedItem: $selectedLocation, placeholder: C.PlaceHolder.address)
+                        NavigationLink(destination: ItemSelectionView(selectedItem: $eventModel.location, itemType: .location)) {
+                            CustomNavigationView(selectedItem: $eventModel.location, placeholder: C.PlaceHolder.address)
                         }
                     }
                 } else {
                     VStack(alignment: .leading) {
                         EventDetailTitle(text: "Add link to join \(eventType.name)")
-                        CustomTextFieldDynamic(searchText: $onlineEventLink, placeHolder: "e.g. http://zoom...")
+                        CustomTextFieldDynamic(searchText: $eventModel.joinEventLink, placeHolder: "e.g. http://zoom...")
                     }
                 }
                 
                 
                 VStack(alignment: .leading) {
                     EventDetailTitle(text: "Add link to event website")
-                    CustomTextFieldDynamic(searchText: $eventWebsiteLink, placeHolder: "e.g. http://facebook...")
+                    CustomTextFieldDynamic(searchText: $eventModel.linkOfEvent, placeHolder: "e.g. http://facebook...")
                 }
                 
                 VStack(alignment: .leading) {
                     EventDetailTitle(text: "About the event*")
-                    NavigationLink(destination: AboutEventView(aboutTxt: $aboutText)) {
-                        CustomNavigationView(selectedItem: $aboutText, placeholder: "Enter description")
+                    NavigationLink(destination: AboutEventView(aboutTxt: $eventModel.eventDescription)) {
+                        CustomNavigationView(selectedItem: $eventModel.eventDescription, placeholder: "Enter description")
                     }
                 }
                 
@@ -109,17 +140,17 @@ struct EventDetailsView: View {
                         HStack {
                             EventDetailTitle(text: "Fee*")
                             Spacer()
-                            CustomTextFieldDynamic(searchText: $amount, placeHolder: "")
+                            CustomTextFieldDynamic(searchText: $eventModel.fee, placeHolder: "")
                                 .frame(width: 80)
-                            NavigationLink(destination: ItemSelectionView(selectedItem: $selectedCurrency, itemType: .currency)) {
-                                CustomNavigationView(selectedItem: $selectedCurrency, placeholder: C.PlaceHolder.currency)
+                            NavigationLink(destination: ItemSelectionView(selectedItem: $eventModel.feeCurrency, itemType: .currency)) {
+                                CustomNavigationView(selectedItem: $eventModel.feeCurrency, placeholder: C.PlaceHolder.currency)
                                     .frame(width: 120)
                             }
                         }
                         
                         VStack(alignment: .leading) {
                             EventDetailTitle(text: "Where to book the event")
-                            CustomTextFieldDynamic(searchText: $bookEventLink, placeHolder: "e.g. http://www...")
+                            CustomTextFieldDynamic(searchText: $eventModel.bookingURL, placeHolder: "e.g. http://www...")
                         }
                     }
                 }
@@ -127,13 +158,13 @@ struct EventDetailsView: View {
                 VStack(spacing: 30)  {
                     VStack(alignment: .leading) {
                         EventDetailTitle(text: "Max. number of attendees")
-                        CustomTextFieldDynamic(searchText: $attendees, placeHolder: "Add")
+                        CustomTextFieldDynamic(searchText: $eventModel.maxAttendees, placeHolder: "Add")
                     }
                     
                     VStack(alignment: .leading) {
                         EventDetailTitle(text: "Language the event is hosted in*")
-                        NavigationLink(destination: ItemSelectionView(selectedItem: $selectedLanguage, itemType: .language)) {
-                            CustomNavigationView(selectedItem: $selectedLanguage, placeholder: "Select")
+                        NavigationLink(destination: ItemSelectionView(selectedItem: $eventModel.language, itemType: .language)) {
+                            CustomNavigationView(selectedItem: $eventModel.language, placeholder: "Select")
                         }
                     }
                     
@@ -145,26 +176,40 @@ struct EventDetailsView: View {
                             }.frame(width: 250)
                                 .offset(x: -6)
                             Spacer()
-                            Toggle("", isOn: $acceptParticipants)
+                            
+                            let participantsBinding: Binding<Bool> = .init {
+                                acceptParticipants
+                            } set: { newValue in
+                                acceptParticipants = newValue
+                                eventModel.acceptParticipants = acceptParticipants ? "1" : "0"
+                            }
+                            Toggle("", isOn: participantsBinding)
                                 .tint(Color.lightBrown)
                         }
                     }
                     
                     HStack {
                         EventDetailTitle2(text: "Allow comments*")
-                        Toggle("", isOn: $allowComments)
+                        
+                        let allowCommentsBinding: Binding<Bool> = .init {
+                            allowComments
+                        } set: { newValue in
+                            allowComments = newValue
+                            eventModel.allowComments = allowComments ? "1" : "0"
+                        }
+                        Toggle("", isOn: allowCommentsBinding)
                             .tint(Color.lightBrown)
                     }
                     
                     VStack(alignment: .leading) {
                         EventDetailTitle(text: "Event category*")
-                        NavigationLink(destination: ItemSelectionView(selectedItem: $selectedCategory, itemType: .category)) {
-                            CustomNavigationView(selectedItem: $selectedCategory, placeholder: "Select")
+                        NavigationLink(destination: ItemSelectionView(selectedItem: $eventModel.eventCategories, itemType: .category)) {
+                            CustomNavigationView(selectedItem: $eventModel.eventCategories, placeholder: "Select")
                         }
                     }
                     
-                    if selectedCategory != "" {
-//                        SubCategoryView(mainCategory: selectedCategory, categories: $categories, selectedCategories: $selectedCategories, addTapped: { newCategory in
+                    if eventModel.eventCategories != "" {
+//                        SubCategoryView(mainCategory: $eventModel.eventCategories, categories: $categories, selectedCategories: $selectedCategories, addTapped: { newCategory in
 //
 //                        })
                     }
@@ -187,8 +232,20 @@ struct EventDetailsView: View {
             }.padding(20)
             Spacer()
         }
+        .onAppear(perform: {
+            startDate = eventModel.startDate.toDate(format: "yyyy-MM-dd") ?? Date()
+            startTime = eventModel.startTime.toDate(format: "HH:mm") ?? Date()
+            endDate = eventModel.endDate.toDate(format: "yyyy-MM-dd") ?? Date()
+            endTime = eventModel.endTime.toDate(format: "HH:mm") ?? Date()
+            
+            isPaid = (Int(eventModel.fee) ?? 0) > 0
+            acceptParticipants = eventModel.acceptParticipants.toBool() ?? false
+            allowComments = eventModel.allowComments.toBool() ?? false
+        })
         .fullScreenCover(isPresented: $showPreview, content: {
             EventDetailPreviewView(eventType: eventType, images: images)
+                .environmentObject(addEventVM)
+                .environmentObject(eventModel)
         })
         
         .navigationBarTitle(Text(eventType.name.capitalized), displayMode: .inline)
@@ -200,7 +257,6 @@ struct EventDetailsView: View {
 
 struct AddImageView: View {
     @Binding  var images: [UIImage]
-    var isMultiPicker = true
     @State private var showAction = false
     let screenWidth = UIScreen.main.bounds.size.width
     let imageH: CGFloat = 220
@@ -212,14 +268,9 @@ struct AddImageView: View {
             if images.isEmpty {
                 GreyBackgroundImage()
             } else {
-                if isMultiPicker {
-                    HorizontalImageScroller1(images: images)
-                } else {
-                    HorizontalImageScroller1(images: images.first != nil ? [images.first!] : [])
-                }
-                
-             //   HorizontalImageScroller1(images: images)
-                
+                HorizontalImageScroller(images: images)
+
+//   HorizontalImageScroller1(images: images)
 //                ScrollView(.horizontal, showsIndicators: false) {
 //                    LazyHGrid(rows: [GridItem(.fixed(screenWidth))]) {
 //                        ForEach(images, id: \.self) { image in
@@ -238,7 +289,7 @@ struct AddImageView: View {
             } label: {
                 VStack(spacing: 10) {
                     Image(systemName: ImageName.cameraFill)
-                    Title4(title: isMultiPicker ? "Add photo(s)": "Add photo", fColor: .lightBrown)
+                    Title4(title: "Add photo(s)", fColor: .lightBrown)
                 }
             }
         }.offset(y: -1)
