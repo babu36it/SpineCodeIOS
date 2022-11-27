@@ -182,6 +182,10 @@
 		2C5BADFD292D48A800BB31D1 /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADFC292D48A800BB31D1 /* EventModel.swift */; };
 		2C5BADFF292D494E00BB31D1 /* EventsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BADFE292D494E00BB31D1 /* EventsServices.swift */; };
 		2C5BAE0329311DC900BB31D1 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BAE0229311DC900BB31D1 /* RemoteImage.swift */; };
+		2C5BAE052933EF6C00BB31D1 /* TimezoneListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BAE042933EF6C00BB31D1 /* TimezoneListViewModel.swift */; };
+		2C5BAE072933EF8B00BB31D1 /* TimezoneListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BAE062933EF8B00BB31D1 /* TimezoneListService.swift */; };
+		2C5BAE092933F74B00BB31D1 /* EventCategoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BAE082933F74B00BB31D1 /* EventCategoryListViewModel.swift */; };
+		2C5BAE0B2933F75900BB31D1 /* EventCategoryListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BAE0A2933F75900BB31D1 /* EventCategoryListService.swift */; };
 		2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */; };
 		2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */; };
 		2C7B1FBA29202C4600E06E40 /* MessagingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */; };
@@ -431,6 +435,10 @@
 		2C5BADFC292D48A800BB31D1 /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
 		2C5BADFE292D494E00BB31D1 /* EventsServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsServices.swift; sourceTree = "<group>"; };
 		2C5BAE0229311DC900BB31D1 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
+		2C5BAE042933EF6C00BB31D1 /* TimezoneListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimezoneListViewModel.swift; sourceTree = "<group>"; };
+		2C5BAE062933EF8B00BB31D1 /* TimezoneListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimezoneListService.swift; sourceTree = "<group>"; };
+		2C5BAE082933F74B00BB31D1 /* EventCategoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCategoryListViewModel.swift; sourceTree = "<group>"; };
+		2C5BAE0A2933F75900BB31D1 /* EventCategoryListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCategoryListService.swift; sourceTree = "<group>"; };
 		2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailService.swift; sourceTree = "<group>"; };
 		2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -658,6 +666,8 @@
 			isa = PBXGroup;
 			children = (
 				04873C7C28E60D9D0054A00C /* AddEventViewModel.swift */,
+				2C5BAE042933EF6C00BB31D1 /* TimezoneListViewModel.swift */,
+				2C5BAE082933F74B00BB31D1 /* EventCategoryListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -673,6 +683,8 @@
 			isa = PBXGroup;
 			children = (
 				04873C7E28E60DF00054A00C /* AddEventServiceProvider.swift */,
+				2C5BAE062933EF8B00BB31D1 /* TimezoneListService.swift */,
+				2C5BAE0A2933F75900BB31D1 /* EventCategoryListService.swift */,
 			);
 			path = ServiceProvider;
 			sourceTree = "<group>";
@@ -1638,6 +1650,7 @@
 				66A237B2281709FC00CA3763 /* WelcomeView.swift in Sources */,
 				04A0593128B62F0000262BDA /* ReportConfirmationView.swift in Sources */,
 				048924F1287444B300CD4E90 /* NotificationTypeView.swift in Sources */,
+				2C5BAE0B2933F75900BB31D1 /* EventCategoryListService.swift in Sources */,
 				04894D1E286D6F1100CF4860 /* BookmarkList.swift in Sources */,
 				04A0592B28B62E8200262BDA /* ReportingMainView.swift in Sources */,
 				049D45B6285C58D4005FF3C2 /* ImagePicker.swift in Sources */,
@@ -1658,6 +1671,7 @@
 				048712C72877E81800F70FBE /* CountTimer.swift in Sources */,
 				04867266286206BC00582275 /* MDPMonthView.swift in Sources */,
 				66A237FE281709FC00CA3763 /* UserModel.swift in Sources */,
+				2C5BAE052933EF6C00BB31D1 /* TimezoneListViewModel.swift in Sources */,
 				2C7B1FC22920E48600E06E40 /* LanguagesListViewModel.swift in Sources */,
 				040A224A288534B600C9F65A /* PostDetailListView.swift in Sources */,
 				0481A91A28731A980096AFEE /* SaveEventsInCalndrView.swift in Sources */,
@@ -1719,6 +1733,7 @@
 				0482B60F28713393006017E9 /* UserProfileViewModel.swift in Sources */,
 				04873C7328E337A00054A00C /* HttpUtility.swift in Sources */,
 				0482D5E22869B45C00DFCA2A /* FollowerListView.swift in Sources */,
+				2C5BAE072933EF8B00BB31D1 /* TimezoneListService.swift in Sources */,
 				048306FC286C79D300F677CC /* PostList.swift in Sources */,
 				048672592861D1D500582275 /* EventFilterView.swift in Sources */,
 				66A662CE2822F43D0012A129 /* CategoryModel.swift in Sources */,
@@ -1729,6 +1744,7 @@
 				0491886128590749002343CA /* SubCategoryView.swift in Sources */,
 				180C16B02856CAE90072D0DF /* CustomAddItemSheet.swift in Sources */,
 				180C16AF2856CAE90072D0DF /* ActivityView.swift in Sources */,
+				2C5BAE092933F74B00BB31D1 /* EventCategoryListViewModel.swift in Sources */,
 				04894D27286DF8FC00CF4860 /* EmployeeProfileView.swift in Sources */,
 				180C16CA2856CB140072D0DF /* MusicPlayerView.swift in Sources */,
 				048198CE286F5C8900AFC6AA /* EditProfileView.swift in Sources */,

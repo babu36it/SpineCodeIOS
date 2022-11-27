@@ -274,7 +274,7 @@ extension RegisterVC {
                           let fbAccessToken = AccessToken.current?.tokenString ?? ""
 
                           let fbResult = "id=\(fbUserId)&accessToken=\(fbAccessToken)"
-                          let request = socialLoginRequestModel()
+                          let request = SocialLoginRequestModel()
                           let email = fbDetails["email"]  as? String
                           let id = fbDetails["id"]  as? String
                           let name = fbDetails["name"]  as? String
@@ -309,7 +309,7 @@ extension RegisterVC {
       }
 
     func doSignUp() {
-            let request = signUpRequestModel()
+            let request = SignUpRequestModel()
             request.email = self._emailId.wrappedValue
             request.password = self._password.wrappedValue
             request.name = self._username.wrappedValue

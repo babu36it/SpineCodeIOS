@@ -34,7 +34,7 @@ class AccountViewViewModel: ObservableObject {
     
     func getSelectedLanguage() {
         if let langId: String = AppUtility.shared.userInfo?.data?.defaultLanguageID {
-            language(for: langId) { [weak self] model in
+            LanguagesListService.language(for: langId) { [weak self] model in
                 self?.language = model
             }
         }
@@ -42,7 +42,7 @@ class AccountViewViewModel: ObservableObject {
     
     func getSelectedCurrency() {
         if let currId: String = AppUtility.shared.userInfo?.data?.defaultCurrencyID {
-            currency(for: currId) { [weak self] model in
+            CurrenciesListService.currency(for: currId) { [weak self] model in
                 self?.currency = model
             }
         }
@@ -60,34 +60,6 @@ class AccountViewViewModel: ObservableObject {
                 }
                 
                 self?.showLoader = false
-            }
-        }
-    }
-    
-    private func language(for id: String, completion: @escaping (LanguageModel?) -> Void) {
-        LanguagesListService().getLanguages { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let languageRes):
-                    let langModel = languageRes.data?.first { $0.id == id }
-                    completion(langModel)
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
-    }
-    
-    private func currency(for id: String, completion: @escaping (CurrencyModel?) -> Void) {
-        CurrenciesListService().getCurrencies { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let currenciesRes):
-                    let currModel = currenciesRes.data?.first { $0.id == id }
-                    completion(currModel)
-                case .failure(let error):
-                    print(error)
-                }
             }
         }
     }

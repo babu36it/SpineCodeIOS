@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CategoryModel : Codable, Identifiable {
+struct CategoryModel: Codable, Identifiable {
     let id = UUID()
     let index : Int?
     let name : String?

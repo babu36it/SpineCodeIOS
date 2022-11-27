@@ -7,14 +7,7 @@
 
 import Foundation
 
-struct UserEventResponseModel: Decodable {
-    let status: Bool?
-    let data: [EventModel]
-    let image: String?
-    let message: String?
-}
-
-class EventModel: ObservableObject, Decodable, Identifiable {
+class EventModel: ObservableObject, Codable, Identifiable {
     var id: String = ""
     var userID: String = ""
     var title: String = ""
@@ -224,10 +217,42 @@ extension EventModel {
         return dtStr
     }
     
-    func imageURL(for path: String?) -> String? {
+    func imageURLs(for path: String?) -> [String]? {
         if let path = path, !file.isEmpty {
-            return "\(path)\(file)"
+            let filenames: [String] = file.components(separatedBy: ",")
+                
+            return filenames.map { "\(path)\($0)" }
         }
         return nil
+    }
+    
+    var formBody: [String: Any] {
+        var formB: [String: Any] = [:]
+        
+        formB["type"] = type
+        formB["allow_comments"] = Int(allowComments) ?? 0
+        formB["title"] = title
+        formB["description"] = eventDescription
+        formB["start_date"] = startDate
+        formB["start_time"] = startTime
+        formB["end_date"] = endDate
+        formB["end_time"] = endTime
+        formB["timezone"] = timezone
+        formB["location"] = location
+        formB["latitude"] = latitude
+        formB["longitude"] = longitude
+        formB["link_of_event"] = linkOfEvent
+        formB["join_event_link"] = joinEventLink
+        formB["event_categories"] = eventCategories
+        formB["event_subcategories"] = eventSubcategories
+        formB["fee"] = Double(fee) ?? 0
+        formB["fee_currency"] = feeCurrency
+        formB["max_attendees"] = maxAttendees
+        formB["language"] = language
+        formB["accept_participants"] = acceptParticipants
+        formB["booking_url"] = bookingURL
+        formB["status"] = 1 // 0 for draft , 1 for publish
+        
+        return formB
     }
 }

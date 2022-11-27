@@ -10,13 +10,16 @@ import SwiftUI
 struct EventConfirmationView: View {
     @Environment(\.dismiss) var dismiss
     let screenWidth = UIScreen.main.bounds.size.width
+    
+    var dismissWithEventID: ((String?) -> Void)?
+    
     var body: some View {
         VStack(alignment: .leading) {
             VStack(spacing: 0) {
                 HStack {
-                    ButtonWithSystemImage(image: ImageName.multiply, size: 15) {
-                        dismiss()
-                    }
+//                    ButtonWithSystemImage(image: ImageName.multiply, size: 15) {
+//                        dismiss()
+//                    }
                     Spacer()
                     Title2(title: "THANK YOU")
                     Spacer()
@@ -33,10 +36,14 @@ struct EventConfirmationView: View {
                 
                 LargeButton(title: "GO TO EVENT", width: screenWidth - Kconstant.filterPadding, height: 40, bColor: Color.lightBrown, fSize: 15, fColor: .white) {
                     print("Tapped")
+                    dismiss()
+                    dismissWithEventID?(nil)
                 }
                 
                 LargeButton(title: "ADD ANOTHER EVENT", width: screenWidth - Kconstant.filterPadding, height: 40, bColor: Color.lightBrown, fSize: 15, fColor: .white) {
                     print("Tapped")
+                    dismiss()
+                    dismissWithEventID?(nil)
                 }
                 
             }.padding(.horizontal, Kconstant.filterPadding/2)

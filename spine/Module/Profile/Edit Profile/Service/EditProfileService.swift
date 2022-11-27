@@ -35,12 +35,12 @@ struct EditProfileService {
         }
     }
 
-    func fetchUserDetails(completion: @escaping(_ result: Result<UserDetailResponse, CHError>)-> Void) {
+    func fetchUserDetails(completion: @escaping(_ result: Result<APIResponseModel<UserDetailResponseData>, CHError>)-> Void) {
         guard let url = URL(string: APIEndPoint.userDetails.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(url: url, resultType: UserDetailResponse.self) { result in
+        httpUtility.requestData(url: url, resultType: APIResponseModel<UserDetailResponseData>.self) { result in
             completion(result)
         }
     }

@@ -7,7 +7,7 @@ import Foundation
 import ObjectMapper
 
 class LoginViewModel {
-    typealias SignInResponse = (_ response: signInResponseModel?,_ result: Bool) -> Void
+    typealias SignInResponse = (_ response: SignInResponseModel?, _ result: Bool) -> Void
     
     private var isSigningIn: Bool = false
     private var completionHandlers: [SignInResponse] = []
@@ -17,7 +17,7 @@ class LoginViewModel {
     private init() { }
     
     func signIn(emailId: String, password: String, deviceToken: String = "saaadasd", deviceType: String = "iPhone", completion: @escaping SignInResponse) {
-        let request = signInRequestModel()
+        let request = SignInRequestModel()
         request.email = emailId
         request.password = password
         request.devicetoken = deviceToken
@@ -43,9 +43,9 @@ class LoginViewModel {
 
 extension LoginViewModel {
     // MARK: - signIn Webservice
-    private func signIn(_ request: signInRequestModel, completion: @escaping (_ response:signInResponseModel?,_ result: Bool) -> Void) {
+    private func signIn(_ request: SignInRequestModel, completion: @escaping (_ response: SignInResponseModel?, _ result: Bool) -> Void) {
         ShowHud.show()
-        AlamofireClient<signInResponseModel>.responseObjectNew(APIRequest(.signin(parameters: request.toJSON()))) { (response, error) in
+        AlamofireClient<SignInResponseModel>.responseObjectNew(APIRequest(.signin(parameters: request.toJSON()))) { (response, error) in
             ShowHud.hide()
             if let res = response {
                 if res.status == true {
@@ -63,9 +63,9 @@ extension LoginViewModel {
     }
     
     // MARK: - socialsignin Webservice
-    func socialLogin(_ request: socialLoginRequestModel,  completion: @escaping (_ response:signInResponseModel?,_ result: Bool) -> Void) {
+    func socialLogin(_ request: SocialLoginRequestModel, completion: @escaping (_ response: SignInResponseModel?, _ result: Bool) -> Void) {
         ShowHud.show()
-        AlamofireClient<signInResponseModel>.responseObjectNew(APIRequest(.socialLogin(parameters: request.toJSON()))) { (response, error) in
+        AlamofireClient<SignInResponseModel>.responseObjectNew(APIRequest(.socialLogin(parameters: request.toJSON()))) { (response, error) in
             ShowHud.hide()
             if let res = response {
                 if res.status == true {
@@ -82,9 +82,9 @@ extension LoginViewModel {
     }
 
     // MARK: - signUp Webservice
-    func signUp(_ request: signUpRequestModel,  completion: @escaping (_ response:signInResponseModel?,_ result: Bool) -> Void) {
+    func signUp(_ request: SignUpRequestModel, completion: @escaping (_ response: SignInResponseModel?, _ result: Bool) -> Void) {
         ShowHud.show()
-        AlamofireClient<signInResponseModel>.responseObjectNew(APIRequest(.signup(parameters: request.toJSON()))) { (response, error) in
+        AlamofireClient<SignInResponseModel>.responseObjectNew(APIRequest(.signup(parameters: request.toJSON()))) { (response, error) in
             ShowHud.hide()
             if let res = response {
                 completion(res, true)
@@ -98,9 +98,9 @@ extension LoginViewModel {
     }
     
     // MARK: - forgotPassword Webservice
-    func forgotPassword(_ request: forgotPasswordRequestModel,  completion: @escaping (_ response:forgotPasswordResponseModel?,_ result: Bool) -> Void) {
+    func forgotPassword(_ request: ForgotPasswordRequestModel, completion: @escaping (_ response: ForgotPasswordResponseModel?, _ result: Bool) -> Void) {
         ShowHud.show()
-        AlamofireClient<forgotPasswordResponseModel>.responseObjectNew(APIRequest(.forgotpassword(parameters: request.toJSON()))) { (response, error) in
+        AlamofireClient<ForgotPasswordResponseModel>.responseObjectNew(APIRequest(.forgotpassword(parameters: request.toJSON()))) { (response, error) in
             ShowHud.hide()
             if let res = response {
                 print(res)
@@ -115,9 +115,9 @@ extension LoginViewModel {
     }
     
     // MARK: - mobileVerificationCode Webservice
-    func mobileVerificationCode(_ request: mobileVerificationRequestModel,  completion: @escaping (_ response:signInResponseModel?,_ result: Bool) -> Void) {
+    func mobileVerificationCode(_ request: MobileVerificationRequestModel, completion: @escaping (_ response: SignInResponseModel?, _ result: Bool) -> Void) {
         ShowHud.show()
-        AlamofireClient<signInResponseModel>.responseObjectNew(APIRequest(.userMobileVerification(parameters: request.toJSON()))) { (response, error) in
+        AlamofireClient<SignInResponseModel>.responseObjectNew(APIRequest(.userMobileVerification(parameters: request.toJSON()))) { (response, error) in
             ShowHud.hide()
             if let res = response {
                 print(res)
@@ -132,10 +132,10 @@ extension LoginViewModel {
         }
     }
     // MARK: - verifyOTP Webservice
-    func verifyOTP(userID : String ,_ completion: @escaping (_ response:signInResponseModel?,_ status: Bool) -> Void) {
+    func verifyOTP(userID : String ,_ completion: @escaping (_ response: SignInResponseModel?, _ status: Bool) -> Void) {
         ShowHud.show()
       
-        AlamofireClient<signInResponseModel>.responseObjectNew(APIRequest(.userAccountVerify(userID: userID))) { (response, error) in
+        AlamofireClient<SignInResponseModel>.responseObjectNew(APIRequest(.userAccountVerify(userID: userID))) { (response, error) in
             ShowHud.hide()
             if let res = response {
                 if res.status == true {
@@ -152,10 +152,10 @@ extension LoginViewModel {
     }
     
     // MARK: - verifyOTP Webservice
-    func resendEmailOTP(userID: String ,_ completion: @escaping (_ response:signInResponseModel?,_ status: Bool) -> Void) {
+    func resendEmailOTP(userID: String, _ completion: @escaping (_ response: SignInResponseModel?, _ status: Bool) -> Void) {
         ShowHud.show()
       
-        AlamofireClient<signInResponseModel>.responseObjectNew(APIRequest(.resendEmailOTP(userID: userID))) { (response, error) in
+        AlamofireClient<SignInResponseModel>.responseObjectNew(APIRequest(.resendEmailOTP(userID: userID))) { (response, error) in
             ShowHud.hide()
             if let res = response {
                 completion(res, true)
@@ -166,11 +166,11 @@ extension LoginViewModel {
         }
     }
 
-    func userDetails(completion: @escaping (_ response:signInResponseModel?,_ status: Bool) -> Void) {
+    func userDetails(completion: @escaping (_ response: SignInResponseModel?, _ status: Bool) -> Void) {
         EditProfileService().fetchUserDetails { result in
             switch result {
             case .success(let userResponse):
-                if let jsonData: Data = try? JSONEncoder().encode(userResponse), let jsonString: String = String(data: jsonData, encoding: .utf8), let responseModel: signInResponseModel = .init(JSONString: jsonString) {
+                if let jsonData: Data = try? JSONEncoder().encode(userResponse), let jsonString: String = String(data: jsonData, encoding: .utf8), let responseModel: SignInResponseModel = .init(JSONString: jsonString) {
                     completion(responseModel, true)
                 }
             case .failure(let error):

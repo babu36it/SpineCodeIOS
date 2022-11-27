@@ -227,7 +227,7 @@ extension LoginVC {
                           let fbAccessToken = AccessToken.current?.tokenString ?? ""
 
 //                          let fbResult = "id=\(fbUserId)&accessToken=\(fbAccessToken)"
-                          let request = socialLoginRequestModel()
+                          let request = SocialLoginRequestModel()
                           let email = fbDetails["email"]  as? String
                           let id = fbDetails["id"]  as? String
                           let name = fbDetails["name"]  as? String

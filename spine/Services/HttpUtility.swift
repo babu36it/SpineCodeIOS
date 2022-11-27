@@ -45,7 +45,26 @@ struct HttpUtility {
         httpRequest(request, queue: queue, completion: completion)
     }
     
-    func requestData<T: Decodable>(refresh: Bool = false, httpMethod: HTTPMethod = .get, postData: [String:Any]? = nil, url: URL, resultType: T.Type, queue: DispatchQueue? = nil, completion: @escaping(_ result: Result<T, CHError>)-> Void) {
+    func requestFormData<T: Decodable>(refresh: Bool = false, httpMethod: HTTPMethod = .post, postData: [String: Any]? = nil, mediaFiles: [Media]? = nil, url: URL, resultType: T.Type, queue: DispatchQueue? = nil, completion: @escaping(_ result: Result<T, CHError>)-> Void) {
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = httpMethod.rawValue
+        //create boundary
+        let boundary = generateBoundary()
+        //set content type
+        request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        if let authToken: String = AppUtility.shared.userInfo?.token {
+            request.addValue(authToken, forHTTPHeaderField: "Authorization")
+        }
+
+        //call createDataBody method
+        let dataBody = createDataBody(withParameters: postData, media: mediaFiles, boundary: boundary)
+        request.httpBody = dataBody
+        httpRequest(request, queue: queue, completion: completion)
+    }
+
+    func requestData<T: Decodable>(refresh: Bool = false, httpMethod: HTTPMethod = .get, postData: [String: Any]? = nil, url: URL, resultType: T.Type, queue: DispatchQueue? = nil, completion: @escaping(_ result: Result<T, CHError>)-> Void) {
         
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue
@@ -91,7 +110,7 @@ struct HttpUtility {
         }.resume()
     }
     
-    private func getPostString(params: [String:Any]) -> String{
+    private func getPostString(params: [String: Any]) -> String{
         var data = [String]()
         for(key, value) in params {
             data.append(key + "=\(value)")
@@ -100,26 +119,27 @@ struct HttpUtility {
     }
 
     private func createDataBody(withParameters params: [String: Any]? = nil, media: [Media]?, boundary: String) -> Data {
-       let lineBreak = "\r\n"
-       var body = Data()
-       if let parameters = params {
-          for (key, value) in parameters {
-             body.append("--\(boundary + lineBreak)")
-             body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
-             body.append("\(value as! String + lineBreak)")
-          }
-       }
-       if let media = media {
-          for photo in media {
-             body.append("--\(boundary + lineBreak)")
-             body.append("Content-Disposition: form-data; name=\"\(photo.key)\"; filename=\"\(photo.filename)\"\(lineBreak)")
-             body.append("Content-Type: \(photo.mimeType + lineBreak + lineBreak)")
-             body.append(photo.data)
-             body.append(lineBreak)
-          }
-       }
-       body.append("--\(boundary)--\(lineBreak)")
-       return body
+        let lineBreak = "\r\n"
+        var body = Data()
+        if let parameters = params {
+            for (key, value) in parameters {
+                body.append("--\(boundary + lineBreak)")
+                body.append("Content-Disposition: form-data; name=\"\(key)\"\(lineBreak + lineBreak)")
+                body.append("\(value)")
+                body.append(lineBreak)
+            }
+        }
+        if let media = media {
+            for photo in media {
+                body.append("--\(boundary + lineBreak)")
+                body.append("Content-Disposition: form-data; name=\"\(photo.key)\"; filename=\"\(photo.filename)\"\(lineBreak)")
+                body.append("Content-Type: \(photo.mimeType + lineBreak + lineBreak)")
+                body.append(photo.data)
+                body.append(lineBreak)
+            }
+        }
+        body.append("--\(boundary)--\(lineBreak)")
+        return body
     }
     
     private func generateBoundary() -> String {

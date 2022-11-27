@@ -113,7 +113,7 @@ struct ForgotPasswordVC: View {
 }
 extension ForgotPasswordVC {
     func doForgotPassword() {
-        let request = forgotPasswordRequestModel()
+        let request = ForgotPasswordRequestModel()
         request.email = self._emailId.wrappedValue
         viewModel?.forgotPassword(request) { (response, status) in
             if response?.status == true {

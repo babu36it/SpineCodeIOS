@@ -213,14 +213,25 @@ struct AttendingListScrollView: View {
 }
 
 struct AboutEventTextView: View {
+    @EnvironmentObject var addEventVM: AddEventViewModel
+    @EnvironmentObject var eventModel: EventModel
+    
     let msgTapped: ()-> Void
     
     var body: some View {
         VStack(spacing: 20) {
             HStack(spacing: 15) {
-                CircularBorderedProfileView(image: "Oval 57", size: 65, borderWidth: 3, showShadow: true)
+                if let imageServerPath: String = AppUtility.shared.userInfo?.imagePath, let userImage: String = eventModel.hostedProfilePic {
+                    let imageURL = "\(imageServerPath)\(userImage)"
+                    RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imageURL))
+                        .circularBorder(radius: 100, borderWidth: 3, shadowRadius: 5)
+                        .aspectRatio(contentMode: .fill)
+                } else {
+                    CircularBorderedProfileView(image: "Oval 57", size: 65, borderWidth: 3, showShadow: true)
+                }
+                
                 VStack(alignment: .leading) {
-                    Header5(title: "Anna Red")
+                    Header5(title: eventModel.userName)
                     Title4(title: "HOST")
                 }
                 Spacer()
@@ -230,11 +241,10 @@ struct AboutEventTextView: View {
             }
             VStack(alignment: .leading, spacing: 10) {
                 Title4(title: "ABOUT THE EVENT")
-                Title4(title: C.PlaceHolder.aboutEventprvTxt)
+                Title4(title: eventModel.eventDescription)
                     .lineLimit(10)
                     .foregroundColor(.lightBlackText)
             }
-            
         }
         .padding(20)
         .padding(.top, -10)

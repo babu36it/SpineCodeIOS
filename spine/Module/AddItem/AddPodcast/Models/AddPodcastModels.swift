@@ -75,12 +75,6 @@ struct RssUserModel: Codable {
 }
 
 //Language list
-struct LanguageListResponse: Codable {
-    let status: Bool
-    let data: [LanguageModel]?
-    let message: String
-}
-
 struct LanguageModel: Codable {
     let id, name, iso6391, status: String
 
@@ -92,49 +86,39 @@ struct LanguageModel: Codable {
 }
 
 struct ItemModel: Identifiable {
-    let name: String
     let id: String
+    let name: String
 }
 
 //Category list
-struct CategoryListResponse: Codable {
-    let status: Bool
-    let data: [CategryModel]?
-    let message: String
-}
-
 struct CategryModel: Codable {
-    let category_name: String
     let id: String
-}
-
-
-//Sub-Category list
-struct SubCategoryResponse: Codable {
-    let status: Bool
-    let data: [SubCategoryModel]?
-    let message: String
-}
-
-struct SubCategoryModel: Codable {
-    let name: String
-    let id: String
-    let parentId: String
+    let categoryName: String
     
     enum CodingKeys: String, CodingKey {
-        case name = "subcategory_name"
+        case id
+        case categoryName = "category_name"
+    }
+}
+
+//Sub-Category list
+struct SubCategoryModel: Codable {
+    let id: String
+    let parentId: String
+    let name: String
+    
+    enum CodingKeys: String, CodingKey {
         case id
         case parentId = "parent_id"
+        case name = "subcategory_name"
     }
 }
 
 //add podcast sub category
-
 struct GeneralResponseModel: Codable {
     let status: Bool
     let message: String
 }
-
 
 class AddPodcastData {
     static let shared = AddPodcastData()

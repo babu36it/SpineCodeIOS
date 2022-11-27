@@ -33,7 +33,7 @@ class AppUtility {
     var fcmToken           : String = ""
     var customValue        : String = ""
     
-    private(set) var userInfo: signInResponseModel?
+    private(set) var userInfo: SignInResponseModel?
     private(set) var userCredentials: UserCredentials?
     
     init() {
@@ -63,7 +63,7 @@ class AppUtility {
         userCredentials = userCred
     }
     
-    func updateUserInfo(_ updatedUser: signInResponseModel) {
+    func updateUserInfo(_ updatedUser: SignInResponseModel) {
         userInfo = updatedUser
     }
     
@@ -81,12 +81,12 @@ class AppUtility {
     }
     
     private func restoreUserSession() {
-        userInfo = signInResponseModel.retrieve()
+        userInfo = SignInResponseModel.retrieve()
         userCredentials = UserCredentials.retrieve()
     }
     
     private func clearUserSession() {
-        signInResponseModel.remove()
+        SignInResponseModel.remove()
         UserCredentials.remove()
     }
 }

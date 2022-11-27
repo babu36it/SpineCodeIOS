@@ -54,7 +54,7 @@ struct RssDataServiceProvider {
 struct AddPodcastServiceProvider {
     private let httpUtility: HttpUtility = .shared
 
-    func getLanguageList(completion: @escaping(_ result: Result<LanguageListResponse, CHError>)-> Void) {
+    func getLanguageList(completion: @escaping(_ result: Result<APIResponseModel<[LanguageModel]>, CHError>)-> Void) {
         
         //let urlStr = Helper.getUrlString(itemType: itemType)
         
@@ -62,28 +62,28 @@ struct AddPodcastServiceProvider {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(httpMethod: .get, url: url, resultType: LanguageListResponse.self) { result in
+        httpUtility.requestData(httpMethod: .get, url: url, resultType: APIResponseModel<[LanguageModel]>.self) { result in
             completion(result)
         }
     }
     
-    func getCategoryList(completion: @escaping(_ result: Result<CategoryListResponse, CHError>)-> Void) {
+    func getCategoryList(completion: @escaping(_ result: Result<APIResponseModel<[CategryModel]>, CHError>)-> Void) {
         
         guard let url = URL(string: APIEndPoint.getPodcastsCategory.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(httpMethod: .get, url: url, resultType: CategoryListResponse.self) { result in
+        httpUtility.requestData(httpMethod: .get, url: url, resultType: APIResponseModel<[CategryModel]>.self) { result in
             completion(result)
         }
     }
     
-    func getSubCategories(postData: [String:Any]?, completion: @escaping(_ result: Result<SubCategoryResponse, CHError>)-> Void) {
+    func getSubCategories(postData: [String:Any]?, completion: @escaping(_ result: Result<APIResponseModel<[SubCategoryModel]>, CHError>)-> Void) {
         guard let url = URL(string: APIEndPoint.getPodcastsSubcategoryByIds.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(httpMethod: .post, postData: postData, url: url, resultType: SubCategoryResponse.self) { result in
+        httpUtility.requestData(httpMethod: .post, postData: postData, url: url, resultType: APIResponseModel<[SubCategoryModel]>.self) { result in
             completion(result)
         }
     }

@@ -2,9 +2,8 @@
 import Foundation
 import ObjectMapper
 
-
-// MARK: - signInRequestModel
-class signInRequestModel: Mappable {
+// MARK: - SignInRequestModel
+class SignInRequestModel: Mappable {
     
     private let Email = "email"
     private let Password = "password"
@@ -20,57 +19,58 @@ class signInRequestModel: Mappable {
     required init?(map: Map) { }
     
     func mapping(map: Map) {
-        email                 <- map[Email]
-        password              <- map[Password]
-        devicetype            <- map[DeviceType]
-        devicetoken           <- map[DeviceToken]
+        email <- map[Email]
+        password <- map[Password]
+        devicetype <- map[DeviceType]
+        devicetoken <- map[DeviceToken]
     }
 }
 
-// MARK: - signInResponseModel
-class signInResponseModel : NSObject, NSCoding, Mappable{
-    
-    var data: signInResponseData?
+// MARK: - SignInResponseModel
+class SignInResponseModel: NSObject, NSCoding, Mappable{
+    var data: SignInResponseData?
     var status: Bool?
     var token: String?
     var tokenType: String?
     var tokenExpiry: Int?
+    var imagePath: String?
     var message: String?
     
-    required override init(){}
-    required init?(map: Map){}
+    required override init() { }
+    required init?(map: Map) { }
     
-    func mapping(map: Map)
-    {
+    func mapping(map: Map) {
         data <- map["data"]
         status <- map["status"]
         token <- map["token"]
         tokenType <- map["token_type"]
         tokenExpiry <- map["expires_in"]
+        imagePath <- map["image"]
         message <- map["message"]
     }
-    @objc required init(coder aDecoder: NSCoder)
-    {
-        data = aDecoder.decodeObject(forKey: "data") as? signInResponseData
+    
+    @objc required init(coder aDecoder: NSCoder) {
+        data = aDecoder.decodeObject(forKey: "data") as? SignInResponseData
         status = aDecoder.decodeObject(forKey: "status") as? Bool
         token = aDecoder.decodeObject(forKey: "token") as? String
         tokenType = aDecoder.decodeObject(forKey: "token_type") as? String
         tokenExpiry = aDecoder.decodeObject(forKey: "expires_in") as? Int
+        imagePath = aDecoder.decodeObject(forKey: "image") as? String
         message = aDecoder.decodeObject(forKey: "message") as? String
     }
     
-    @objc func encode(with aCoder: NSCoder)
-    {
+    @objc func encode(with aCoder: NSCoder) {
         aCoder.encode(data, forKey: "data")
         aCoder.encode(status, forKey: "status")
         aCoder.encode(token, forKey: "token")
         aCoder.encode(tokenType, forKey: "token_type")
         aCoder.encode(tokenExpiry, forKey: "expires_in")
+        aCoder.encode(imagePath, forKey: "image")
         aCoder.encode(message, forKey: "message")
     }
 }
 
-extension signInResponseModel {
+extension SignInResponseModel {
     func save() {
         AppUtility.shared.updateUserInfo(self)
         if let jsonData: Data = self.toJSONString()?.data(using: .utf8) {
@@ -78,9 +78,9 @@ extension signInResponseModel {
         }
     }
     
-    class func retrieve() -> signInResponseModel? {
+    class func retrieve() -> SignInResponseModel? {
         if let jsonData: Data = KeychainHelper.shared.readData(forKey: "UserInformation"), let jsonString: String = String(data: jsonData, encoding: .utf8) {
-            return signInResponseModel(JSONString: jsonString)
+            return SignInResponseModel(JSONString: jsonString)
         }
         return nil
     }
@@ -144,9 +144,7 @@ class signInResponseModel :  NSObject, NSCoding, Mappable{
  */
 
 // MARK: - signInResponseData
-
-class signInResponseData : NSObject, NSCoding, Mappable{
-
+class SignInResponseData : NSObject, NSCoding, Mappable{
     var account: String?
     var accountMode: String?
     var address: AnyObject?
@@ -216,10 +214,10 @@ class signInResponseData : NSObject, NSCoding, Mappable{
     var website: AnyObject?
     var wikipedia: String?
 
-    required override init(){ }
-    required init?(map: Map) {}
-    func mapping(map: Map)
-    {
+    required override init() { }
+    required init?(map: Map) { }
+    
+    func mapping(map: Map) {
         account <- map["account"]
         accountMode <- map["account_mode"]
         address <- map["address"]
@@ -294,8 +292,7 @@ class signInResponseData : NSObject, NSCoding, Mappable{
     * NSCoding required initializer.
     * Fills the data from the passed decoder
     */
-    @objc required init(coder aDecoder: NSCoder)
-    {
+    @objc required init(coder aDecoder: NSCoder) {
         account = aDecoder.decodeObject(forKey: "account") as? String
         accountMode = aDecoder.decodeObject(forKey: "account_mode") as? String
         address = aDecoder.decodeObject(forKey: "address") as? AnyObject
@@ -370,8 +367,7 @@ class signInResponseData : NSObject, NSCoding, Mappable{
     * NSCoding required method.
     * Encodes mode properties into the decoder
     */
-    @objc func encode(with aCoder: NSCoder)
-    {
+    @objc func encode(with aCoder: NSCoder) {
         if account != nil{
             aCoder.encode(account, forKey: "account")
         }
@@ -579,119 +575,113 @@ class signInResponseData : NSObject, NSCoding, Mappable{
     }
 }
 
-// MARK: - signInRequestModel
-class signUpRequestModel: Mappable {
-    
-    private let Email             = "email"
-    private let Password          = "password"
-    private let Town              = "town"
-    private let Name              = "name"
-    private let Userip            = "user_ip"
-    private let UserLatitude      = "user_latitude"
-    private let UserLongitude     = "user_longitude"
-    
-    
-    
-    lazy var email              : String? = ""
-    lazy var password           : String? = ""
-    lazy var town               : String? = ""
-    lazy var name               : String? = ""
-    lazy var userip             : String? = ""
-    lazy var latitude           : String? = ""
-    lazy var longitude          : String? = ""
-    
-    
-    required init(){ }
+// MARK: - SignInRequestModel
+class SignUpRequestModel: Mappable {
+    private let Email = "email"
+    private let Password = "password"
+    private let Town = "town"
+    private let Name = "name"
+    private let Userip = "user_ip"
+    private let UserLatitude = "user_latitude"
+    private let UserLongitude = "user_longitude"
+
+    lazy var email: String? = ""
+    lazy var password: String? = ""
+    lazy var town: String? = ""
+    lazy var name: String? = ""
+    lazy var userip: String? = ""
+    lazy var latitude: String? = ""
+    lazy var longitude: String? = ""
+
+    required init() { }
     required init?(map: Map) {}
+    
     func mapping(map: Map) {
-        email                 <- map[Email]
-        password              <- map[Password]
-        town                  <- map[Town]
-        name                  <- map[Name]
-        userip                <- map[Userip]
-        latitude              <- map[UserLatitude]
-        longitude             <- map[UserLongitude]
+        email <- map[Email]
+        password <- map[Password]
+        town <- map[Town]
+        name <- map[Name]
+        userip <- map[Userip]
+        latitude <- map[UserLatitude]
+        longitude <- map[UserLongitude]
     }
 }
 
+// MARK: - ForgotPasswordRequestModel
+class ForgotPasswordRequestModel: Mappable {
+    private let Email = "email"
+    lazy var email: String? = ""
 
-// MARK: - forgotPasswordRequestModel
-class forgotPasswordRequestModel: Mappable {
+    required init() { }
+    required init?(map: Map) { }
     
-    private let Email             = "email"
-    
-    lazy var email              : String? = ""
-     
-    
-    required init(){ }
-    required init?(map: Map) {}
     func mapping(map: Map) {
-        email                 <- map[Email]
+        email <- map[Email]
      }
 }
-// MARK: - forgotPasswordResponseModel
-class forgotPasswordResponseModel :  Mappable{
 
-    var message : String?
-    var status : Bool?
+// MARK: - ForgotPasswordResponseModel
+class ForgotPasswordResponseModel:  Mappable{
+    var message: String?
+    var status: Bool?
     
-    required init(){ }
-    required init?(map: Map) {}
+    required init() { }
+    required init?(map: Map) { }
+    
     func mapping(map: Map) {
         message <- map["message"]
         status <- map["status"]
     }
 }
-// MARK: - signInRequestModel
-class mobileVerificationRequestModel: Mappable {
+
+// MARK: - MobileVerificationRequestModel
+class MobileVerificationRequestModel: Mappable {
+    private let Mobile = "mobile_no"
+    private let UserID = "user_id"
     
-    private let Mobile             = "mobile_no"
-    private let UserID             = "user_id"
+    lazy var mobile: String? = ""
+    lazy var userID: String? = ""
     
-    lazy var mobile              : String? = ""
-    lazy var userID              : String? = ""
+    required init() { }
+    required init?(map: Map) { }
     
-    required init(){ }
-    required init?(map: Map) {}
     func mapping(map: Map) {
-        mobile                 <- map[Mobile]
-        userID                 <- map[UserID]
+        mobile <- map[Mobile]
+        userID <- map[UserID]
      }
 }
 
-// MARK: -socialLoginRequestModel
-class socialLoginRequestModel: Mappable {
+// MARK: - SocialLoginRequestModel
+class SocialLoginRequestModel: Mappable {
+    private let Email = "email"
+    private let Name = "name"
+    private let UserLatitude = "user_latitude"
+    private let UserLongitude = "user_longitude"
+    private let FacebokId = "facebook_id"
+    private let DeviceToken = "device_token"
+    private let NotifyToken = "notify_device_token"
+    private let NotifyDeviceType = "notify_device_type"
     
-    private let Email             = "email"
-    private let Name              = "name"
-    private let UserLatitude      = "user_latitude"
-    private let UserLongitude     = "user_longitude"
-    private let FacebokId         = "facebook_id"
-    private let DeviceToken       = "device_token"
-    private let NotifyToken       = "notify_device_token"
-    private let NotifyDeviceType  = "notify_device_type"
+    lazy var email: String? = ""
+    lazy var name: String? = ""
+    lazy var latitude: String? = ""
+    lazy var longitude: String? = ""
+    lazy var facebookId: String? = ""
+    lazy var devicetoken: String? = ""
+    lazy var notifytoken: String? = ""
+    lazy var notifydevicetype: String? = ""
     
-
+    required init() { }
+    required init?(map: Map) { }
     
-    lazy var email              : String? = ""
-    lazy var name               : String? = ""
-    lazy var latitude           : String? = ""
-    lazy var longitude          : String? = ""
-    lazy var facebookId         : String? = ""
-    lazy var devicetoken        : String? = ""
-    lazy var notifytoken        : String? = ""
-    lazy var notifydevicetype   : String? = ""
-    
-    required init(){ }
-    required init?(map: Map) {}
     func mapping(map: Map) {
-        email                 <- map[Email]
-        name                  <- map[Name]
-        latitude              <- map[UserLatitude]
-        longitude             <- map[UserLongitude]
-        facebookId            <- map[FacebokId]
-        devicetoken           <- map[DeviceToken]
-        notifytoken           <- map[NotifyToken]
-        notifydevicetype      <- map[NotifyDeviceType]
+        email <- map[Email]
+        name <- map[Name]
+        latitude <- map[UserLatitude]
+        longitude <- map[UserLongitude]
+        facebookId <- map[FacebokId]
+        devicetoken <- map[DeviceToken]
+        notifytoken <- map[NotifyToken]
+        notifydevicetype <- map[NotifyDeviceType]
     }
 }

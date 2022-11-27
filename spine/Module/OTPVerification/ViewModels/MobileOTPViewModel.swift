@@ -28,7 +28,7 @@ class MobileOTPViewModel: ObservableObject {
     
     func mobileNumberVerified(completion: @escaping (Bool, Error?) -> Void) {
         showLoader = true
-        let request = mobileVerificationRequestModel()
+        let request = MobileVerificationRequestModel()
         request.mobile = phoneNumber
         request.userID = userID
         LoginViewModel.shared.mobileVerificationCode(request) { [weak self] response, status in

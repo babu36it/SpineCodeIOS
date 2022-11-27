@@ -23,20 +23,6 @@ struct EventDetailsView: View {
     @State private var isPaid = false
     @State private var showPreview = false
 
-//    @State var eventTitle: String = ""
-//    @State var selectedTimeZone = ""
-//    @State var selectedLocation = ""
-//    @State var eventWebsiteLink: String = ""
-//    @State var onlineEventLink: String = ""
-//    @State var aboutText: String = ""
-//    @State var bookEventLink: String = ""
-//    @State var selectedCurrency: String = ""
-//    @State var amount: String = "0"
-//    @State var attendees: String = ""
-//    @State var selectedLanguage = ""
-//    @State var selectedCategory = ""
-    @State private var categories = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6","Item 7"]
-    @State private var selectedCategories: [String] = []
     @State private var images = [UIImage]()
     
     var body: some View {
@@ -44,7 +30,8 @@ struct EventDetailsView: View {
         ScrollView {
             VStack(spacing: 0) {
                 LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4).padding(.top, 10)
-                AddImageView(images: $images)
+                let imageBinding: Binding<[UIImage]> = .init(get: { addEventVM.eventImages + images }, set: { _ in } )
+                AddImageView(images: imageBinding)
             }
             
             VStack(spacing: 30) {
@@ -96,8 +83,8 @@ struct EventDetailsView: View {
                 
                 VStack(alignment: .leading) {
                     EventDetailTitle(text: "Timezone*")
-                    NavigationLink(destination: ItemSelectionView(selectedItem: $eventModel.timezone, itemType: .timezone)) {
-                        CustomNavigationView(selectedItem: $eventModel.timezone, placeholder: C.PlaceHolder.timeZone)
+                    NavigationLink(destination: SelectionListView(listViewModel: timzonesListModel)) {
+                        CustomNavigationView(selectedItem: $addEventVM.timezone, placeholder: C.PlaceHolder.timeZone)
                     }
                 }
                 
@@ -142,8 +129,8 @@ struct EventDetailsView: View {
                             Spacer()
                             CustomTextFieldDynamic(searchText: $eventModel.fee, placeHolder: "")
                                 .frame(width: 80)
-                            NavigationLink(destination: ItemSelectionView(selectedItem: $eventModel.feeCurrency, itemType: .currency)) {
-                                CustomNavigationView(selectedItem: $eventModel.feeCurrency, placeholder: C.PlaceHolder.currency)
+                            NavigationLink(destination: SelectionListView(listViewModel: currenciesListModel)) {
+                                CustomNavigationView(selectedItem: $addEventVM.currency, placeholder: C.PlaceHolder.currency)
                                     .frame(width: 120)
                             }
                         }
@@ -163,8 +150,8 @@ struct EventDetailsView: View {
                     
                     VStack(alignment: .leading) {
                         EventDetailTitle(text: "Language the event is hosted in*")
-                        NavigationLink(destination: ItemSelectionView(selectedItem: $eventModel.language, itemType: .language)) {
-                            CustomNavigationView(selectedItem: $eventModel.language, placeholder: "Select")
+                        NavigationLink(destination: SelectionListView(listViewModel: languageListModel)) {
+                            CustomNavigationView(selectedItem: $addEventVM.language, placeholder: "Select")
                         }
                     }
                     
@@ -203,8 +190,8 @@ struct EventDetailsView: View {
                     
                     VStack(alignment: .leading) {
                         EventDetailTitle(text: "Event category*")
-                        NavigationLink(destination: ItemSelectionView(selectedItem: $eventModel.eventCategories, itemType: .category)) {
-                            CustomNavigationView(selectedItem: $eventModel.eventCategories, placeholder: "Select")
+                        NavigationLink(destination: SelectionListView(listViewModel: eventCategoryListModel)) {
+                            CustomNavigationView(selectedItem: $addEventVM.eventCategory, placeholder: "Select")
                         }
                     }
                     
@@ -243,15 +230,65 @@ struct EventDetailsView: View {
             allowComments = eventModel.allowComments.toBool() ?? false
         })
         .fullScreenCover(isPresented: $showPreview, content: {
-            EventDetailPreviewView(eventType: eventType, images: images)
+            EventDetailPreviewView(eventType: eventType, images: addEventVM.eventImages + images)
                 .environmentObject(addEventVM)
                 .environmentObject(eventModel)
         })
-        
         .navigationBarTitle(Text(eventType.name.capitalized), displayMode: .inline)
         .modifier(BackButtonModifier(action: {
             self.dismiss()
         }))
+        
+//        NavigationLink(isActive: $showAddEvent) {
+//            if let selectedEvent: EventModel = addEventVM.selectedEvent, let selectedEventTypeID: String = selectedEvent.type, let eventType: EventTypeModel = addEventVM.eventTypes.first(where: { $0.id == selectedEventTypeID }) {
+//                EventDetailsView(eventType: eventType)
+//                    .environmentObject(addEventVM)
+//                    .environmentObject(selectedEvent)
+//            }
+//        } label: {
+//            EmptyView()
+//        }
+
+    }
+    
+    private var languageListModel: LanguagesListViewModel {
+        let languageLM: LanguagesListViewModel = .init()
+        languageLM.selectedLanguage = addEventVM.selectedLanguage
+        languageLM.didSelectLanguage = { lang in
+            addEventVM.selectedLanguage = lang
+            return true
+        }
+        return languageLM
+    }
+    
+    private var currenciesListModel: CurrenciesListViewModel {
+        let currencyLM: CurrenciesListViewModel = .init()
+        currencyLM.selectedCurrency = addEventVM.selectedCurrency
+        currencyLM.didSelectCurrency = { curr in
+            addEventVM.selectedCurrency = curr
+            return true
+        }
+        return currencyLM
+    }
+
+    private var timzonesListModel: TimezoneListViewModel {
+        let timezoneLM: TimezoneListViewModel = .init()
+        timezoneLM.selectedTimezone = addEventVM.selectedTimezone
+        timezoneLM.didSelectTimezone = { tzone in
+            addEventVM.selectedTimezone = tzone
+            return true
+        }
+        return timezoneLM
+    }
+    
+    private var eventCategoryListModel: EventCategoryListViewModel {
+        let eventCategoryLM: EventCategoryListViewModel = .init()
+        eventCategoryLM.selectedCategory = addEventVM.selectedEventCategory
+        eventCategoryLM.didSelectCategory = { eCat in
+            addEventVM.selectedEventCategory = eCat
+            return true
+        }
+        return eventCategoryLM
     }
 }
 

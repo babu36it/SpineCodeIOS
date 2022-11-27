@@ -73,14 +73,12 @@ struct EventDetailPreviewView: View {
                             .foregroundColor(.lightBrown)
                             Spacer()
                             LargeButton(disable: false, title: "PUBLISH", width: 220, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
-                                showConfirmation = true
+                                publishSelectedEvent()
                             }
-                            
                         }
                     }
                     .padding()
                 }
-                //Spacer()
             }
             .edgesIgnoringSafeArea(.top)
             .confirmationDialog("", isPresented: $showMoreAction, actions: {
@@ -116,8 +114,30 @@ struct EventDetailPreviewView: View {
             })
         }
         .fullScreenCover(isPresented: $showConfirmation, content: {
-            EventConfirmationView()
+            eventConfirmationView
         })
+    }
+    
+    private var eventConfirmationView: EventConfirmationView {
+        var confirmationView = EventConfirmationView()
+        confirmationView.dismissWithEventID = { eventID in
+            if let eventID = eventID {
+                print(eventID)
+            }
+            dismiss()
+        }
+        return confirmationView
+    }
+    
+    private func publishSelectedEvent() {
+        var files: [Media]?
+        if !images.isEmpty {
+            files = images.compactMap { Media(withImage: $0, forKey: "files[]") }
+        }
+        
+        addEventVM.publishSelectedEvent(params: eventModel.formBody, media: files) { _ in 
+            showConfirmation = true
+        }
     }
 }
 

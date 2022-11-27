@@ -79,7 +79,7 @@ extension PodcastInfoViewModel {
                 self.dispatchGrp.leave()
                 switch result {
                 case .success(let value):
-                    self.languages = (value.data ?? []).map{ItemModel(name: $0.name, id: $0.id)}
+                    self.languages = (value.data ?? []).map{ItemModel(id: $0.id, name: $0.name)}
                 case .failure(let error):
                     if error == .tokenExpired {
                         self.getLanguageList()
@@ -98,7 +98,7 @@ extension PodcastInfoViewModel {
                 self.dispatchGrp.leave()
                 switch result {
                 case .success(let value):
-                    self.categories = (value.data ?? []).map{ ItemModel(name: $0.category_name, id: $0.id) }
+                    self.categories = value.data?.compactMap({ ItemModel(id: $0.id, name: $0.categoryName) }) ?? []
                 case .failure(let error):
                     if error == .tokenExpired {
                         self.getCategoryList()
@@ -118,7 +118,7 @@ extension PodcastInfoViewModel {
                 self.showLoader = false
                 switch result {
                 case .success(let value):
-                    self.subCategories = (value.data ?? []).map{ ItemModel(name: $0.name, id: $0.id) }
+                    self.subCategories = (value.data ?? []).map{ ItemModel(id: $0.id, name: $0.name) }
                 case .failure(let error):
                     if error == .tokenExpired {
                         self.getSubcategoryForId()

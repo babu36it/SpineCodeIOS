@@ -9,7 +9,8 @@ import Foundation
 
 class LanguagesListViewModel: ObservableObject {
     let serviceProvider = LanguagesListService()
-
+    var didSelectLanguage: ((LanguageModel?) -> Bool)? = nil
+    
     @Published var selectedLanguage: LanguageModel?
     @Published var filteredLanguages: [LanguageModel]?
     
@@ -31,7 +32,7 @@ class LanguagesListViewModel: ObservableObject {
     
     private var languages: [LanguageModel]? {
         didSet {
-            if let langId: String = AppUtility.shared.userInfo?.data?.defaultLanguageID {
+            if didSelectLanguage == nil, let langId: String = AppUtility.shared.userInfo?.data?.defaultLanguageID {
                 selectedLanguage = languages?.first { $0.id == langId }
             }
             filteredLanguages = languages
@@ -103,13 +104,17 @@ extension LanguagesListViewModel: SelectionListable {
     
     func didSelect(item: any SelectionListItemable, completion: @escaping (Bool) -> Void) {
         selectedLanguage = item as? LanguageModel
-        updateLanguage { result in
-            switch result {
-            case .success:
-                AppUtility.shared.refreshUserInfo()
-                completion(true)
-            case .failure:
-                completion(false)
+        if let didSelectLanguage = didSelectLanguage {
+            completion(didSelectLanguage(selectedLanguage))
+        } else {
+            updateLanguage { result in
+                switch result {
+                case .success:
+                    AppUtility.shared.refreshUserInfo()
+                    completion(true)
+                case .failure:
+                    completion(false)
+                }
             }
         }
     }

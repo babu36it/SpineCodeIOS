@@ -145,7 +145,7 @@ struct ExistingEventView: View {
                 }
                 Spacer()
                 Group {
-                    if let imagePath: String = event.imageURL(for: imagePath) {
+                    if let imagePath: String = event.imageURLs(for: imagePath)?.first {
                         RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
                     } else {
                         Image(ImageName.ic_launch)

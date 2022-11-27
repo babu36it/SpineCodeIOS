@@ -9,6 +9,7 @@ import Foundation
 
 class CurrenciesListViewModel: ObservableObject {
     let serviceProvider = CurrenciesListService()
+    var didSelectCurrency: ((CurrencyModel?) -> Bool)? = nil
 
     @Published var selectedCurrency: CurrencyModel?
     @Published var filteredCurrencies: [CurrencyModel]?
@@ -31,7 +32,7 @@ class CurrenciesListViewModel: ObservableObject {
     
     private var currencies: [CurrencyModel]? {
         didSet {
-            if let currID: String = AppUtility.shared.userInfo?.data?.defaultCurrencyID {
+            if didSelectCurrency == nil, let currID: String = AppUtility.shared.userInfo?.data?.defaultCurrencyID {
                 selectedCurrency = currencies?.first { $0.id == currID }
             }
             filteredCurrencies = currencies
@@ -103,13 +104,17 @@ extension CurrenciesListViewModel: SelectionListable {
 
     func didSelect(item: any SelectionListItemable, completion: @escaping (Bool) -> Void) {
         selectedCurrency = item as? CurrencyModel
-        updateCurrency { result in
-            switch result {
-            case .success:
-                AppUtility.shared.refreshUserInfo()
-                completion(true)
-            case .failure:
-                completion(false)
+        if let didSelectCurrency = didSelectCurrency {
+            completion(didSelectCurrency(selectedCurrency))
+        } else {
+            updateCurrency { result in
+                switch result {
+                case .success:
+                    AppUtility.shared.refreshUserInfo()
+                    completion(true)
+                case .failure:
+                    completion(false)
+                }
             }
         }
     }

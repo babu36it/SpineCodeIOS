@@ -35,7 +35,7 @@ class EditProfileViewModel: ObservableObject {
         userDetails?.bgImage
     }
 
-    private var userDetails: UserDetailResponse? {
+    private var userDetails: APIResponseModel<UserDetailResponseData>? {
         didSet {
             professionalAcc = userDetails?.data?.account == "1" ? true : false
             profileType = userDetails?.data?.listingType == "1" ? .practitioner : .company

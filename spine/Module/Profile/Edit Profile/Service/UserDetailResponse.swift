@@ -7,13 +7,6 @@
 
 import Foundation
 
-struct UserDetailResponse: Codable {
-    let status: Bool?
-    let data: UserDetailResponseData?
-    let image: String?
-    let message: String?
-}
-
 struct UserDetailResponseData: Codable {
     let usersID, name, town, email: String?
     let password, verificationPin, status, account: String?
@@ -88,7 +81,7 @@ struct UserDetailResponseData: Codable {
     }
 }
 
-extension UserDetailResponse {
+extension APIResponseModel where T == UserDetailResponseData {
     var userImage: String? {
         if let image = image, let _userImage = data?._userImage {
             return "\(image)\(_userImage)"

@@ -42,6 +42,9 @@ enum APIEndPoint: String {
     
     // events
     case getUserEvents = "events/getUserEvents"
+    case getEventCategories = "events/getEventsCategory"
+    case timezones = "timezones"
+    case publishEvent = "events/publishEvent"
     
     var urlStr: String {
         return baseUrl + rawValue
