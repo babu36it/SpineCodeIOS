@@ -109,7 +109,7 @@ struct MyProfileHomeView: View {
                 } //vstack
                 VStack {
                     Spacer()
-                    CustomAddItemSheet().offset(y: self.showAdd ? 0: UIScreen.main.bounds.height)
+                    CustomAddItemSheet(dismisser: $showAdd).offset(y: self.showAdd ? 0: UIScreen.main.bounds.height)
                 }.background((self.showAdd ? Color.black.opacity(0.3) : Color.clear).onTapGesture {
                     self.showAdd.toggle()
                 }).edgesIgnoringSafeArea(.all)

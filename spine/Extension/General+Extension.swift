@@ -10,6 +10,14 @@ extension UIApplication {
     func endEditing() {
         sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
+    
+    class var keyWindow: UIWindow? {
+        UIApplication.shared.connectedScenes
+            .filter({ $0.activationState == .foregroundActive })
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows.filter({ $0.isKeyWindow }) })
+            .first
+    }
 }
 
 extension Bundle {

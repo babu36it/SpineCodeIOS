@@ -19,6 +19,8 @@ struct EventDetailPreviewView: View {
     @State var showMoreAction = false
     @State var showConfirmation = false
 
+    var dismissWithEventID: ((String?) -> Void)?
+
     let screenWidth = UIScreen.main.bounds.size.width
     var todayDate = Date()
     
@@ -125,14 +127,16 @@ struct EventDetailPreviewView: View {
                 print(eventID)
             }
             dismiss()
+            dismissWithEventID?(eventID)
         }
         return confirmationView
     }
     
     private func publishSelectedEvent() {
         var files: [Media]?
-        if !images.isEmpty {
-            files = images.compactMap { Media(withImage: $0, forKey: "files[]") }
+        let arrImages = addEventVM.eventImages + images
+        if !arrImages.isEmpty {
+            files = arrImages.compactMap { Media(withImage: $0, forKey: "files[]") }
         }
         
         addEventVM.publishSelectedEvent(params: eventModel.formBody, media: files) { _ in 

@@ -13,6 +13,7 @@ struct EventDetailsView: View {
     @EnvironmentObject var eventModel: EventModel
 
     let eventType: EventTypeModel
+    var dismissWithEventID: ((String?) -> Void)?
 
     @State private var startDate: Date = Date()
     @State private var startTime: Date = Date()
@@ -230,7 +231,7 @@ struct EventDetailsView: View {
             allowComments = eventModel.allowComments.toBool() ?? false
         })
         .fullScreenCover(isPresented: $showPreview, content: {
-            EventDetailPreviewView(eventType: eventType, images: addEventVM.eventImages + images)
+            eventDetailPreviewView
                 .environmentObject(addEventVM)
                 .environmentObject(eventModel)
         })
@@ -248,7 +249,19 @@ struct EventDetailsView: View {
 //        } label: {
 //            EmptyView()
 //        }
-
+    }
+    
+    private var eventDetailPreviewView: EventDetailPreviewView {
+        var eventPV: EventDetailPreviewView = .init(eventType: eventType, images: addEventVM.eventImages + images)
+        eventPV.dismissWithEventID = { eventID in
+            if let eventID = eventID {
+                print(eventID)
+            }
+            dismiss()
+            
+            dismissWithEventID?(eventID)
+        }
+        return eventPV
     }
     
     private var languageListModel: LanguagesListViewModel {

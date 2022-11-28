@@ -10,9 +10,12 @@ import SwiftUI
 struct AddEventView: View {
     @Environment(\.dismiss) var dismiss
 
-    @State var showAddEventTypes = false
-    @State var showAddEvent = false
-    @StateObject var addEventVM = AddEventViewModel()
+    var dismissWithEventID: ((String?) -> Void)?
+
+    @State private var showAddEventTypes = false
+    @State private var showAddEvent = false
+    
+    @StateObject private var addEventVM = AddEventViewModel()
     
     var body: some View {
         ZStack {
@@ -37,7 +40,6 @@ struct AddEventView: View {
                         ExistingEventView(event: draftEvent, imagePath: addEventVM.imagePath, isDraft: true, onTapped: { event in
                             addEventVM.selectedEvent = event
                             showAddEvent = true
-                            showAddEventTypes.toggle()
                         })
                     }
         
@@ -56,7 +58,6 @@ struct AddEventView: View {
                         .listStyle(.plain)
                     }
                 }
-                
                 Spacer()
             }
             
@@ -66,6 +67,8 @@ struct AddEventView: View {
                     let eventModel: EventModel = EventModel()
                     eventModel.type = eventType.id
                     addEventVM.selectedEvent = eventModel
+                    showAddEventTypes.toggle()
+
                     showAddEvent = true
                 })
                 .environmentObject(addEventVM)
@@ -87,13 +90,26 @@ struct AddEventView: View {
 
         NavigationLink(isActive: $showAddEvent) {
             if let selectedEvent: EventModel = addEventVM.selectedEvent, let selectedEventTypeID: String = selectedEvent.type, let eventType: EventTypeModel = addEventVM.eventTypes.first(where: { $0.id == selectedEventTypeID }) {
-                EventDetailsView(eventType: eventType)
+                eventDetailsView(eventType: eventType)
                     .environmentObject(addEventVM)
                     .environmentObject(selectedEvent)
             }
         } label: {
             EmptyView()
         }
+    }
+    
+    private func eventDetailsView(eventType: EventTypeModel) -> EventDetailsView {
+        var eventDV: EventDetailsView = .init(eventType: eventType)
+        eventDV.dismissWithEventID = { eventID in
+            if let eventID = eventID {
+                print(eventID)
+            }
+            dismiss()
+            
+            dismissWithEventID?(eventID)
+        }
+        return eventDV
     }
 }
 
