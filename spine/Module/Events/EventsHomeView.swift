@@ -13,6 +13,8 @@ struct EventsHomeView: View {
     @State var selectedTab: EventsHomeTab = .none
     @State var sheetType: EventSheetType?
     
+    @StateObject var noneTabVM: NoneTabViewModel = .init()
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -48,6 +50,7 @@ struct EventsHomeView: View {
                     switch selectedTab {
                     case .none:
                         NoneTabView(sheetType: $sheetType)
+                            .environmentObject(noneTabVM)
                     case .all, .saved, .online, .nearby:
                         EventSubTabView1(sheetType: $sheetType)
                     case .going, .following, .meta, .past:
@@ -56,8 +59,6 @@ struct EventsHomeView: View {
                     Spacer()
                 }
                 
-                
-                
                 VStack {
                     Spacer()
                     CustomAddItemSheet(dismisser: $showAdd).offset(y: self.showAdd ? 0: UIScreen.main.bounds.height)
@@ -65,7 +66,7 @@ struct EventsHomeView: View {
                     self.showAdd.toggle()
                 }).edgesIgnoringSafeArea(.all)
             }.onAppear(perform: {
-               // selectedTab = .none
+               selectedTab = .none
             })
             .animation(.default, value: showAdd)
             .navigationBarHidden(true)
@@ -86,8 +87,6 @@ struct EventsHomeView_Previews: PreviewProvider {
         EventsHomeView()
     }
 }
-
-
 
 struct SegmentedButtonDymanic: View {
     let title: String
@@ -114,18 +113,32 @@ struct SegmentedButtonDymanic: View {
 
 struct NoneTabView: View {
     @Binding var sheetType: EventSheetType?
+    @EnvironmentObject var noneTabVM: NoneTabViewModel
+    
+    private let screenWidth: CGFloat = UIScreen.main.bounds.width
     var body: some View {
         ScrollView {
-            LazyVStack {
-                BannerImageView(image: "Local&OnlineBanner", heightF: 1.5)
-                BannerImageView(image: "RetreatBanner", heightF: 1.5)
-                BannerImageView(image: "MetaverseBanner", heightF: 1.5)
+            if let eventTypes = noneTabVM.eventTypes {
+                LazyVStack {
+                    ForEach(eventTypes) { eventType in
+                        ZStack {
+                            if let imagePath = noneTabVM.imageURL(for: eventType.image) {
+                                RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
+                            }
+                        }
+                        .frame(width: screenWidth, height: screenWidth/1.5)
+                    }
+                }
             }
-            Divider().padding()
+            Divider()
+                .padding()
             LargeButton(title: "Map view", width:120, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
                 sheetType = .mapView
-            }.padding(.bottom, 20)
-            
+            }
+            .padding(.bottom, 20)
+        }
+        .onAppear {
+            noneTabVM.getEventTypes()
         }
     }
 }

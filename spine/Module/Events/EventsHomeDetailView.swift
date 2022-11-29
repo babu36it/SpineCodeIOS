@@ -213,7 +213,6 @@ struct AttendingListScrollView: View {
 }
 
 struct AboutEventTextView: View {
-    @EnvironmentObject var addEventVM: AddEventViewModel
     @EnvironmentObject var eventModel: EventModel
     
     let msgTapped: ()-> Void

@@ -18,19 +18,59 @@ struct EventPublishResponse: Codable {
     }
 }
 
-struct AddEventServiceProvider {
-    private let httpUtility: HttpUtility = .shared
+struct EventRequest {
+    enum RequestType: String {
+        case all = "all"
+        case saved = "saved"
+        case going = "going"
+        case past = "past"
+        case online = "online"
+        case metaverse = "metaverse"
+        case following = "following"
+    }
+
+    let page: Int
+    let perPage: Int
+    let type: RequestType
+    let eventTypeID: String?
     
+    var queryParams: [String: Any] {
+        var params: [String: Any] = ["page": page, "per_page": perPage, "type": type.rawValue]
+        if let eventTypeID = eventTypeID {
+            params["event_type_id"] = eventTypeID
+        }
+        return params
+    }
+}
+
+protocol CommonEventFetcher {
+    func getEventsTypes(completion: @escaping(_ result: Result<APIResponseModel<[EventTypeModel]>, CHError>)-> Void)
+    func getEvents(for request: EventRequest, completion: @escaping(_ result: Result<APIResponseModel<[EventTypeModel]>, CHError>)-> Void)
+
+}
+
+extension CommonEventFetcher {
     func getEventsTypes(completion: @escaping(_ result: Result<APIResponseModel<[EventTypeModel]>, CHError>)-> Void) {
         guard let url = URL(string: APIEndPoint.getEventTypes.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(url: url, resultType: APIResponseModel<[EventTypeModel]>.self) { result in
-            completion(result)
-        }
+        HttpUtility.shared.getCachedResponse(url: url, cachedFilename: CachedFileNames.eventTypes, queue: .main, completion: completion)
     }
     
+    func getEvents(for request: EventRequest, completion: @escaping(_ result: Result<APIResponseModel<[EventTypeModel]>, CHError>)-> Void) {
+        guard let url = URL(string: APIEndPoint.getAllEvent.urlStr) else {
+            completion(.failure(.invalidUrl))
+            return
+        }
+        
+        HttpUtility.shared.requestData(postData: request.queryParams, url: url, resultType:  APIResponseModel<[EventTypeModel]>.self, queue: .main, completion: completion)
+    }
+}
+
+struct AddEventServiceProvider: CommonEventFetcher {
+    private let httpUtility: HttpUtility = .shared
+        
     func getUserEvents(completion: @escaping(_ result: Result<APIResponseModel<[EventModel]>, CHError>)-> Void) {
         guard let url = URL(string: APIEndPoint.getUserEvents.urlStr) else {
             completion(.failure(.invalidUrl))
@@ -60,10 +100,8 @@ struct EventTypeModel: Codable, Identifiable {
     let image: String
     
     private enum CodingKeys: String, CodingKey {
-        case id = "id"
+        case id, description, status
         case name = "type_name"
-        case description = "description"
-        case status = "status"
         case image = "type_image"
     }
 }

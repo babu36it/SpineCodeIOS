@@ -48,7 +48,12 @@ class EventModel: ObservableObject, Codable, Identifiable {
     var currencyCode: String = ""
     var currencySymbol: String = ""
     var typeName: String = ""
-    
+    var totalComment: String = ""
+    var totalSave: String = ""
+    var totalShare: String = ""
+    var userShareStatus: Int = 0
+    var userSaveStatus: Int = 0
+
     enum CodingKeys: String, CodingKey {
         case id, fee, title, file, multiple, type, timezone, location, latitude, longitude, status, language
         case userID = "user_id"
@@ -79,6 +84,11 @@ class EventModel: ObservableObject, Codable, Identifiable {
         case currencyCode = "currency_code"
         case currencySymbol = "currency_symbol"
         case typeName = "type_name"
+        case totalComment = "total_comment"
+        case totalSave = "total_save"
+        case totalShare = "total_share"
+        case userShareStatus = "user_share_status"
+        case userSaveStatus = "user_save_status"
     }
     
     required init(from decoder: Decoder) throws {
@@ -124,6 +134,11 @@ class EventModel: ObservableObject, Codable, Identifiable {
         currencyCode = try container.decodeIfPresent(String.self, forKey: .currencyCode) ?? ""
         currencySymbol = try container.decodeIfPresent(String.self, forKey: .currencySymbol) ?? ""
         typeName = try container.decodeIfPresent(String.self, forKey: .typeName) ?? ""
+        totalComment = try container.decodeIfPresent(String.self, forKey: .totalComment) ?? ""
+        totalSave = try container.decodeIfPresent(String.self, forKey: .totalSave) ?? ""
+        totalShare = try container.decodeIfPresent(String.self, forKey: .totalShare) ?? ""
+        userShareStatus = try container.decodeIfPresent(Int.self, forKey: .userShareStatus) ?? 0
+        userSaveStatus = try container.decodeIfPresent(Int.self, forKey: .userSaveStatus) ?? 0
     }
     
     func encode(to encoder: Encoder) throws {
@@ -168,6 +183,11 @@ class EventModel: ObservableObject, Codable, Identifiable {
         try container.encode(currencyCode, forKey: .currencyCode)
         try container.encode(currencySymbol, forKey: .currencySymbol)
         try container.encode(typeName, forKey: .typeName)
+        try container.encode(totalComment, forKey: .totalComment)
+        try container.encode(totalSave, forKey: .totalSave)
+        try container.encode(totalShare, forKey: .totalShare)
+        try container.encode(userShareStatus, forKey: .userShareStatus)
+        try container.encode(userSaveStatus, forKey: .userSaveStatus)
     }
     
     init() { }

@@ -189,6 +189,21 @@ struct HttpUtility {
     }
 }
 
+extension HttpUtility {
+    func getCachedResponse<T: Codable>(url: URL, cachedFilename: String, queue: DispatchQueue? = nil, completion: @escaping(_ result: Result<T, CHError>) -> Void) {
+        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: cachedFilename), let response: T = try? JSONDecoder().decode(T.self, from: jsonData) {
+            completion(.success(response))
+        } else {
+            requestData(url: url, resultType: T.self, queue: queue) { result in
+                if let jsonData: Data = try? JSONEncoder().encode(result.get()) {
+                    FileManager.default.saveDataToCachesDirectory(jsonData, filename: cachedFilename)
+                }
+                completion(result)
+            }
+        }
+    }
+}
+
 struct LoginResponse: Codable {
     let status: Bool
     let token: String

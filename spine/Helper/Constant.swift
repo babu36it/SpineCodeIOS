@@ -296,3 +296,11 @@ struct DropAppearance {
         itemFont            : UIFont.init(name: FontStyle.Montserrat_Regular.rawValue, size: 16)
     )
 }
+
+struct CachedFileNames {
+    static let eventCategories: String = "event_categories.json"
+    static let eventTypes: String = "event_types.json"
+    static let currencies: String = "currencies.json"
+    static let languages: String = "languages.json"
+    static let timezones: String = "timezones.json"
+}

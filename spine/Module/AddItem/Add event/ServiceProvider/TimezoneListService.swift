@@ -21,27 +21,14 @@ struct TimezoneModel: Codable {
 }
 
 class TimezoneListService {
-    private struct Constants {
-        static let timezoneFilename: String = "timezones.json"
-    }
-
     private let httpUtility: HttpUtility = .shared
     
     func getTimezones(completion: @escaping(_ result: Result<APIResponseModel<[TimezoneModel]>, CHError>) -> Void) {
-        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: Constants.timezoneFilename), let response: APIResponseModel<[TimezoneModel]> = try? JSONDecoder().decode(APIResponseModel<[TimezoneModel]>.self, from: jsonData) {
-            completion(.success(response))
-        } else {
-            guard let timezonesList = URL(string: APIEndPoint.timezones.urlStr) else {
-                completion(.failure(.invalidUrl))
-                return
-            }
-            httpUtility.requestData(url: timezonesList, resultType: APIResponseModel<[TimezoneModel]>.self) { result in
-                if let jsonData: Data = try? JSONEncoder().encode(result.get()) {
-                    FileManager.default.saveDataToCachesDirectory(jsonData, filename: Constants.timezoneFilename)
-                }
-                completion(result)
-            }
+        guard let url = URL(string: APIEndPoint.timezones.urlStr) else {
+            completion(.failure(.invalidUrl))
+            return
         }
+        httpUtility.getCachedResponse(url: url, cachedFilename: CachedFileNames.timezones, completion: completion)
     }
     
     class func timezone(for timezone: String, completion: @escaping (TimezoneModel?) -> Void) {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class EventServices {
+class EventServices: CommonEventFetcher {
     private let httpUtility: HttpUtility = .shared
 
 }

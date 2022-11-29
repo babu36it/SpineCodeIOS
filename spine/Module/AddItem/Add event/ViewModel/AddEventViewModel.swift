@@ -110,13 +110,11 @@ class AddEventViewModel: ObservableObject {
     
     func getEventTypes() {
         eventService.getEventsTypes { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let value):
-                    self.eventTypes = value.data ?? []
-                case .failure(let err):
-                    print(err.rawValue)
-                }
+            switch result {
+            case .success(let value):
+                self.eventTypes = value.data ?? []
+            case .failure(let err):
+                print(err.rawValue)
             }
         }
     }

@@ -8,27 +8,14 @@
 import Foundation
 
 class EventCategoryListService {
-    private struct Constants {
-        static let eventCategoriesFilename: String = "event_categories.json"
-    }
-
     private let httpUtility: HttpUtility = .shared
     
     func getEventCategories(completion: @escaping(_ result: Result<APIResponseModel<[EventCategoryModel]>, CHError>) -> Void) {
-        if let jsonData: Data = FileManager.default.fileDataFromCachesDirectory(for: Constants.eventCategoriesFilename), let response: APIResponseModel<[EventCategoryModel]> = try? JSONDecoder().decode(APIResponseModel<[EventCategoryModel]>.self, from: jsonData) {
-            completion(.success(response))
-        } else {
-            guard let eventCategoriesList = URL(string: APIEndPoint.getEventCategories.urlStr) else {
-                completion(.failure(.invalidUrl))
-                return
-            }
-            httpUtility.requestData(url: eventCategoriesList, resultType: APIResponseModel<[EventCategoryModel]>.self) { result in
-                if let jsonData: Data = try? JSONEncoder().encode(result.get()) {
-                    FileManager.default.saveDataToCachesDirectory(jsonData, filename: Constants.eventCategoriesFilename)
-                }
-                completion(result)
-            }
+        guard let url = URL(string: APIEndPoint.getEventCategories.urlStr) else {
+            completion(.failure(.invalidUrl))
+            return
         }
+        httpUtility.getCachedResponse(url: url, cachedFilename: CachedFileNames.eventCategories, completion: completion)
     }
     
     class func eventCategory(for name: String, completion: @escaping (EventCategoryModel?) -> Void) {
