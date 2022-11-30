@@ -1931,7 +1931,7 @@
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app requires microphone to record";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This App needs to access your Photo Library for Posts";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = SpineLaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = SpineLaunchScreen.storyboard;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1972,7 +1972,7 @@
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app requires microphone to record";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This App needs to access your Photo Library for Posts";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = SpineLaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = SpineLaunchScreen.storyboard;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
