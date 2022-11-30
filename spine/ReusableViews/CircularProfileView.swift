@@ -98,6 +98,10 @@ extension View {
         self.modifier(AddCircularBoder(radius: radius, borderWidth: borderWidth, borderColor: borderColor, shadowRadius: shadowRadius, shadowColor: shadowColor))
         .modifier(BadgeView(size: badgeSize, radius: badgeCornerRadius, offset: badgeOffset, color: badgeColor))
     }
+    
+    func circularClip(radius: CGFloat = 0) -> some View {
+        modifier(CircularClip(radius: radius))
+    }
 }
 
 struct BadgeView: ViewModifier {
@@ -135,5 +139,20 @@ struct AddCircularBoder: ViewModifier {
             .clipShape(Circle())
             .overlay(Circle().stroke(borderColor, lineWidth: borderWidth))
             .shadow(color: shadowColor, radius: shadowRadius)
+    }
+}
+
+struct CircularClip: ViewModifier {
+    let radius: CGFloat
+    
+    func body(content: Content) -> some View {
+        if radius > 0 {
+            content
+                .frame(width: radius, height: radius)
+                .clipShape(Circle())
+        } else {
+            content
+                .clipShape(Circle())
+        }
     }
 }

@@ -21,7 +21,7 @@ class CurrenciesListService {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.getCachedResponse(url: url, cachedFilename: CachedFileNames.currencies, completion: completion)
+        httpUtility.getCachedResponse(url: url, cachedFilename: CachedFileNames.currencies, queue: .main, completion: completion)
     }
     
     func updateCurrency(to currency: CurrencyModel, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
@@ -36,14 +36,12 @@ class CurrenciesListService {
     
     class func currency(for id: String, completion: @escaping (CurrencyModel?) -> Void) {
         CurrenciesListService().getCurrencies { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let currenciesRes):
-                    let currModel = currenciesRes.data?.first { $0.id == id }
-                    completion(currModel)
-                case .failure(let error):
-                    print(error)
-                }
+            switch result {
+            case .success(let currenciesRes):
+                let currModel = currenciesRes.data?.first { $0.id == id }
+                completion(currModel)
+            case .failure(let error):
+                print(error)
             }
         }
     }

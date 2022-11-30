@@ -275,4 +275,48 @@ extension EventModel {
         
         return formB
     }
+    
+    var eventDays: String {
+        if let startDate: Date = startDate.toDate(format: "yyyy-MM-dd"), let endDate: Date = endDate.toDate(format: "yyyy-MM-dd") {
+            let calendar = Calendar.current
+            let daysPassed = calendar.startOfDay(for: endDate).daysInBetweenDate(calendar.startOfDay(for: startDate))
+            if daysPassed > 1 {
+                return "\(daysPassed) days"
+            } else if daysPassed == 1 {
+                return "\(daysPassed) day"
+            } else if !startTime.isEmpty, !endTime.isEmpty {
+                return "\(startTime) - \(endTime)"
+            }
+        }
+        return ""
+    }
+    
+    func cost(_ completion: @escaping (String) -> Void) {
+        if let feeVal = Double(fee), feeVal > 0 {
+            CurrenciesListService.currency(for: feeCurrency) { [weak self] model in
+                guard let self = self else {
+                    completion("FREE")
+                    return
+                }
+                
+                if let model = model {
+                    let formatter = NumberFormatter()
+                    formatter.numberStyle = .currency
+                    formatter.minimumFractionDigits = 0
+                    formatter.maximumFractionDigits = 2
+                    formatter.currencySymbol = model.symbol
+
+                    if let price = formatter.string(from: feeVal as NSNumber) {
+                        completion(price)
+                    } else {
+                        completion("$\(self.fee)")
+                    }
+                } else {
+                    completion("$\(self.fee)")
+                }
+            }
+        } else {
+            completion("FREE")
+        }
+    }
 }

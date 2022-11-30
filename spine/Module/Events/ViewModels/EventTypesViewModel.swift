@@ -1,5 +1,5 @@
 //
-//  NoneTabViewModel.swift
+//  EventTypesViewModel.swift
 //  spine
 //
 //  Created by Mac on 30/11/22.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NoneTabViewModel: ObservableObject {
+class EventTypesViewModel: ObservableObject {
     private let service: EventServices = .init()
     
     @Published var eventTypes: [EventTypeModel]?

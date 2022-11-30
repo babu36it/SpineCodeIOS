@@ -45,7 +45,7 @@ struct EventRequest {
 
 protocol CommonEventFetcher {
     func getEventsTypes(completion: @escaping(_ result: Result<APIResponseModel<[EventTypeModel]>, CHError>)-> Void)
-    func getEvents(for request: EventRequest, completion: @escaping(_ result: Result<APIResponseModel<[EventTypeModel]>, CHError>)-> Void)
+    func getEvents<T: Decodable>(for request: EventRequest, completion: @escaping(_ result: Result<T, CHError>)-> Void)
 
 }
 
@@ -58,13 +58,13 @@ extension CommonEventFetcher {
         HttpUtility.shared.getCachedResponse(url: url, cachedFilename: CachedFileNames.eventTypes, queue: .main, completion: completion)
     }
     
-    func getEvents(for request: EventRequest, completion: @escaping(_ result: Result<APIResponseModel<[EventTypeModel]>, CHError>)-> Void) {
+    func getEvents<T: Decodable>(for request: EventRequest, completion: @escaping(_ result: Result<T, CHError>)-> Void) {
         guard let url = URL(string: APIEndPoint.getAllEvent.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
         
-        HttpUtility.shared.requestData(postData: request.queryParams, url: url, resultType:  APIResponseModel<[EventTypeModel]>.self, queue: .main, completion: completion)
+        HttpUtility.shared.requestData(httpMethod: .post, postData: request.queryParams, url: url, resultType:  T.self, queue: .main, completion: completion)
     }
 }
 

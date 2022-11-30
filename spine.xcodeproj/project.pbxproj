@@ -198,7 +198,9 @@
 		2C7B1FC82921190100E06E40 /* CurrenciesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FC72921190100E06E40 /* CurrenciesListService.swift */; };
 		2C7B1FCA292128D600E06E40 /* NotificationTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FC9292128D600E06E40 /* NotificationTypeViewModel.swift */; };
 		2C7B1FCC292128E800E06E40 /* NotificationTypeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FCB292128E800E06E40 /* NotificationTypeService.swift */; };
-		2C8853A029368CBD008F922E /* NoneTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C88539F29368CBD008F922E /* NoneTabViewModel.swift */; };
+		2C8853A029368CBD008F922E /* EventTypesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C88539F29368CBD008F922E /* EventTypesViewModel.swift */; };
+		2C8853A22937DA40008F922E /* EventAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8853A12937DA40008F922E /* EventAPIResponse.swift */; };
+		2C8853A42937DC37008F922E /* EventsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8853A32937DC37008F922E /* EventsListViewModel.swift */; };
 		661830B92824409D00289E66 /* HomeSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661830B82824409D00289E66 /* HomeSectionView.swift */; };
 		6624C1082821A801009DD4F3 /* MobileNoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6624C1072821A801009DD4F3 /* MobileNoVC.swift */; };
 		6630D248281B1CBC007138B8 /* AppLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6630D247281B1CBC007138B8 /* AppLoginButton.swift */; };
@@ -452,7 +454,9 @@
 		2C7B1FC72921190100E06E40 /* CurrenciesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrenciesListService.swift; sourceTree = "<group>"; };
 		2C7B1FC9292128D600E06E40 /* NotificationTypeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTypeViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FCB292128E800E06E40 /* NotificationTypeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTypeService.swift; sourceTree = "<group>"; };
-		2C88539F29368CBD008F922E /* NoneTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoneTabViewModel.swift; sourceTree = "<group>"; };
+		2C88539F29368CBD008F922E /* EventTypesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTypesViewModel.swift; sourceTree = "<group>"; };
+		2C8853A12937DA40008F922E /* EventAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAPIResponse.swift; sourceTree = "<group>"; };
+		2C8853A32937DC37008F922E /* EventsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsListViewModel.swift; sourceTree = "<group>"; };
 		661830B82824409D00289E66 /* HomeSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSectionView.swift; sourceTree = "<group>"; };
 		6624C1072821A801009DD4F3 /* MobileNoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileNoVC.swift; sourceTree = "<group>"; };
 		6630D247281B1CBC007138B8 /* AppLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLoginButton.swift; sourceTree = "<group>"; };
@@ -904,7 +908,7 @@
 			children = (
 				2C5BADFB292D489A00BB31D1 /* Models */,
 				2C5BADF9292D489A00BB31D1 /* Services */,
-				2C5BADFA292D489A00BB31D1 /* VIewModels */,
+				2C5BADFA292D489A00BB31D1 /* ViewModels */,
 				180C16B22856CB000072D0DF /* EventsHomeView.swift */,
 				048672582861D1D500582275 /* EventFilterView.swift */,
 				0486725C2861FD0D00582275 /* MultiSelectionCalenderView.swift */,
@@ -1065,18 +1069,20 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		2C5BADFA292D489A00BB31D1 /* VIewModels */ = {
+		2C5BADFA292D489A00BB31D1 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				2C88539F29368CBD008F922E /* NoneTabViewModel.swift */,
+				2C88539F29368CBD008F922E /* EventTypesViewModel.swift */,
+				2C8853A32937DC37008F922E /* EventsListViewModel.swift */,
 			);
-			path = VIewModels;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		2C5BADFB292D489A00BB31D1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				2C5BADFC292D48A800BB31D1 /* EventModel.swift */,
+				2C8853A12937DA40008F922E /* EventAPIResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1577,6 +1583,7 @@
 				049D653728A3FCE600124805 /* CustomImageView.swift in Sources */,
 				2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */,
 				180C16C62856CB140072D0DF /* LinkRSSView.swift in Sources */,
+				2C8853A42937DC37008F922E /* EventsListViewModel.swift in Sources */,
 				188F227E2840B49E00F8896D /* MemberGalleryVC.swift in Sources */,
 				66A237B6281709FC00CA3763 /* SVIndefiniteAnimatedView.m in Sources */,
 				0492CCF128C369E000A2E29E /* AddVoiceOverViewModel.swift in Sources */,
@@ -1600,7 +1607,7 @@
 				2C5BADFD292D48A800BB31D1 /* EventModel.swift in Sources */,
 				048672552861A54500582275 /* MapView.swift in Sources */,
 				04894D23286D9F5500CF4860 /* CustomTextField.swift in Sources */,
-				2C8853A029368CBD008F922E /* NoneTabViewModel.swift in Sources */,
+				2C8853A029368CBD008F922E /* EventTypesViewModel.swift in Sources */,
 				048850EC28A7AED500A96385 /* SingleImageOrVideoPickerView.swift in Sources */,
 				047F64BD28B9DB0600370458 /* BaseSheetView.swift in Sources */,
 				66A662D2282304FD0012A129 /* HomeHeaderView.swift in Sources */,
@@ -1762,6 +1769,7 @@
 				048747F1289278840024C8EC /* SingleImagePicker.swift in Sources */,
 				04A0593328B62F3600262BDA /* Dot3ViewModel.swift in Sources */,
 				66A237D4281709FC00CA3763 /* IndicatorView.swift in Sources */,
+				2C8853A22937DA40008F922E /* EventAPIResponse.swift in Sources */,
 				1824535A2820EDA7005FA023 /* ForgotPasswordVC.swift in Sources */,
 				0496238C28CC615F003F14F8 /* VoiceViewModel.swift in Sources */,
 				0496239028CCE026003F14F8 /* AudioPreviewView.swift in Sources */,

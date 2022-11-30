@@ -13,7 +13,7 @@ struct EventsHomeView: View {
     @State var selectedTab: EventsHomeTab = .none
     @State var sheetType: EventSheetType?
     
-    @StateObject var noneTabVM: NoneTabViewModel = .init()
+    @StateObject var eventTypeTabVM: EventTypesViewModel = .init()
     
     var body: some View {
         NavigationView {
@@ -49,8 +49,8 @@ struct EventsHomeView: View {
                     
                     switch selectedTab {
                     case .none:
-                        NoneTabView(sheetType: $sheetType)
-                            .environmentObject(noneTabVM)
+                        EventTypesView(sheetType: $sheetType)
+                            .environmentObject(eventTypeTabVM)
                     case .all, .saved, .online, .nearby:
                         EventSubTabView1(sheetType: $sheetType)
                     case .going, .following, .meta, .past:
@@ -111,22 +111,29 @@ struct SegmentedButtonDymanic: View {
     }
 }
 
-struct NoneTabView: View {
+struct EventTypesView: View {
     @Binding var sheetType: EventSheetType?
-    @EnvironmentObject var noneTabVM: NoneTabViewModel
+    @EnvironmentObject var eventTypeTabVM: EventTypesViewModel
+    
+    @State private var showEventTypes: Bool = false
+    @State private var selectedEventType: EventTypeModel?
     
     private let screenWidth: CGFloat = UIScreen.main.bounds.width
     var body: some View {
         ScrollView {
-            if let eventTypes = noneTabVM.eventTypes {
+            if let eventTypes = eventTypeTabVM.eventTypes {
                 LazyVStack {
                     ForEach(eventTypes) { eventType in
                         ZStack {
-                            if let imagePath = noneTabVM.imageURL(for: eventType.image) {
+                            if let imagePath = eventTypeTabVM.imageURL(for: eventType.image) {
                                 RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
                             }
                         }
                         .frame(width: screenWidth, height: screenWidth/1.5)
+                        .onTapGesture {
+                            selectedEventType = eventType
+                            showEventTypes = true
+                        }
                     }
                 }
             }
@@ -138,7 +145,17 @@ struct NoneTabView: View {
             .padding(.bottom, 20)
         }
         .onAppear {
-            noneTabVM.getEventTypes()
+            eventTypeTabVM.getEventTypes()
+        }
+        
+        NavigationLink(isActive: $showEventTypes) {
+            if let eventType: EventTypeModel = selectedEventType {
+                let eventListVM: EventsListViewModel = .init(eventType: eventType)
+                EventsListView()
+                    .environmentObject(eventListVM)
+            }
+        } label: {
+            EmptyView()
         }
     }
 }
@@ -153,7 +170,7 @@ struct EventSubTabView1: View {
             //
             //FilterViewForEventList()
             ScrollView(.vertical, showsIndicators: false, content: {
-                EventHomeDateRow()
+                EventHomeDateRow(date: Date())
                 ForEach(events, id: \.self) { event in
                     if event.isBanner {
                         EventBannerRow(image: event.bannerImg)
@@ -179,7 +196,7 @@ struct EventSubTabView2: View {
     var body: some View {
         VStack {
             ScrollView(.vertical, showsIndicators: false, content: {
-                EventHomeDateRow()
+                EventHomeDateRow(date: Date())
                 ForEach(events, id: \.self) { event in
                     NavigationLink(destination: EventsHomeDetailView(event: event, images: [])) {
                         EventHomeRow(event: event)
@@ -279,10 +296,11 @@ struct EventBannerRow: View {
 }
 
 struct EventHomeDateRow: View {
-
+    let date: Date
+    
     var body: some View {
         VStack(alignment: .leading) {
-            Title3(title: "SAT, 9 MAY 2022")
+            Title3(title: date.toString("EEE, d MMM yyyy"))
             Divider()
         }.padding(.horizontal, 20)
             .padding(.top, 10)
@@ -309,3 +327,102 @@ struct FilterViewForEventList: View {
     }
 }
 
+struct EventsListView: View {
+    @EnvironmentObject var eventsListVM: EventsListViewModel
+    
+    var body: some View {
+        VStack {
+            ScrollView(.vertical, showsIndicators: false, content: {
+                if let eventRecords = eventsListVM.eventRecords, !eventRecords.isEmpty {
+                    ForEach(eventRecords, id: \.startDate) { eventRecord in
+                        let date: Date = eventRecord.startDate?.toDate(format: "yyyy-MM-dd") ?? Date()
+                        EventHomeDateRow(date: date)
+                        if let events: [EventModel] = eventRecord.records, !events.isEmpty {
+                            ForEach(events) { event in
+                                EventListItem()
+                                    .environmentObject(event)
+//                                NavigationLink(destination: EventsHomeDetailView(event: event, images: [])) {
+//                                    EventHomeRow(event: event)
+//                                }
+                            }
+                        }
+                    }
+                } else if let message = eventsListVM.message {
+                    Text(message)
+                        .font(.system(size: 40))
+                }
+            })
+        }
+        .onAppear {
+            eventsListVM.getEvents()
+        }
+    }
+}
+
+struct EventListItem: View {
+    @EnvironmentObject var eventsListVM: EventsListViewModel
+    @EnvironmentObject var event: EventModel
+
+    @State var eventCost: String = ""
+    
+    var body: some View {
+        VStack {
+            HStack {
+                VStack(spacing: 10) {
+                    if let userImage = event.hostedProfilePic, let imagePath: String = eventsListVM.imagePath(forUserImage: userImage) {
+                        RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
+                            .circularClip(radius: 65)
+                    } else {
+                        CircularBorderedProfileView(image: "Oval 57", size: 65, borderWidth: 0, showShadow: false)
+                    }
+                    Title4(title: event.userName)
+                }
+                VStack(alignment: .leading, spacing: 5) {
+                    SubHeader6(title: eventsListVM.eventType.name.uppercased(), fColor: .lightBrown)
+                    
+                    VStack(alignment: .leading) {
+                        Title4(title: event.title)
+                            .multilineTextAlignment(.leading)
+                        if eventsListVM.eventType.name.contains("Online Events") {
+                            Title4(title: event.startTime)
+                        } else {
+                            Title4(title: event.location, fColor: .lightGray2)
+                        }
+                    }
+                    
+                    Title4(title: event.eventDays)
+
+//                    if event.status != .none {
+//                        HStack {
+//                            Image(systemName: event.invitation.imageName().0)
+//                                .foregroundColor(event.invitation.imageName().1)
+//                            Title5(title: event.invitation.getTitle(), fColor: .lightBlackText)
+//
+//                        }.padding(.top, 2)
+//                    }
+                }
+                .padding(.horizontal, 10)
+                Spacer()
+                VStack(alignment: .trailing, spacing: 50) {
+                    HStack {
+                        ButtonWithCustomImage(image: "directArrow", size: 18) {
+                            print("share tapped")
+                        }
+                        ButtonWithCustomImage(image: "Bookmark", size: 18) {
+                            print("BookMark tapped")
+                        }
+                    }
+
+                    Header5(title: eventCost)
+                }
+            }
+            Divider()
+        }
+        .padding(.horizontal, 20)
+        .onAppear {
+            event.cost { costStr in
+                eventCost = costStr
+            }
+        }
+    }
+}
