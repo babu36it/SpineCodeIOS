@@ -38,9 +38,9 @@ struct ImagePicker: UIViewControllerRepresentable {
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
      
             if let image = info[.editedImage] as? UIImage {
-                parent.selectedImages.insert(image, at: 0)
+                parent.selectedImages.append(image)
             } else if let image = info[.originalImage] as? UIImage {
-                parent.selectedImages.insert(image, at: 0)
+                parent.selectedImages.append(image)
             }
      
             parent.presentationMode.wrappedValue.dismiss()

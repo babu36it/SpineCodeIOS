@@ -202,7 +202,6 @@ struct Title3: View {
     }
 }
 
-
 struct Title4: View {
     let title: String
     var fColor: Color = .primary

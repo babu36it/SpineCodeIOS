@@ -31,8 +31,7 @@ struct EventDetailsView: View {
         ScrollView {
             VStack(spacing: 0) {
                 LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4).padding(.top, 10)
-                let imageBinding: Binding<[UIImage]> = .init(get: { addEventVM.eventImages + images }, set: { _ in } )
-                AddImageView(images: imageBinding)
+                AddImageView(images: $images)
             }
             
             VStack(spacing: 30) {
@@ -306,33 +305,19 @@ struct EventDetailsView: View {
 }
 
 struct AddImageView: View {
+    @EnvironmentObject var addEventVM: AddEventViewModel
+    
     @Binding  var images: [UIImage]
-    @State private var showAction = false
-    let screenWidth = UIScreen.main.bounds.size.width
-    let imageH: CGFloat = 220
+
     @State var selectedMode: MediaMode?
+    @State private var showAction = false
     
-    
+    private let screenWidth = UIScreen.main.bounds.size.width
+    private let imageH: CGFloat = 220
+
     var body: some View {
         ZStack {
-            if images.isEmpty {
-                GreyBackgroundImage()
-            } else {
-                HorizontalImageScroller(images: images)
-
-//   HorizontalImageScroller1(images: images)
-//                ScrollView(.horizontal, showsIndicators: false) {
-//                    LazyHGrid(rows: [GridItem(.fixed(screenWidth))]) {
-//                        ForEach(images, id: \.self) { image in
-//                            Image(uiImage: image)
-//                                .resizable()
-//                                //.aspectRatio(contentMode: .fill)
-//                                .frame(width: screenWidth, height: imageH)
-//                                .edgesIgnoringSafeArea(.all)
-//                        }
-//                    }
-//                }.frame( height: 220)
-            }
+            imageScroller
             
             Button {
                 showAction = true
@@ -342,25 +327,35 @@ struct AddImageView: View {
                     Title4(title: "Add photo(s)", fColor: .lightBrown)
                 }
             }
-        }.offset(y: -1)
-            .sheet(item: $selectedMode) { mode in
-                switch mode {
-                case .camera:
-                    ImagePicker(sourceType: .camera, selectedImages: self.$images)
-                case .gallary:
-                    ImagePicker(sourceType: .photoLibrary, selectedImages: self.$images)
-                }
+        }
+        .offset(y: -1)
+        .sheet(item: $selectedMode) { mode in
+            switch mode {
+            case .camera:
+                ImagePicker(sourceType: .camera, selectedImages: self.$images)
+            case .gallary:
+                ImagePicker(sourceType: .photoLibrary, selectedImages: self.$images)
             }
-            .actionSheet(isPresented: $showAction) { () -> ActionSheet in
-                ActionSheet(title: Text("Choose mode"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
-                    selectedMode = .camera
-                }), ActionSheet.Button.default(Text("Photo Library"), action: {
-                    selectedMode = .gallary
-                }), ActionSheet.Button.cancel()])
-            }
+        }
+        .actionSheet(isPresented: $showAction) { () -> ActionSheet in
+            ActionSheet(title: Text("Choose mode"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
+                selectedMode = .camera
+            }), ActionSheet.Button.default(Text("Photo Library"), action: {
+                selectedMode = .gallary
+            }), ActionSheet.Button.cancel()])
+        }
+    }
+    
+    @ViewBuilder
+    private var imageScroller: some View {
+        let scrollImages: [UIImage] = addEventVM.eventImages + images
+        if scrollImages.isEmpty {
+            GreyBackgroundImage()
+        } else {
+            HorizontalImageScroller(images: scrollImages)
+        }
     }
 }
-
 
 struct EventDetailTitle: View {
     let text: String

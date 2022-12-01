@@ -149,10 +149,9 @@ struct ExistingEventView: View {
         } label: {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
-                    Header5(title: event.title)
-                    Title4(title: event.eventDescription)
+                    Header5(title: event.title, lineLimit: 2)
+                    Title4(title: event.eventDescription, lineLimit: 2)
                         .multilineTextAlignment(.leading)
-                        .lineLimit(3)
                     Title4(title: event.dateString)
                     Title4(title: event.languageName)
                     if isDraft {
