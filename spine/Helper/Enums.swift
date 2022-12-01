@@ -60,7 +60,7 @@ enum EventType: String, CaseIterable, Identifiable {
 }
 
 
-enum EventsHomeTab: String, CaseIterable {
+enum EventsHomeTabType: String, CaseIterable {
     case none
     case all = "ALL"
     case going = "GOING"
@@ -71,7 +71,7 @@ enum EventsHomeTab: String, CaseIterable {
     case nearby = "NEARBY"
     case past = "PAST"
     
-    static func allTabs()->[EventsHomeTab] {
+    static func allTabs()->[EventsHomeTabType] {
         return [.all, .going, .saved, .following, .online, .meta, .nearby, .past]
     }
     

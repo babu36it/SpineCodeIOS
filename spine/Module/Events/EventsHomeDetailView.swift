@@ -213,6 +213,35 @@ struct AttendingListScrollView: View {
 }
 
 struct AboutEventTextView: View {
+    let msgTapped: ()-> Void
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            HStack(spacing: 15) {
+                CircularBorderedProfileView(image: "Oval 57", size: 65, borderWidth: 3, showShadow: true)
+                VStack(alignment: .leading) {
+                    Header5(title: "Anna Red")
+                    Title4(title: "HOST")
+                }
+                Spacer()
+                LargeButton(title: "MESSAGE", width: 100, height: 30, bColor: .lightGray1, fSize: 14, fColor: .lightBrown) {
+                    msgTapped()
+                }
+            }
+            VStack(alignment: .leading, spacing: 10) {
+                Title4(title: "ABOUT THE EVENT")
+                Title4(title: C.PlaceHolder.aboutEventprvTxt)
+                    .lineLimit(10)
+                    .foregroundColor(.lightBlackText)
+            }
+            
+        }
+        .padding(20)
+        .padding(.top, -10)
+    }
+}
+
+struct EventDetailPreviewAboutView: View {
     @EnvironmentObject var eventModel: EventModel
     
     let msgTapped: ()-> Void
@@ -247,5 +276,149 @@ struct AboutEventTextView: View {
         }
         .padding(20)
         .padding(.top, -10)
+    }
+}
+
+struct EventDetailView: View {
+    @Environment(\.dismiss) var dismiss
+
+    @EnvironmentObject var eventListVM: EventsListViewModel
+    @EnvironmentObject var event: EventModel
+    
+    @State private var showMoreAction = false
+    @State private var showConfirmation = false
+    @State private var reserveSpot = false
+    @State private var isInviteSent = false
+    @State private var showMsg = false
+    @State private var disableBtn = false
+
+    private let screenWidth = UIScreen.main.bounds.size.width
+    private var externalBooking = false
+    
+    private var images: [UIImage] = .init()
+    
+    var body: some View {
+        ZStack {
+            ScrollView { //put it down
+                VStack(spacing: 0) {
+                    ZStack(alignment: .bottomLeading) {
+                        HorizontalImageScroller(images: images)
+                        DateBadge(date: Date())
+                            .padding(20)
+                    }
+                    // ScrollView {
+                    VStack(alignment: .leading, spacing: 14) {
+                        PodcastTitle(title: event.typeName.uppercased(), fSize: 12, linelimit: 1, fontWeight: .black, fColor: .white)
+                        PodcastTitle(title: event.title, fSize: 20, linelimit: 2, fontWeight: .heavy, fColor: .white).padding(.trailing, 30)
+                        HStack {
+                            EventDetailPreviewRow(image: "Calender", title: "Sat, 09 May", subtitle: "18:00")
+                            Text("-").foregroundColor(.white)
+                            EventDetailPreviewRow(image: "", title: "Sat, 09 May", subtitle: "20:00", arrow: true)
+                        }
+                        EventDetailPreviewRow(image: "E_location", title: "Fortune House", subtitle: "134 Carstorphine Rd \u{2022} Madrid, Spain", arrow: true)
+                        EventDetailPreviewRow(image: "E_Arrow_NE", title: "Website")
+                        EventDetailPreviewRow(image: "E_mic", title: "Hosted in", subtitle: "German")
+                    }.padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.lightBrown)
+                    //
+                    AttendingListScrollView()
+                    LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
+                    AboutEventTextView(msgTapped: {
+                        self.showMsg = true
+                    })
+                    CommentSectionView()
+                    LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
+                    
+                    HStack {
+                        Spacer()
+                        if isInviteSent {
+                            Header5(title: "You sent a request to join")
+                                .padding(.trailing, 20)
+                        } else {
+                            if event.typeName == "Online Events" || event.typeName == "Metaverse Events" {
+                                LargeButton(title: "REQUEST TO ATTEND ONLINE", width:200, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
+                                    reserveSpot = true
+                                }.padding(.trailing, 20)
+                            } else if event.typeName == "Retreat" {
+                                if externalBooking {
+                                    LargeButton(title: "BOOK EVENT", width:140, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white, img: "arrow.right") {
+                                    }.padding(.trailing, 20)
+                                } else {
+                                    LargeButton(title: "RESERVE A SPOT", width:140, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
+                                        reserveSpot = true
+                                    }.padding(.trailing, 20)
+                                }
+                                
+                            }
+                        }
+                    }.padding(.vertical, 5)
+                    LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
+                }
+                
+                // Spacer()
+            }.edgesIgnoringSafeArea(.top)
+            customAlertView()
+            if showMsg {
+                SendMessageAlert(showAdd: $showMsg)
+                //GoingYesNoView(showAdd: $showMsg)
+                //GoingAlert(showAdd: $showMsg)
+            }
+            
+        } //zstack
+        .onChange(of: reserveSpot, perform: { newValue in
+            disableBtn = newValue
+        })
+        .onChange(of: showMsg, perform: { newValue in
+            disableBtn = newValue
+        })
+        .confirmationDialog("", isPresented: $showMoreAction, actions: {
+            Button("Follow"){ }
+            Button("Report Post"){ }
+        })
+        //            .onAppear(perform: {
+        //                if let image1 = UIImage(named: "magic-bowls"), let image2 = UIImage(named: "ic_launch") {
+        //                    images2 = [image2, image1]
+        //                }
+        //            })
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action : {
+            self.dismiss()
+        }){
+            Image(systemName: ImageName.chevronLeft)
+                .foregroundColor(.white)
+        }.disabled(disableBtn).opacity(disableBtn ? 0.3 : 1))
+        
+        .navigationBarItems(trailing: Button(action : {
+            print("More")
+            showMoreAction = true
+        }){
+            NavBarButtonImage(image: "More")
+        }.disabled(disableBtn).opacity(disableBtn ? 0.3 : 1))
+        
+        .navigationBarItems(trailing: Button(action : {
+            print("Share")
+        }){
+            NavBarButtonImage(image: "ic_bookmark", size: 22)
+        }.disabled(disableBtn).opacity(disableBtn ? 0.3 : 1))
+        
+        .navigationBarItems(trailing: Button(action : {
+            print("Share")
+        }){
+            NavBarButtonImage(image: "directArrow")
+        }.disabled(disableBtn).opacity(disableBtn ? 0.3 : 1))
+    }
+    
+    @ViewBuilder
+    func customAlertView() -> some View {
+        switch event.typeName {
+        case "Retreat":
+             SendInvitationAlertView(showAdd: $reserveSpot, inviteSent: $isInviteSent)
+        case "Online Events", "Metaverse Events":
+            SendInvitationOnlineMeta(showAdd: $reserveSpot, inviteSent: $isInviteSent)
+        default:
+             EmptyView()
+        }
     }
 }

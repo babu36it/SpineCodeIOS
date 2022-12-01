@@ -23,7 +23,7 @@ struct CustomAddItemSheet: View {
                 link(destination: QuestionAndThoughtView(), label: "Question or Thought")
                 link(destination: AddImageOrVideoView(addItemType: .videoImage), label: "Picture or Video")
                 link(destination: AddImageOrVideoView(addItemType: .story), label: "Story")
-                link(destination: AddEventView(), label: "Event")
+                link(destination: AddEventTypeSelectionView(), label: "Event")
                 link(destination: LinkRSSView(), label: "Podcast")
                 link(destination: CreateAdView(), label: "Ad")
             }

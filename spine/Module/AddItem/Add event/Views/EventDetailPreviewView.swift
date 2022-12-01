@@ -44,7 +44,7 @@ struct EventDetailPreviewView: View {
                     .frame(maxWidth: .infinity)
                     .background(Color.lightBrown)
                     
-                    AboutEventTextView(msgTapped: {
+                    EventDetailPreviewAboutView(msgTapped: {
                         
                     })
                     

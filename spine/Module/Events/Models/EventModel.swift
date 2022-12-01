@@ -14,10 +14,10 @@ class EventModel: ObservableObject, Codable, Identifiable {
     var file: String = ""
     var multiple: String = ""
     var type: String = ""
-    var startTime: String = ""
-    var startDate: String = ""
-    var endTime: String = ""
-    var endDate: String = ""
+    var _startTime: String = ""
+    var _startDate: String = ""
+    var _endTime: String = ""
+    var _endDate: String = ""
     var acctualStartDatetime: String = ""
     var acctualEndDatetime: String = ""
     var timezone: String = ""
@@ -57,10 +57,10 @@ class EventModel: ObservableObject, Codable, Identifiable {
     enum CodingKeys: String, CodingKey {
         case id, fee, title, file, multiple, type, timezone, location, latitude, longitude, status, language
         case userID = "user_id"
-        case startTime = "start_time"
-        case startDate = "start_date"
-        case endTime = "end_time"
-        case endDate = "end_date"
+        case _startTime = "start_time"
+        case _startDate = "start_date"
+        case _endTime = "end_time"
+        case _endDate = "end_date"
         case acctualStartDatetime = "acctual_start_datetime"
         case acctualEndDatetime = "acctual_end_datetime"
         case linkOfEvent = "link_of_event"
@@ -100,10 +100,10 @@ class EventModel: ObservableObject, Codable, Identifiable {
         file = try container.decodeIfPresent(String.self, forKey: .file) ?? ""
         multiple = try container.decodeIfPresent(String.self, forKey: .multiple) ?? ""
         type = try container.decodeIfPresent(String.self, forKey: .type) ?? ""
-        startTime = try container.decodeIfPresent(String.self, forKey: .startTime) ?? ""
-        startDate = try container.decodeIfPresent(String.self, forKey: .startDate) ?? ""
-        endTime = try container.decodeIfPresent(String.self, forKey: .endTime) ?? ""
-        endDate = try container.decodeIfPresent(String.self, forKey: .endDate) ?? ""
+        _startTime = try container.decodeIfPresent(String.self, forKey: ._startTime) ?? ""
+        _startDate = try container.decodeIfPresent(String.self, forKey: ._startDate) ?? ""
+        _endTime = try container.decodeIfPresent(String.self, forKey: ._endTime) ?? ""
+        _endDate = try container.decodeIfPresent(String.self, forKey: ._endDate) ?? ""
         acctualStartDatetime = try container.decodeIfPresent(String.self, forKey: .acctualStartDatetime) ?? ""
         acctualEndDatetime = try container.decodeIfPresent(String.self, forKey: .acctualEndDatetime) ?? ""
         timezone = try container.decodeIfPresent(String.self, forKey: .timezone) ?? ""
@@ -149,10 +149,10 @@ class EventModel: ObservableObject, Codable, Identifiable {
         try container.encode(file, forKey: .file)
         try container.encode(multiple, forKey: .multiple)
         try container.encode(type, forKey: .type)
-        try container.encode(startTime, forKey: .startTime)
-        try container.encode(startDate, forKey: .startDate)
-        try container.encode(endTime, forKey: .endTime)
-        try container.encode(endDate, forKey: .endDate)
+        try container.encode(_startTime, forKey: ._startTime)
+        try container.encode(_startDate, forKey: ._startDate)
+        try container.encode(_endTime, forKey: ._endTime)
+        try container.encode(_endDate, forKey: ._endDate)
         try container.encode(acctualStartDatetime, forKey: .acctualStartDatetime)
         try container.encode(acctualEndDatetime, forKey: .acctualEndDatetime)
         try container.encode(timezone, forKey: .timezone)
@@ -194,12 +194,60 @@ class EventModel: ObservableObject, Codable, Identifiable {
 }
 
 extension EventModel {
+    var startDate: Date? {
+        get {
+            if !_startDate.isEmpty, let date: Date = _startDate.toDate(format: "yyyy-MM-dd") {
+                return date
+            }
+            return nil
+        }
+        set {
+            _startDate = newValue?.toString("yyyy-MM-dd") ?? ""
+        }
+    }
+    
+    var startTime: Date? {
+        get {
+            if !_startTime.isEmpty, let date: Date = _startTime.toDate(format: "HH:mm:ss") {
+                return date
+            }
+            return nil
+        }
+        set {
+            _startTime = newValue?.toString("HH:mm:ss") ?? ""
+        }
+    }
+    
+    var endDate: Date? {
+        get {
+            if !_endDate.isEmpty, let date: Date = _endDate.toDate(format: "yyyy-MM-dd") {
+                return date
+            }
+            return nil
+        }
+        set {
+            _endDate = newValue?.toString("yyyy-MM-dd") ?? ""
+        }
+    }
+    
+    var endTime: Date? {
+        get {
+            if !_endTime.isEmpty, let date: Date = _endTime.toDate(format: "HH:mm:ss") {
+                return date
+            }
+            return nil
+        }
+        set {
+            _endTime = newValue?.toString("HH:mm:ss") ?? ""
+        }
+    }
+
     var eventDurationDateString: String {
         var dtStr: String = ""
-        if let startDate: Date = startDate.toDate(format: "yyyy-MM-dd") {
+        if let startDate: Date = startDate {
             dtStr = startDate.toString(format: "EEE, dd MMM yyyy")
         }
-        if let endDate: Date = endDate.toDate(format: "yyyy-MM-dd") {
+        if let endDate: Date = endDate {
             dtStr.append(" - ")
             dtStr.append(endDate.toString(format: "EEE, dd MMM yyyy"))
         }
@@ -208,11 +256,11 @@ extension EventModel {
     
     var eventDurationTimeString: String {
         var dtStr: String = ""
-        if let startTime: Date = startTime.toDate(format: "HH:mm:ss") {
+        if let startTime: Date = startTime {
             dtStr.append(startTime.toString(format: "HH:mm"))
         }
         dtStr.append(" - ")
-        if let endTime: Date = endTime.toDate(format: "HH:mm:ss") {
+        if let endTime: Date = endTime {
             dtStr.append(endTime.toString(format: "HH:mm"))
         }
         dtStr.append(" \(timezone)")
@@ -221,16 +269,16 @@ extension EventModel {
     
     var dateString: String {
         var dtStr: String = ""
-        if let startDate: Date = startDate.toDate(format: "yyyy-MM-dd") {
+        if let startDate: Date = startDate {
             dtStr = startDate.toString(format: "dd MMM")
         }
         
-        if let endDate: Date = endDate.toDate(format: "yyyy-MM-dd") {
+        if let endDate: Date = endDate {
             dtStr.append(" - ")
             dtStr.append(endDate.toString(format: "dd MMM yyyy"))
         }
         
-        if let endTime: Date = endTime.toDate(format: "HH:mm:ss") {
+        if let endTime: Date = endTime {
             dtStr.append(", ")
             dtStr.append(endTime.toString(format: "HH:mm"))
         }
@@ -277,15 +325,15 @@ extension EventModel {
     }
     
     var eventDays: String {
-        if let startDate: Date = startDate.toDate(format: "yyyy-MM-dd"), let endDate: Date = endDate.toDate(format: "yyyy-MM-dd") {
+        if let startDate: Date = startDate, let endDate: Date = endDate {
             let calendar = Calendar.current
             let daysPassed = calendar.startOfDay(for: endDate).daysInBetweenDate(calendar.startOfDay(for: startDate))
             if daysPassed > 1 {
                 return "\(daysPassed) days"
             } else if daysPassed == 1 {
                 return "\(daysPassed) day"
-            } else if !startTime.isEmpty, !endTime.isEmpty {
-                return "\(startTime) - \(endTime)"
+            } else if let startTime = startTime, let endTime = endTime {
+                return "\(startTime.toString("HH:mm")) - \(endTime.toString("HH:mm"))"
             }
         }
         return ""

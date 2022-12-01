@@ -94,9 +94,9 @@
 		048AD9F428A52FBA0091BC60 /* PaymentConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048AD9F328A52FBA0091BC60 /* PaymentConfirmView.swift */; };
 		048B0D5C2909167F003C7BA7 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B0D5B2909167F003C7BA7 /* Helper.swift */; };
 		048C0EB7288D020100EB362C /* QuestionAndThoughtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048C0EB6288D020100EB362C /* QuestionAndThoughtView.swift */; };
-		0491885C2858D07A002343CA /* AddEventTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049188592858D079002343CA /* AddEventTypeView.swift */; };
-		0491885D2858D07A002343CA /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491885A2858D079002343CA /* EventDetailsView.swift */; };
-		0491885E2858D07A002343CA /* AddEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491885B2858D07A002343CA /* AddEventView.swift */; };
+		0491885C2858D07A002343CA /* EventsTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049188592858D079002343CA /* EventsTypeListView.swift */; };
+		0491885D2858D07A002343CA /* AddEventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491885A2858D079002343CA /* AddEventDetailsView.swift */; };
+		0491885E2858D07A002343CA /* AddEventTypeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491885B2858D07A002343CA /* AddEventTypeSelectionView.swift */; };
 		0491886128590749002343CA /* SubCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491886028590749002343CA /* SubCategoryView.swift */; };
 		0491B1B62907A48400C4CD1C /* RssLinkOTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491B1B52907A48400C4CD1C /* RssLinkOTPViewModel.swift */; };
 		0491B1B8290814BB00C4CD1C /* PodcastInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491B1B7290814BB00C4CD1C /* PodcastInfoViewModel.swift */; };
@@ -350,9 +350,9 @@
 		048AD9F328A52FBA0091BC60 /* PaymentConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentConfirmView.swift; sourceTree = "<group>"; };
 		048B0D5B2909167F003C7BA7 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		048C0EB6288D020100EB362C /* QuestionAndThoughtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAndThoughtView.swift; sourceTree = "<group>"; };
-		049188592858D079002343CA /* AddEventTypeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventTypeView.swift; sourceTree = "<group>"; };
-		0491885A2858D079002343CA /* EventDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
-		0491885B2858D07A002343CA /* AddEventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventView.swift; sourceTree = "<group>"; };
+		049188592858D079002343CA /* EventsTypeListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsTypeListView.swift; sourceTree = "<group>"; };
+		0491885A2858D079002343CA /* AddEventDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventDetailsView.swift; sourceTree = "<group>"; };
+		0491885B2858D07A002343CA /* AddEventTypeSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventTypeSelectionView.swift; sourceTree = "<group>"; };
 		0491886028590749002343CA /* SubCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryView.swift; sourceTree = "<group>"; };
 		0491B1B52907A48400C4CD1C /* RssLinkOTPViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RssLinkOTPViewModel.swift; sourceTree = "<group>"; };
 		0491B1B7290814BB00C4CD1C /* PodcastInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastInfoViewModel.swift; sourceTree = "<group>"; };
@@ -658,9 +658,9 @@
 		04873C7828E60C750054A00C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0491885B2858D07A002343CA /* AddEventView.swift */,
-				049188592858D079002343CA /* AddEventTypeView.swift */,
-				0491885A2858D079002343CA /* EventDetailsView.swift */,
+				0491885B2858D07A002343CA /* AddEventTypeSelectionView.swift */,
+				049188592858D079002343CA /* EventsTypeListView.swift */,
+				0491885A2858D079002343CA /* AddEventDetailsView.swift */,
 				0488773D2859A73900C4022B /* AboutEventView.swift */,
 				04A3D3FD285AEF5A00827941 /* EventDetailPreviewView.swift */,
 				049D4599285B7179005FF3C2 /* EventConfirmationView.swift */,
@@ -1569,7 +1569,7 @@
 				18D5E3792824EC670075F5A2 /* APIRequest.swift in Sources */,
 				04A3D3FE285AEF5A00827941 /* EventDetailPreviewView.swift in Sources */,
 				180C16C22856CB140072D0DF /* PodcastConfirmationView.swift in Sources */,
-				0491885C2858D07A002343CA /* AddEventTypeView.swift in Sources */,
+				0491885C2858D07A002343CA /* EventsTypeListView.swift in Sources */,
 				66A237D7281709FC00CA3763 /* Constant.swift in Sources */,
 				0482B61328714AAA006017E9 /* StandardUser.swift in Sources */,
 				189D8B90282E2FD300C1126C /* FollowingFeedListVC.swift in Sources */,
@@ -1596,7 +1596,7 @@
 				66A237D1281709FC00CA3763 /* Collapsible.swift in Sources */,
 				0471A2E1286B09C5007779CF /* MyPublicProfileView.swift in Sources */,
 				047FA03A2876FF5A0062BF79 /* ViewModifiers.swift in Sources */,
-				0491885D2858D07A002343CA /* EventDetailsView.swift in Sources */,
+				0491885D2858D07A002343CA /* AddEventDetailsView.swift in Sources */,
 				04894D21286D9F4E00CF4860 /* MessageRow.swift in Sources */,
 				180C16C92856CB140072D0DF /* HelperViews.swift in Sources */,
 				049D653528A38AD300124805 /* AdPreviewView.swift in Sources */,
@@ -1794,7 +1794,7 @@
 				180C16C82856CB140072D0DF /* FilterPodcastView.swift in Sources */,
 				66A237B3281709FC00CA3763 /* SVRadialGradientLayer.m in Sources */,
 				04A0592928B62DC000262BDA /* CustomSheetViewController.swift in Sources */,
-				0491885E2858D07A002343CA /* AddEventView.swift in Sources */,
+				0491885E2858D07A002343CA /* AddEventTypeSelectionView.swift in Sources */,
 				66A237C5281709FC00CA3763 /* YBTextPickerDataModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

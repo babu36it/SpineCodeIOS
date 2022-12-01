@@ -6,85 +6,65 @@
 import SwiftUI
 
 struct TabBarView: View {
-//    @State private var currentView: Tab = .Ballots
     @State private var selection = 0
     @State private var showEvent = true
-    
-    init() {
-           // UITabBar.appearance().backgroundColor = UIColor.white
+
+    var handler: Binding<Int> { Binding(
+        get: { self.selection },
+        set: {
+            if $0 == self.selection {
+                print("Reset here!!")
+                if self.selection == 1 { // event home
+                    eventHomeView.updateSelectedTab(.none)
+                }
+            }
+            self.selection = $0
         }
-    
+    )}
+
     var body: some View {
-//        .navigationViewStyle(StackNavigationViewStyle())
-//        .navigationBarHidden(true)
-//        .edgesIgnoringSafeArea(.all)
-//        NavigationView { //prash
-            TabView(selection: $selection) {
-//                FeedListVC()
-                //FeedVC()
-                FeedHomeView()
-               // Text("Feed Tab")
-                //PodcastHomeView()
-                    .tabItem {
-                        Image(ImageName.ic_home).renderingMode(.template)
-                        Text("Feed")
-                    }
-                    .tag(0)
-
-               // Text("Event Tab")
-                //tab2View()
-                 //   .font(.system(size: 30, weight: .bold, design: .rounded))
-               // PodcastHomeView()
-
-//                NavigationLink("", isActive: $showEvent) {
-//                    EventsHomeView()
-//                }
+        TabView(selection: handler) {
+            FeedHomeView()
+                .tabItem {
+                    Image(ImageName.ic_home).renderingMode(.template)
+                    Text("Feed")
+                }
+                .tag(0)
             
-                EventsHomeView()
-                    .tabItem {
-                        Image(ImageName.ic_event).renderingMode(.template)
-                        Text("Event")
-                    }
-                    .tag(1)
-
-//                Text("Podcasts Tab")
-//                    .font(.system(size: 30, weight: .bold, design: .rounded))
-                 PodcastHomeView()
-               // tab3View()
-                    .tabItem {
-                        Image(ImageName.ic_podcast).renderingMode(.template)
-                        Text("Podcasts")
-                    }
-                    .tag(2)
-
-                //Text("Activities Tab")
-                  //  .font(.system(size: 30, weight: .bold, design: .rounded))
-                ActivityView()
-               //tab4View()
-                    .tabItem {
-                        Image(ImageName.ic_activites).renderingMode(.template)
-                        Text("Activities")
-                    }
-                    .tag(3)
-                
-               // Text("Profile Tab")
-//                    .font(.system(size: 30, weight: .bold, design: .rounded))
-                //ProfileVC()
-               // tab5View()
-                MyProfileHomeView()
-                    .tabItem {
-                        Image(ImageName.ic_profile).renderingMode(.template)
-                        Text("Profile")
-                    }
-                    .tag(4)
-            }//.modifier(DarkModeViewModifier())
-            .accentColor(K.appColors.appTheme)
-                   // .navigationViewStyle(StackNavigationViewStyle())
-                   // .navigationBarHidden(true)
-                  //  .edgesIgnoringSafeArea(.all)
-   //     }
-        
+            eventHomeView
+                .tabItem {
+                    Image(ImageName.ic_event).renderingMode(.template)
+                    Text("Event")
+                }
+                .tag(1)
+            
+            PodcastHomeView()
+                .tabItem {
+                    Image(ImageName.ic_podcast).renderingMode(.template)
+                    Text("Podcasts")
+                }
+                .tag(2)
+            
+            ActivityView()
+                .tabItem {
+                    Image(ImageName.ic_activites).renderingMode(.template)
+                    Text("Activities")
+                }
+                .tag(3)
+            
+            MyProfileHomeView()
+                .tabItem {
+                    Image(ImageName.ic_profile).renderingMode(.template)
+                    Text("Profile")
+                }
+                .tag(4)
+        }
+        .accentColor(K.appColors.appTheme)
     }
+    
+    private let eventHomeView: EventsHomeView = {
+        EventsHomeView()
+    }()
 }
 
 struct TabBarView_Previews: PreviewProvider {

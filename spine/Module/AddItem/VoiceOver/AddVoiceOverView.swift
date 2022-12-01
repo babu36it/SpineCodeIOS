@@ -133,18 +133,13 @@ struct AddVoiceOverView: View {
             }
         }
         .sheet(item: $viewModel.selectedMode) { mode in
-            switch mode {
-            case .camera:
-                SingleImagePicker(sourceType: .camera, selectedItem: self.$viewModel.selectedImage)
-            case .gallary:
-                SingleImagePicker(sourceType: .photoLibrary, selectedItem: self.$viewModel.selectedImage)
-            }
+            SingleImagePicker(sourceType: mode, selectedItem: self.$viewModel.selectedImage)
         }
         .actionSheet(isPresented: $viewModel.showAction) { () -> ActionSheet in
             ActionSheet(title: Text("Choose mode"), message: Text("Please choose your preferred mode to set your profile image"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
                 viewModel.selectedMode = .camera
             }), ActionSheet.Button.default(Text("Photo Library"), action: {
-                viewModel.selectedMode = .gallary
+                viewModel.selectedMode = .photoLibrary
             }), ActionSheet.Button.cancel()])
         }
         .navigationBarTitle(Text(viewModel.selectedImage != nil ? "" : "ADD IMAGE/VIDEO"), displayMode: .inline)

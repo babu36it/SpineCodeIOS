@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddEventTypeView: View {
+struct EventsTypeListView: View {
     @EnvironmentObject var addEventVM: AddEventViewModel
     var onSelect: (EventTypeModel) -> Void
     

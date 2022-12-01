@@ -11,7 +11,7 @@ import AVKit
 struct SingleImageOrVideoPickerView: View {
     @Binding var selectedMedia: Any?
     @State private var showAction = false
-    @State var selectedMode: MediaMode?
+    @State var selectedMode: UIImagePickerController.SourceType?
     var supportVideo = true
     
     var body: some View {
@@ -39,18 +39,13 @@ struct SingleImageOrVideoPickerView: View {
         }
         
         .sheet(item: $selectedMode) { mode in
-            switch mode {
-            case .camera:
-                SingleImagePicker(sourceType: .camera, selectedItem: self.$selectedMedia, supportVideo: supportVideo)
-            case .gallary:
-                SingleImagePicker(sourceType: .photoLibrary, selectedItem: self.$selectedMedia, supportVideo: supportVideo)
-            }
+            SingleImagePicker(sourceType: mode, selectedItem: self.$selectedMedia, supportVideo: supportVideo)
         }
         .actionSheet(isPresented: $showAction) { () -> ActionSheet in
             ActionSheet(title: Text("Choose mode"), message: Text("Please choose your preferred mode to set your profile image"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
                 selectedMode = .camera
             }), ActionSheet.Button.default(Text("Photo Library"), action: {
-                selectedMode = .gallary
+                selectedMode = .photoLibrary
             }), ActionSheet.Button.cancel()])
         }
     }

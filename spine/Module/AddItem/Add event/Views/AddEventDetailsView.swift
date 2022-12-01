@@ -1,5 +1,5 @@
 //
-//  EventDetailsView.swift
+//  AddEventDetailsView.swift
 //  spine
 //
 //  Created by Mac on 12/06/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EventDetailsView: View {
+struct AddEventDetailsView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var addEventVM: AddEventViewModel
     @EnvironmentObject var eventModel: EventModel
@@ -47,7 +47,7 @@ struct EventDetailsView: View {
                             startDate
                         } set: { newValue in
                             startDate = newValue
-                            eventModel.startDate = startDate.toString("yyyy-MM-dd")
+                            eventModel.startDate = startDate
                         }
                         DateSelectionView(type: .date, selectedDate: dateBinding, size: 15).padding(.vertical,2)
                         
@@ -55,7 +55,7 @@ struct EventDetailsView: View {
                             startTime
                         } set: { newValue in
                             startTime = newValue
-                            eventModel.startTime = startTime.toString("HH:mm")
+                            eventModel.startTime = startTime
                         }
                         DateSelectionView(type: .time, selectedDate: timeBinding, size: 15).padding(.vertical,2)
                     }.frame(width: 160)
@@ -66,7 +66,7 @@ struct EventDetailsView: View {
                             endDate
                         } set: { newValue in
                             endDate = newValue
-                            eventModel.startDate = endDate.toString("yyyy-MM-dd")
+                            eventModel.endDate = endDate
                         }
                         DateSelectionView(type: .date, selectedDate: dateBinding, size: 15).padding(.vertical,2)
 
@@ -74,7 +74,7 @@ struct EventDetailsView: View {
                             endTime
                         } set: { newValue in
                             endTime = newValue
-                            eventModel.endTime = endTime.toString("HH:mm")
+                            eventModel.endTime = endTime
                         }
                         DateSelectionView(type: .time, selectedDate: timeBinding, size: 15).padding(.vertical,2)
                     }.frame(width: 160)
@@ -220,10 +220,10 @@ struct EventDetailsView: View {
             Spacer()
         }
         .onAppear(perform: {
-            startDate = eventModel.startDate.toDate(format: "yyyy-MM-dd") ?? Date()
-            startTime = eventModel.startTime.toDate(format: "HH:mm") ?? Date()
-            endDate = eventModel.endDate.toDate(format: "yyyy-MM-dd") ?? Date()
-            endTime = eventModel.endTime.toDate(format: "HH:mm") ?? Date()
+            startDate = eventModel.startDate ?? Date()
+            startTime = eventModel.startTime ?? Date()
+            endDate = eventModel.endDate ?? Date()
+            endTime = eventModel.endTime ?? Date()
             
             isPaid = (Int(eventModel.fee) ?? 0) > 0
             acceptParticipants = eventModel.acceptParticipants.toBool() ?? false
@@ -309,7 +309,7 @@ struct AddImageView: View {
     
     @Binding  var images: [UIImage]
 
-    @State var selectedMode: MediaMode?
+    @State var selectedMode: UIImagePickerController.SourceType?
     @State private var showAction = false
     
     private let screenWidth = UIScreen.main.bounds.size.width
@@ -320,7 +320,11 @@ struct AddImageView: View {
             imageScroller
             
             Button {
-                showAction = true
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    showAction = true
+                } else {
+                    selectedMode = .photoLibrary
+                }
             } label: {
                 VStack(spacing: 10) {
                     Image(systemName: ImageName.cameraFill)
@@ -330,19 +334,26 @@ struct AddImageView: View {
         }
         .offset(y: -1)
         .sheet(item: $selectedMode) { mode in
-            switch mode {
-            case .camera:
-                ImagePicker(sourceType: .camera, selectedImages: self.$images)
-            case .gallary:
-                ImagePicker(sourceType: .photoLibrary, selectedImages: self.$images)
-            }
+            ImagePicker(sourceType: mode, selectedImages: self.$images)
         }
-        .actionSheet(isPresented: $showAction) { () -> ActionSheet in
-            ActionSheet(title: Text("Choose mode"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
-                selectedMode = .camera
-            }), ActionSheet.Button.default(Text("Photo Library"), action: {
-                selectedMode = .gallary
-            }), ActionSheet.Button.cancel()])
+        .actionSheet(isPresented: $showAction) {
+            var actionButtons: [ActionSheet.Button] = .init()
+            
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                let cameraButton: ActionSheet.Button = .default(Text("Camera"), action: {
+                    selectedMode = .camera
+                })
+                actionButtons.append(cameraButton)
+            }
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                let gallaryButton: ActionSheet.Button = .default(Text("Photo Library"), action: {
+                    selectedMode = .photoLibrary
+                })
+                actionButtons.append(gallaryButton)
+            }
+            actionButtons.append(.cancel())
+
+            return ActionSheet(title: Text("Choose mode"), buttons: actionButtons)
         }
     }
     

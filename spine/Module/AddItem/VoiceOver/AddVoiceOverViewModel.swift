@@ -5,11 +5,11 @@
 //  Created by Mac on 03/09/22.
 //
 
-import Foundation
+import UIKit
 
 class AddVoiceOverViewModel: ObservableObject {
     @Published var showAction = false
-    @Published var selectedMode: MediaMode?
+    @Published var selectedMode: UIImagePickerController.SourceType?
     @Published var images: [Any?] = [nil]
     @Published var selectedImage: Any?
     @Published var aboutText = ""

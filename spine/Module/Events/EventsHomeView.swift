@@ -10,7 +10,7 @@ import SwiftUI
 struct EventsHomeView: View {
     @State var searchText = ""
     @State var showAdd = false
-    @State var selectedTab: EventsHomeTab = .none
+    @State var selectedTab: EventsHomeTabType = .none
     @State var sheetType: EventSheetType?
     
     @StateObject var eventTypeTabVM: EventTypesViewModel = .init()
@@ -34,7 +34,7 @@ struct EventsHomeView: View {
                     VStack(spacing: 0) {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
-                                ForEach(EventsHomeTab.allTabs(), id: \.self) { tab in
+                                ForEach(EventsHomeTabType.allTabs(), id: \.self) { tab in
                                     SegmentedButtonDymanic(title: tab.rawValue, selectedTab: $selectedTab) {
                                         selectedTab = tab
                                     }
@@ -49,7 +49,7 @@ struct EventsHomeView: View {
                     
                     switch selectedTab {
                     case .none:
-                        EventTypesView(sheetType: $sheetType)
+                        EventTypesTabView(sheetType: $sheetType)
                             .environmentObject(eventTypeTabVM)
                     case .all, .saved, .online, .nearby:
                         EventSubTabView1(sheetType: $sheetType)
@@ -80,6 +80,10 @@ struct EventsHomeView: View {
             }
         }
     }
+    
+    func updateSelectedTab(_ tab: EventsHomeTabType) {
+        selectedTab = tab
+    }
 }
 
 struct EventsHomeView_Previews: PreviewProvider {
@@ -90,7 +94,7 @@ struct EventsHomeView_Previews: PreviewProvider {
 
 struct SegmentedButtonDymanic: View {
     let title: String
-    @Binding var selectedTab: EventsHomeTab
+    @Binding var selectedTab: EventsHomeTabType
     var onTapped: ()-> Void
     var body: some View {
         HStack {
@@ -111,7 +115,7 @@ struct SegmentedButtonDymanic: View {
     }
 }
 
-struct EventTypesView: View {
+struct EventTypesTabView: View {
     @Binding var sheetType: EventSheetType?
     @EnvironmentObject var eventTypeTabVM: EventTypesViewModel
     
@@ -339,11 +343,10 @@ struct EventsListView: View {
                         EventHomeDateRow(date: date)
                         if let events: [EventModel] = eventRecord.records, !events.isEmpty {
                             ForEach(events) { event in
-                                EventListItem()
-                                    .environmentObject(event)
-//                                NavigationLink(destination: EventsHomeDetailView(event: event, images: [])) {
-//                                    EventHomeRow(event: event)
-//                                }
+                                NavigationLink(destination: EventDetailView().environmentObject(event)) {
+                                    EventListItem()
+                                        .environmentObject(event)
+                                }
                             }
                         }
                     }
@@ -378,13 +381,13 @@ struct EventListItem: View {
                     Title4(title: event.userName)
                 }
                 VStack(alignment: .leading, spacing: 5) {
-                    SubHeader6(title: eventsListVM.eventType.name.uppercased(), fColor: .lightBrown)
+                    SubHeader6(title: event.typeName.uppercased(), fColor: .lightBrown)
                     
                     VStack(alignment: .leading) {
                         Title4(title: event.title)
                             .multilineTextAlignment(.leading)
-                        if eventsListVM.eventType.name.contains("Online Events") {
-                            Title4(title: event.startTime)
+                        if event.typeName.contains("Online Events"), let startTimeStr: String = event.startTime?.toString("HH:mm") {
+                            Title4(title: startTimeStr)
                         } else {
                             Title4(title: event.location, fColor: .lightGray2)
                         }

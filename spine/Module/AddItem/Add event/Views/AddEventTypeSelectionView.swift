@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddEventView: View {
+struct AddEventTypeSelectionView: View {
     @Environment(\.dismiss) var dismiss
 
     var dismissWithEventID: ((String?) -> Void)?
@@ -63,7 +63,7 @@ struct AddEventView: View {
             
             VStack {
                 Spacer()
-                AddEventTypeView(onSelect: { eventType in
+                EventsTypeListView(onSelect: { eventType in
                     let eventModel: EventModel = EventModel()
                     eventModel.type = eventType.id
                     addEventVM.selectedEvent = eventModel
@@ -99,8 +99,8 @@ struct AddEventView: View {
         }
     }
     
-    private func eventDetailsView(eventType: EventTypeModel) -> EventDetailsView {
-        var eventDV: EventDetailsView = .init(eventType: eventType)
+    private func eventDetailsView(eventType: EventTypeModel) -> AddEventDetailsView {
+        var eventDV: AddEventDetailsView = .init(eventType: eventType)
         eventDV.dismissWithEventID = { eventID in
             if let eventID = eventID {
                 print(eventID)

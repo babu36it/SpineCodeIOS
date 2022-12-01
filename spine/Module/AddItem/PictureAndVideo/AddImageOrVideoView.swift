@@ -14,16 +14,16 @@ enum AddItemType {
     case story
 }
 
-enum MediaMode: Identifiable {
-    var id: Int { self.hashValue }
-    case camera
-    case gallary
+extension UIImagePickerController.SourceType: Identifiable {
+    public var id: Int {
+        rawValue
+    }
 }
 
 struct AddImageOrVideoView: View {
     let addItemType: AddItemType
     @State private var showAction = false
-    @State var selectedMode: MediaMode?
+    @State var selectedMode: UIImagePickerController.SourceType?
     @Environment(\.dismiss) var dismiss
     @State var images: [Any?] = [nil]
     @State var selectedImage: Any?
@@ -128,18 +128,13 @@ struct AddImageOrVideoView: View {
             }
         }
         .sheet(item: $selectedMode) { mode in
-            switch mode {
-            case .camera:
-                SingleImagePicker(sourceType: .camera, selectedItem: self.$selectedImage)
-            case .gallary:
-                SingleImagePicker(sourceType: .photoLibrary, selectedItem: self.$selectedImage)
-            }
+            SingleImagePicker(sourceType: mode, selectedItem: self.$selectedImage)
         }
         .actionSheet(isPresented: $showAction) { () -> ActionSheet in
             ActionSheet(title: Text("Choose mode"), message: Text("Please choose your preferred mode to set your profile image"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
                 selectedMode = .camera
             }), ActionSheet.Button.default(Text("Photo Library"), action: {
-                selectedMode = .gallary
+                selectedMode = .photoLibrary
             }), ActionSheet.Button.cancel()])
         }
         .navigationBarTitle(Text(selectedImage != nil ? "" : "ADD IMAGE/VIDEO"), displayMode: .inline)

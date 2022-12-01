@@ -18,7 +18,7 @@ struct EditProfileView: View {
     @StateObject var editProfileViewModel: EditProfileViewModel = .init()
     @State private var showAction = false
     @State private var selectionType: ImageSelectionType = .none
-    @State var selectedMode: MediaMode?
+    @State var selectedMode: UIImagePickerController.SourceType?
     
     //2
     var body: some View {
@@ -66,16 +66,15 @@ struct EditProfileView: View {
                 }
             })
             .sheet(item: $selectedMode) { mode in
-                let imageSource: UIImagePickerController.SourceType = mode == .camera ? .camera : .photoLibrary
                 let imageBinding: Binding<[UIImage]> = selectionType == .background ? $editProfileViewModel.backgroundImages : $editProfileViewModel.images
                 let allowsEditing: Bool = selectionType == .profile
-                ImagePicker(sourceType: imageSource, allowsEditing: allowsEditing, selectedImages: imageBinding)
+                ImagePicker(sourceType: mode, allowsEditing: allowsEditing, selectedImages: imageBinding)
             }
             .actionSheet(isPresented: $showAction) { () -> ActionSheet in
                 ActionSheet(title: Text("Choose mode"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
                     selectedMode = .camera
                 }), ActionSheet.Button.default(Text("Photo Library"), action: {
-                    selectedMode = .gallary
+                    selectedMode = .photoLibrary
                 }), ActionSheet.Button.cancel()])
             }
             .navigationBarBackButtonHidden(true)
