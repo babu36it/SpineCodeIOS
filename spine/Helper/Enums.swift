@@ -59,8 +59,7 @@ enum EventType: String, CaseIterable, Identifiable {
     }
 }
 
-
-enum EventsHomeTabType: String, CaseIterable {
+enum EventsHomeTabType: String {
     case none
     case all = "ALL"
     case going = "GOING"
@@ -71,10 +70,24 @@ enum EventsHomeTabType: String, CaseIterable {
     case nearby = "NEARBY"
     case past = "PAST"
     
-    static func allTabs()->[EventsHomeTabType] {
+    static func allTabs() -> [EventsHomeTabType] {
         return [.all, .going, .saved, .following, .online, .meta, .nearby, .past]
     }
     
+    var requestType: EventRequest.RequestType {
+        switch self {
+        case .all: return .all
+        case .going: return .going
+        case .saved: return .saved
+        case .following: return .following
+        case .online: return .online
+        case .meta: return .metaverse
+        case .past: return .past
+        // FIXME: -
+        case .none: return .all
+        case .nearby: return .all
+        }
+    }
 }
 
 enum Invitation {

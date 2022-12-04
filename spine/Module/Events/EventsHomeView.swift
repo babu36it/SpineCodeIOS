@@ -12,9 +12,7 @@ struct EventsHomeView: View {
     @State var showAdd = false
     @State var selectedTab: EventsHomeTabType = .none
     @State var sheetType: EventSheetType?
-    
-    @StateObject var eventTypeTabVM: EventTypesViewModel = .init()
-    
+        
     var body: some View {
         NavigationView {
             ZStack {
@@ -43,18 +41,17 @@ struct EventsHomeView: View {
                         }
                         LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
                     }
-                    if selectedTab == .all { //&& filter selected
-                        FilterViewForEventList()
-                    }
+//                    if selectedTab == .all { //&& filter selected
+//                        FilterViewForEventList()
+//                    }
                     
                     switch selectedTab {
                     case .none:
                         EventTypesTabView(sheetType: $sheetType)
-                            .environmentObject(eventTypeTabVM)
-                    case .all, .saved, .online, .nearby:
-                        EventSubTabView1(sheetType: $sheetType)
-                    case .going, .following, .meta, .past:
-                        EventSubTabView2(sheetType: $sheetType)
+                            .environmentObject(EventTypesViewModel())
+                    default:
+                        EventSegmentTabView(sheetType: $sheetType, tabType: selectedTab)
+                            .environmentObject(EventsListViewModel())
                     }
                     Spacer()
                 }
@@ -154,9 +151,8 @@ struct EventTypesTabView: View {
         
         NavigationLink(isActive: $showEventTypes) {
             if let eventType: EventTypeModel = selectedEventType {
-                let eventListVM: EventsListViewModel = .init(eventType: eventType)
-                EventsListView()
-                    .environmentObject(eventListVM)
+                EventsListView(eventType: eventType)
+                    .environmentObject(EventsListViewModel())
             }
         } label: {
             EmptyView()
@@ -164,35 +160,46 @@ struct EventTypesTabView: View {
     }
 }
 
-struct EventSubTabView1: View {
+struct EventSegmentTabView: View {
+    @EnvironmentObject var eventsListVM: EventsListViewModel
+
     @Binding var sheetType: EventSheetType?
-    let events = [event1, event2, event3, event4]
     
+    let tabType: EventsHomeTabType
     
     var body: some View {
         VStack {
-            //
-            //FilterViewForEventList()
             ScrollView(.vertical, showsIndicators: false, content: {
-                EventHomeDateRow(date: Date())
-                ForEach(events, id: \.self) { event in
-                    if event.isBanner {
-                        EventBannerRow(image: event.bannerImg)
-                    } else {
-                        NavigationLink(destination: EventsHomeDetailView(event: event, images: [])) {
-                            EventHomeRow(event: event)
+                if let eventRecords = eventsListVM.eventRecords, !eventRecords.isEmpty {
+                    ForEach(eventRecords, id: \.startDate) { eventRecord in
+                        let date: Date = eventRecord.startDate?.toDate(format: "yyyy-MM-dd") ?? Date()
+                        EventHomeDateRow(date: date)
+                        if let events: [EventModel] = eventRecord.records, !events.isEmpty {
+                            ForEach(events) { event in
+                                let eventDetail: EventDetailViewModel = .init(event: event, eventImagePath: eventsListVM.eventImagePath, userImagePath: eventsListVM.userImagePath)
+                                NavigationLink(destination: EventDetailView(eventDetails: eventDetail)) {
+                                    EventListItem()
+                                        .environmentObject(event)
+                                }
+                            }
                         }
                     }
+                } else if let message = eventsListVM.message {
+                    Text(message)
+                        .padding(.top, 100)
                 }
             })
             
             LargeButton(title: "Map view", width:120, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
                 sheetType = .mapView
-            }.padding(.bottom, 20)
+            }
+            .padding(.bottom, 20)
+        }.onAppear {
+            eventsListVM.getEvents(forType: tabType.requestType)
         }
-        
     }
 }
+
 struct EventSubTabView2: View {
     @Binding var sheetType: EventSheetType?
     let events = [event5, event6, event7]
@@ -335,6 +342,8 @@ struct EventsListView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var eventsListVM: EventsListViewModel
     
+    let eventType: EventTypeModel
+    
     var body: some View {
         VStack {
             ScrollView(.vertical, showsIndicators: false, content: {
@@ -354,17 +363,17 @@ struct EventsListView: View {
                     }
                 } else if let message = eventsListVM.message {
                     Text(message)
-                        .font(.system(size: 40))
+                        .padding(.top, 100)
                 }
             })
         }
         .onAppear {
-            eventsListVM.getEvents()
+            eventsListVM.getEvents(forType: .all, eventTypeId: eventType.id)
         }
         .modifier(BackButtonModifier(action: {
             self.dismiss()
         }))
-        .navigationTitle(eventsListVM.eventType.name.uppercased())
+        .navigationTitle(eventType.name.uppercased())
     }
 }
 

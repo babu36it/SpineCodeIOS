@@ -10,8 +10,6 @@ import Foundation
 class EventsListViewModel: ObservableObject {
     private let service: EventServices = .init()
     
-    let eventType: EventTypeModel
-    
     private var shouldFetchMore: Bool = true
     
     private var eventResponse: EventAPIResponse? {
@@ -31,10 +29,6 @@ class EventsListViewModel: ObservableObject {
     var userImagePath: String? { eventResponse?.userImage }
     var eventImagePath: String? { eventResponse?.image }
 
-    init(eventType: EventTypeModel) {
-        self.eventType = eventType
-    }
-    
     func imagePath(forUserImage image: String?) -> String? {
         if let serverPath: String = eventResponse?.userImage, let image = image, !serverPath.isEmpty, !image.isEmpty {
             return "\(serverPath)\(image)"
@@ -49,7 +43,7 @@ class EventsListViewModel: ObservableObject {
         return nil
     }
     
-    func getEvents() {
+    func getEvents(forType type: EventRequest.RequestType, eventTypeId: String? = nil) {
         if shouldFetchMore {
             var page: Int = 1
             var pageLimit: Int = 10
@@ -59,7 +53,7 @@ class EventsListViewModel: ObservableObject {
             if let currentPageLimit: Int = Int(eventResponse?.currentPerPage ?? "0"), currentPageLimit > 0 {
                 pageLimit = currentPageLimit
             }
-            let eventRequest = EventRequest(page: page, perPage: pageLimit, type: .all, eventTypeID: eventType.id)
+            let eventRequest = EventRequest(page: page, perPage: pageLimit, type: type, eventTypeID: eventTypeId)
 //            let eventRequest = EventRequest(page: page, perPage: pageLimit, type: .past, eventTypeID: nil)
 
             service.getEvents(for: eventRequest) { [weak self] (result: Result<EventAPIResponse, CHError>) -> Void in

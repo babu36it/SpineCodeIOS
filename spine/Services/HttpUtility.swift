@@ -158,7 +158,7 @@ struct HttpUtility {
         let errCode = response.statusCode
         
         switch errCode {
-        case 200:
+        case 200, 201:
             print("Success")
             if error == nil && data != nil {
                 do {
