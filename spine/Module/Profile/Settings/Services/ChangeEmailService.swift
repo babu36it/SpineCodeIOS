@@ -10,12 +10,12 @@ import Foundation
 struct ChangeEmailService {
     private let httpUtility: HttpUtility = .shared
 
-    func updateUserEmail(_ toEmail: String, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
+    func updateUserEmail(_ toEmail: String, completion: @escaping(_ result: Result<GenericPostAPIResponse, CHError>) -> Void) {
         guard let updateEmail = URL(string: APIEndPoint.updateUserEmail.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(httpMethod: .post, postData: ["email": toEmail], url: updateEmail, resultType: EditProfileResponseModel.self) { result in
+        httpUtility.requestData(httpMethod: .post, postData: ["email": toEmail], url: updateEmail, resultType: GenericPostAPIResponse.self) { result in
             completion(result)
         }
     }

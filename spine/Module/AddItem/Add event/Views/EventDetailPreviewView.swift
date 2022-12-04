@@ -44,7 +44,7 @@ struct EventDetailPreviewView: View {
                     .frame(maxWidth: .infinity)
                     .background(Color.lightBrown)
                     
-                    EventDetailPreviewAboutView(msgTapped: {
+                    EventDetailPreviewAboutView(userImagePath: AppUtility.shared.userInfo?.imagePath, msgTapped: {
                         
                     })
                     

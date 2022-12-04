@@ -46,6 +46,10 @@ enum APIEndPoint: String {
     case timezones = "timezones"
     case publishEvent = "events/publishEvent"
     case getAllEvent = "events/getAllEvents"
+    case getEventAttendee = "events/getEventAttendee/%@"
+    case getEventComments = "events/getSpineEventsComment/%@"
+    case getEventCommentReplies = "/events/getSpineEventsReplys/%@"
+    case postEventComment = "events/spineEventsComment"
     
     var urlStr: String {
         return baseUrl + rawValue

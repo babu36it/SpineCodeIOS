@@ -19,12 +19,12 @@ class LanguagesListService {
         httpUtility.getCachedResponse(url: url, cachedFilename: CachedFileNames.languages, completion: completion)
     }
     
-    func updateLanguage(to language: LanguageModel, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
+    func updateLanguage(to language: LanguageModel, completion: @escaping(_ result: Result<GenericPostAPIResponse, CHError>) -> Void) {
         guard let updateLanguage = URL(string: APIEndPoint.updateLanguage.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(httpMethod: .post, postData: ["language_id": language.id], url: updateLanguage, resultType: EditProfileResponseModel.self) { result in
+        httpUtility.requestData(httpMethod: .post, postData: ["language_id": language.id], url: updateLanguage, resultType: GenericPostAPIResponse.self) { result in
             completion(result)
         }
     }

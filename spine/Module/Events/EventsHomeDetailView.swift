@@ -49,7 +49,7 @@ struct EventsHomeDetailView: View {
                     //
                     AttendingListScrollView()
                     LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
-                    AboutEventTextView(msgTapped: {
+                AboutEventTextView(msgTapped: {
                         self.showMsg = true
                     })
                     CommentSectionView()
@@ -212,6 +212,53 @@ struct AttendingListScrollView: View {
     }
 }
 
+struct EventAttendeesListView: View {
+    @StateObject private var attendeesListVM: EventAttendeesListViewModel = .init()
+    @State private var showAttendees = false
+    
+    let eventID: String
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            if attendeesListVM.attendees.isEmpty {
+                Title5(title: "---")
+            } else if attendeesListVM.attendees.count == 1 {
+                Title5(title: "1 person going")
+            } else {
+                Title5(title: "\(attendeesListVM.attendees.count) people are going")
+            }
+            HStack {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHStack {
+                        ForEach(attendeesListVM.attendees) { attendee in
+                            if let imagePath = attendeesListVM.imageForAttendee(attendee) {
+                                RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
+                                    .circularClip(radius: 40)
+                            }
+                        }
+                    }
+                }
+                Button {
+                    showAttendees = true
+                } label: {
+                    Image(systemName: ImageName.chevronLeft)
+                        .foregroundColor(.gray)
+                }
+
+                NavigationLink("", isActive: $showAttendees) {
+                    AttendeesListView()
+                        .environmentObject(attendeesListVM)
+                }
+            }
+        }
+        .onAppear {
+            attendeesListVM.getAttendees(for: eventID)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+    }
+}
+
 struct AboutEventTextView: View {
     let msgTapped: ()-> Void
     
@@ -244,13 +291,14 @@ struct AboutEventTextView: View {
 struct EventDetailPreviewAboutView: View {
     @EnvironmentObject var eventModel: EventModel
     
+    let userImagePath: String?
     let msgTapped: ()-> Void
     
     var body: some View {
         VStack(spacing: 20) {
             HStack(spacing: 15) {
-                if let imageServerPath: String = AppUtility.shared.userInfo?.imagePath, let userImage: String = eventModel.hostedProfilePic {
-                    let imageURL = "\(imageServerPath)\(userImage)"
+                if let userImagePath = userImagePath, let userImage: String = eventModel.hostedProfilePic {
+                    let imageURL = "\(userImagePath)\(userImage)"
                     RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imageURL))
                         .circularBorder(radius: 100, borderWidth: 3, shadowRadius: 5)
                         .aspectRatio(contentMode: .fill)
@@ -282,9 +330,6 @@ struct EventDetailPreviewAboutView: View {
 struct EventDetailView: View {
     @Environment(\.dismiss) var dismiss
 
-    @EnvironmentObject var eventListVM: EventsListViewModel
-    @EnvironmentObject var event: EventModel
-    
     @State private var showMoreAction = false
     @State private var showConfirmation = false
     @State private var reserveSpot = false
@@ -293,42 +338,66 @@ struct EventDetailView: View {
     @State private var disableBtn = false
 
     private let screenWidth = UIScreen.main.bounds.size.width
-    private var externalBooking = false
+    var externalBooking = false
     
-    private var images: [UIImage] = .init()
+    @StateObject var eventDetails: EventDetailViewModel
+
+//    init(eventDetails: EventDetailViewModel) {
+//        self.eventDetails = eventDetails
+//
+//        let appearance = UINavigationBarAppearance()
+//        appearance.configureWithTransparentBackground()
+//        appearance.backgroundColor = .clear
+//        appearance.shadowColor = .clear
+//        UINavigationBar.appearance().standardAppearance = appearance
+//    }
     
     var body: some View {
         ZStack {
             ScrollView { //put it down
                 VStack(spacing: 0) {
+                    let event: EventModel = eventDetails.event
+
                     ZStack(alignment: .bottomLeading) {
-                        HorizontalImageScroller(images: images)
+                        HorizontalImageScroller(images: eventDetails.eventImages)
                         DateBadge(date: Date())
                             .padding(20)
                     }
-                    // ScrollView {
+                    .onAppear { eventDetails.getEventImages() }
+
                     VStack(alignment: .leading, spacing: 14) {
                         PodcastTitle(title: event.typeName.uppercased(), fSize: 12, linelimit: 1, fontWeight: .black, fColor: .white)
                         PodcastTitle(title: event.title, fSize: 20, linelimit: 2, fontWeight: .heavy, fColor: .white).padding(.trailing, 30)
                         HStack {
-                            EventDetailPreviewRow(image: "Calender", title: "Sat, 09 May", subtitle: "18:00")
+                            let startDateStr = event.startDate?.toString("EEE, dd MMM") ?? ""
+                            let startTimeStr = event.startTime?.toString("HH:mm") ?? ""
+                            let endDateStr = event.endDate?.toString("EEE, dd MMM") ?? ""
+                            let endTimeStr = event.endTime?.toString("HH:mm") ?? ""
+
+                            EventDetailPreviewRow(image: "Calender", title: startDateStr, subtitle: startTimeStr)
                             Text("-").foregroundColor(.white)
-                            EventDetailPreviewRow(image: "", title: "Sat, 09 May", subtitle: "20:00", arrow: true)
+                            EventDetailPreviewRow(image: "", title: endDateStr, subtitle: endTimeStr, arrow: true)
                         }
-                        EventDetailPreviewRow(image: "E_location", title: "Fortune House", subtitle: "134 Carstorphine Rd \u{2022} Madrid, Spain", arrow: true)
-                        EventDetailPreviewRow(image: "E_Arrow_NE", title: "Website")
-                        EventDetailPreviewRow(image: "E_mic", title: "Hosted in", subtitle: "German")
-                    }.padding(.horizontal, 20)
-                        .padding(.vertical, 10)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.lightBrown)
-                    //
-                    AttendingListScrollView()
+                        EventDetailPreviewRow(image: "E_location", title: event.location, subtitle: "", arrow: true)
+                        EventDetailPreviewRow(image: "E_Arrow_NE", title: event.linkOfEvent)
+                        EventDetailPreviewRow(image: "E_mic", title: "Hosted in", subtitle: event.location)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.lightBrown)
+
+//                    AttendingListScrollView()
+                    EventAttendeesListView(eventID: event.id)
+                    
                     LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
-                    AboutEventTextView(msgTapped: {
+                    EventDetailPreviewAboutView(userImagePath: eventDetails.userImagePath, msgTapped: {
                         self.showMsg = true
                     })
-                    CommentSectionView()
+                    .environmentObject(eventDetails.event)
+                    
+                    EventDetailCommentSectionView(commentsVM: EventDetailCommentSectionViewModel(event: event))
+                    
                     LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
                     
                     HStack {
@@ -340,33 +409,36 @@ struct EventDetailView: View {
                             if event.typeName == "Online Events" || event.typeName == "Metaverse Events" {
                                 LargeButton(title: "REQUEST TO ATTEND ONLINE", width:200, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
                                     reserveSpot = true
-                                }.padding(.trailing, 20)
+                                }
+                                .padding(.trailing, 20)
                             } else if event.typeName == "Retreat" {
                                 if externalBooking {
                                     LargeButton(title: "BOOK EVENT", width:140, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white, img: "arrow.right") {
-                                    }.padding(.trailing, 20)
+                                    }
+                                    .padding(.trailing, 20)
                                 } else {
                                     LargeButton(title: "RESERVE A SPOT", width:140, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
                                         reserveSpot = true
-                                    }.padding(.trailing, 20)
+                                    }
+                                    .padding(.trailing, 20)
                                 }
-                                
                             }
                         }
-                    }.padding(.vertical, 5)
-                    LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
+                    }
+                    .padding(.vertical, 5)
+                    LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top)
+                        .frame(height: 4)
                 }
-                
-                // Spacer()
-            }.edgesIgnoringSafeArea(.top)
+            }
             customAlertView()
             if showMsg {
                 SendMessageAlert(showAdd: $showMsg)
-                //GoingYesNoView(showAdd: $showMsg)
-                //GoingAlert(showAdd: $showMsg)
             }
-            
-        } //zstack
+        }
+        .edgesIgnoringSafeArea(.top)
+        .modifier(BackButtonModifier(action: {
+            self.dismiss()
+        }))
         .onChange(of: reserveSpot, perform: { newValue in
             disableBtn = newValue
         })
@@ -377,19 +449,6 @@ struct EventDetailView: View {
             Button("Follow"){ }
             Button("Report Post"){ }
         })
-        //            .onAppear(perform: {
-        //                if let image1 = UIImage(named: "magic-bowls"), let image2 = UIImage(named: "ic_launch") {
-        //                    images2 = [image2, image1]
-        //                }
-        //            })
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: Button(action : {
-            self.dismiss()
-        }){
-            Image(systemName: ImageName.chevronLeft)
-                .foregroundColor(.white)
-        }.disabled(disableBtn).opacity(disableBtn ? 0.3 : 1))
-        
         .navigationBarItems(trailing: Button(action : {
             print("More")
             showMoreAction = true
@@ -402,7 +461,6 @@ struct EventDetailView: View {
         }){
             NavBarButtonImage(image: "ic_bookmark", size: 22)
         }.disabled(disableBtn).opacity(disableBtn ? 0.3 : 1))
-        
         .navigationBarItems(trailing: Button(action : {
             print("Share")
         }){
@@ -412,7 +470,7 @@ struct EventDetailView: View {
     
     @ViewBuilder
     func customAlertView() -> some View {
-        switch event.typeName {
+        switch eventDetails.event.typeName {
         case "Retreat":
              SendInvitationAlertView(showAdd: $reserveSpot, inviteSent: $isInviteSent)
         case "Online Events", "Metaverse Events":

@@ -24,12 +24,12 @@ class CurrenciesListService {
         httpUtility.getCachedResponse(url: url, cachedFilename: CachedFileNames.currencies, queue: .main, completion: completion)
     }
     
-    func updateCurrency(to currency: CurrencyModel, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
+    func updateCurrency(to currency: CurrencyModel, completion: @escaping(_ result: Result<GenericPostAPIResponse, CHError>) -> Void) {
         guard let updateCurrency = URL(string: APIEndPoint.updateCurrency.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(httpMethod: .post, postData: ["currency_id": currency.id], url: updateCurrency, resultType: EditProfileResponseModel.self) { result in
+        httpUtility.requestData(httpMethod: .post, postData: ["currency_id": currency.id], url: updateCurrency, resultType: GenericPostAPIResponse.self) { result in
             completion(result)
         }
     }

@@ -46,7 +46,6 @@ struct EventRequest {
 protocol CommonEventFetcher {
     func getEventsTypes(completion: @escaping(_ result: Result<APIResponseModel<[EventTypeModel]>, CHError>)-> Void)
     func getEvents<T: Decodable>(for request: EventRequest, completion: @escaping(_ result: Result<T, CHError>)-> Void)
-
 }
 
 extension CommonEventFetcher {

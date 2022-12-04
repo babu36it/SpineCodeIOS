@@ -79,8 +79,15 @@ struct HttpUtility {
         
         httpRequest(request, queue: queue, completion: completion)
     }
-    
-    func getData<T: Decodable>(request: URLRequest, resultType: T.Type, queue: DispatchQueue? = nil, completion: @escaping(_ result: Result<T, CHError>)-> Void){
+        
+    func getData<T: Decodable>(refresh: Bool = false, url: URL, resultType: T.Type, queue: DispatchQueue? = nil, completion: @escaping(_ result: Result<T, CHError>)-> Void) {
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.get.rawValue
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        if let authToken: String = AppUtility.shared.userInfo?.token {
+            request.addValue(authToken, forHTTPHeaderField: "Authorization")
+        }
         httpRequest(request, queue: queue, completion: completion)
     }
     

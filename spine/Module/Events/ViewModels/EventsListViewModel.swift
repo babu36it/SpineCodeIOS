@@ -26,10 +26,11 @@ class EventsListViewModel: ObservableObject {
     
     @Published var eventRecords: [EventAPIResponse.Records]?
     
-    var message: String? {
-        eventResponse?.message
-    }
+    var message: String? { eventResponse?.message }
     
+    var userImagePath: String? { eventResponse?.userImage }
+    var eventImagePath: String? { eventResponse?.image }
+
     init(eventType: EventTypeModel) {
         self.eventType = eventType
     }

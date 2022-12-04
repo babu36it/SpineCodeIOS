@@ -20,12 +20,12 @@ struct SaveEventsInCalendarService {
         }
     }
 
-    func updateSaveEventsInCalendarStatus(_ status: String, completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
+    func updateSaveEventsInCalendarStatus(_ status: String, completion: @escaping(_ result: Result<GenericPostAPIResponse, CHError>) -> Void) {
         guard let updateAuthorization = URL(string: APIEndPoint.saveEventToCalendar.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(httpMethod: .post, postData: ["calender_status": status], url: updateAuthorization, resultType: EditProfileResponseModel.self) { result in
+        httpUtility.requestData(httpMethod: .post, postData: ["calender_status": status], url: updateAuthorization, resultType: GenericPostAPIResponse.self) { result in
             completion(result)
         }
     }

@@ -22,7 +22,7 @@ class EditProfileViewModel: ObservableObject {
 
     @Published var profileType: BusinessProfileType = .practitioner
     @Published var professionalAcc = false
-    @Published var apiResponse: EditProfileResponseModel?
+    @Published var apiResponse: GenericPostAPIResponse?
     @Published var showLoader = false
     
     @Published var showAlert = false

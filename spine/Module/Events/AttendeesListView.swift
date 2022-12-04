@@ -111,7 +111,6 @@ struct MsgAttendeeView: View {
             
             Spacer()
         }
-        
         .navigationBarTitle("\(attendee.name.uppercased())", displayMode: .inline)
         .modifier(BackButtonModifier(action: {
             self.dismiss()

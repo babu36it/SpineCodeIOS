@@ -332,6 +332,7 @@ struct FilterViewForEventList: View {
 }
 
 struct EventsListView: View {
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var eventsListVM: EventsListViewModel
     
     var body: some View {
@@ -343,7 +344,8 @@ struct EventsListView: View {
                         EventHomeDateRow(date: date)
                         if let events: [EventModel] = eventRecord.records, !events.isEmpty {
                             ForEach(events) { event in
-                                NavigationLink(destination: EventDetailView().environmentObject(event)) {
+                                let eventDetail: EventDetailViewModel = .init(event: event, eventImagePath: eventsListVM.eventImagePath, userImagePath: eventsListVM.userImagePath)
+                                NavigationLink(destination: EventDetailView(eventDetails: eventDetail)) {
                                     EventListItem()
                                         .environmentObject(event)
                                 }
@@ -359,6 +361,10 @@ struct EventsListView: View {
         .onAppear {
             eventsListVM.getEvents()
         }
+        .modifier(BackButtonModifier(action: {
+            self.dismiss()
+        }))
+        .navigationTitle(eventsListVM.eventType.name.uppercased())
     }
 }
 

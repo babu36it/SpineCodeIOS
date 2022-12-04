@@ -20,22 +20,22 @@ class NotificationTypeService {
         }
     }
     
-    func updatePushNotificationStatus(params: [String: Any], completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
+    func updatePushNotificationStatus(params: [String: Any], completion: @escaping(_ result: Result<GenericPostAPIResponse, CHError>) -> Void) {
         guard let languagesList = URL(string: APIEndPoint.mobileNotifications.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(httpMethod: .post, postData: params, url: languagesList, resultType: EditProfileResponseModel.self) { result in
+        httpUtility.requestData(httpMethod: .post, postData: params, url: languagesList, resultType: GenericPostAPIResponse.self) { result in
             completion(result)
         }
     }
     
-    func updateEmailNotificationStatus(params: [String: Any], completion: @escaping(_ result: Result<EditProfileResponseModel, CHError>) -> Void) {
+    func updateEmailNotificationStatus(params: [String: Any], completion: @escaping(_ result: Result<GenericPostAPIResponse, CHError>) -> Void) {
         guard let languagesList = URL(string: APIEndPoint.emailNotifications.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(httpMethod: .post, postData: params, url: languagesList, resultType: EditProfileResponseModel.self) { result in
+        httpUtility.requestData(httpMethod: .post, postData: params, url: languagesList, resultType: GenericPostAPIResponse.self) { result in
             completion(result)
         }
     }
