@@ -12,14 +12,15 @@ struct EventsHomeView: View {
     @State var showAdd = false
     @State var selectedTab: EventsHomeTabType = .none
     @State var sheetType: EventSheetType?
-        
+
+    private let eventTypesVM: EventTypesViewModel = .init()
+    private let eventsListVM: EventsListViewModel = .init()
+    
     var body: some View {
         NavigationView {
             ZStack {
-                
                 VStack {
                     HStack(spacing: 0) {
-                        
                         SystemButton(image: "plus", font: .title2) {
                             self.showAdd.toggle()
                         }
@@ -27,7 +28,8 @@ struct EventsHomeView: View {
                         CustomButton(image: "FilterBTN") {
                             sheetType = .filter
                         }
-                    }.padding(.horizontal)
+                    }
+                    .padding(.horizontal)
                     
                     VStack(spacing: 0) {
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -48,10 +50,10 @@ struct EventsHomeView: View {
                     switch selectedTab {
                     case .none:
                         EventTypesTabView(sheetType: $sheetType)
-                            .environmentObject(EventTypesViewModel())
+                            .environmentObject(eventTypesVM)
                     default:
                         EventSegmentTabView(sheetType: $sheetType, tabType: selectedTab)
-                            .environmentObject(EventsListViewModel())
+                            .environmentObject(eventsListVM)
                     }
                     Spacer()
                 }
@@ -59,15 +61,16 @@ struct EventsHomeView: View {
                 VStack {
                     Spacer()
                     CustomAddItemSheet(dismisser: $showAdd).offset(y: self.showAdd ? 0: UIScreen.main.bounds.height)
-                }.background((self.showAdd ? Color.black.opacity(0.3) : Color.clear).onTapGesture {
+                }
+                .background((self.showAdd ? Color.black.opacity(0.3) : Color.clear).onTapGesture {
                     self.showAdd.toggle()
-                }).edgesIgnoringSafeArea(.all)
-            }.onAppear(perform: {
+                })
+                .edgesIgnoringSafeArea(.all)
+            }.onAppear {
                selectedTab = .none
-            })
+            }
             .animation(.default, value: showAdd)
             .navigationBarHidden(true)
-
             .fullScreenCover(item: $sheetType) { item in
                 if item == .filter {
                     EventFilterView()
@@ -164,38 +167,41 @@ struct EventSegmentTabView: View {
     @EnvironmentObject var eventsListVM: EventsListViewModel
 
     @Binding var sheetType: EventSheetType?
-    
     let tabType: EventsHomeTabType
     
     var body: some View {
         VStack {
-            ScrollView(.vertical, showsIndicators: false, content: {
-                if let eventRecords = eventsListVM.eventRecords, !eventRecords.isEmpty {
+            ScrollView(.vertical, showsIndicators: false) {
+                if let eventRecords = eventsListVM.eventRecords[tabType.requestType], !eventRecords.isEmpty {
                     ForEach(eventRecords, id: \.startDate) { eventRecord in
                         let date: Date = eventRecord.startDate?.toDate(format: "yyyy-MM-dd") ?? Date()
-                        EventHomeDateRow(date: date)
                         if let events: [EventModel] = eventRecord.records, !events.isEmpty {
                             ForEach(events) { event in
-                                let eventDetail: EventDetailViewModel = .init(event: event, eventImagePath: eventsListVM.eventImagePath, userImagePath: eventsListVM.userImagePath)
+                                let eventDetail: EventDetailViewModel = .init(event: event, eventImagePath: eventsListVM.eventImagePath(forRequestType: tabType.requestType), userImagePath: eventsListVM.userImagePath(forRequestType: tabType.requestType))
                                 NavigationLink(destination: EventDetailView(eventDetails: eventDetail)) {
-                                    EventListItem()
+                                    EventListItem(tabType: tabType)
                                         .environmentObject(event)
                                 }
+                                EventHomeDateRow(date: date)
                             }
                         }
                     }
-                } else if let message = eventsListVM.message {
+                } else if let message = eventsListVM.message(forRequestType: tabType.requestType) {
                     Text(message)
                         .padding(.top, 100)
                 }
+            }
+            .onAppear {
+                eventsListVM.getEvents(forType: tabType.requestType)
+            }
+            .onChange(of: tabType, perform: { newTab in
+                eventsListVM.getEvents(forType: newTab.requestType)
             })
-            
+
             LargeButton(title: "Map view", width:120, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
                 sheetType = .mapView
             }
             .padding(.bottom, 20)
-        }.onAppear {
-            eventsListVM.getEvents(forType: tabType.requestType)
         }
     }
 }
@@ -347,21 +353,21 @@ struct EventsListView: View {
     var body: some View {
         VStack {
             ScrollView(.vertical, showsIndicators: false, content: {
-                if let eventRecords = eventsListVM.eventRecords, !eventRecords.isEmpty {
+                if let eventRecords = eventsListVM.eventRecords[EventsHomeTabType.all.requestType], !eventRecords.isEmpty {
                     ForEach(eventRecords, id: \.startDate) { eventRecord in
                         let date: Date = eventRecord.startDate?.toDate(format: "yyyy-MM-dd") ?? Date()
                         EventHomeDateRow(date: date)
                         if let events: [EventModel] = eventRecord.records, !events.isEmpty {
                             ForEach(events) { event in
-                                let eventDetail: EventDetailViewModel = .init(event: event, eventImagePath: eventsListVM.eventImagePath, userImagePath: eventsListVM.userImagePath)
+                                let eventDetail: EventDetailViewModel = .init(event: event, eventImagePath: eventsListVM.eventImagePath(forRequestType: EventsHomeTabType.none.requestType), userImagePath: eventsListVM.userImagePath(forRequestType: EventsHomeTabType.none.requestType))
                                 NavigationLink(destination: EventDetailView(eventDetails: eventDetail)) {
-                                    EventListItem()
+                                    EventListItem(tabType: EventsHomeTabType.none)
                                         .environmentObject(event)
                                 }
                             }
                         }
                     }
-                } else if let message = eventsListVM.message {
+                } else if let message = eventsListVM.message(forRequestType: EventsHomeTabType.all.requestType) {
                     Text(message)
                         .padding(.top, 100)
                 }
@@ -380,14 +386,16 @@ struct EventsListView: View {
 struct EventListItem: View {
     @EnvironmentObject var eventsListVM: EventsListViewModel
     @EnvironmentObject var event: EventModel
-
-    @State var eventCost: String = ""
     
+    @State private var eventCost: String = ""
+
+    let tabType: EventsHomeTabType
+
     var body: some View {
         VStack {
             HStack {
                 VStack(spacing: 10) {
-                    if let userImage = event.hostedProfilePic, let imagePath: String = eventsListVM.imagePath(forUserImage: userImage) {
+                    if let userImage = event.hostedProfilePic, let imagePath: String = eventsListVM.imagePath(forUserImage: userImage, onRequestType: tabType.requestType) {
                         RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
                             .circularClip(radius: 65)
                     } else {

@@ -84,7 +84,7 @@ enum EventsHomeTabType: String {
         case .meta: return .metaverse
         case .past: return .past
         // FIXME: -
-        case .none: return .all
+        case .none: return .none
         case .nearby: return .all
         }
     }

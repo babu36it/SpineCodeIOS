@@ -20,6 +20,7 @@ struct EventPublishResponse: Codable {
 
 struct EventRequest {
     enum RequestType: String {
+        case none = "none"
         case all = "all"
         case saved = "saved"
         case going = "going"
@@ -35,7 +36,8 @@ struct EventRequest {
     let eventTypeID: String?
     
     var queryParams: [String: Any] {
-        var params: [String: Any] = ["page": page, "per_page": perPage, "type": type.rawValue]
+        let requestTypeStr = (type == .none) ? RequestType.all.rawValue : type.rawValue
+        var params: [String: Any] = ["page": page, "per_page": perPage, "type": requestTypeStr]
         if let eventTypeID = eventTypeID {
             params["event_type_id"] = eventTypeID
         }
