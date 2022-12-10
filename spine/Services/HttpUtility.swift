@@ -12,11 +12,28 @@ struct Media {
     let filename: String
     let data: Data
     let mimeType: String
+    
     init?(withImage image: UIImage, forKey key: String) {
+        guard let data = image.jpegData(compressionQuality: 0.7) else { return nil }
         self.key = key
         self.mimeType = "image/jpeg"
         self.filename = "\(Date().timeIntervalSince1970.rounded()).jpg"
-        guard let data = image.jpegData(compressionQuality: 0.7) else { return nil }
+        self.data = data
+    }
+    
+    init?(withVideo videoURL: URL, forKey key: String) {
+        guard let data = try? Data(contentsOf: videoURL) else { return nil }
+        self.key = key
+        self.mimeType = "video/mp4"
+        self.filename = "\(Date().timeIntervalSince1970.rounded()).jpg"
+        self.data = data
+    }
+    
+    init?(withAudio audioURL: URL, forKey key: String) {
+        guard let data = try? Data(contentsOf: audioURL) else { return nil }
+        self.key = key
+        self.mimeType = "audio/mp3"
+        self.filename = "\(Date().timeIntervalSince1970.rounded()).jpg"
         self.data = data
     }
 }

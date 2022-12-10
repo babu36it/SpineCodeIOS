@@ -13,8 +13,10 @@ protocol SelectionListItemable: Identifiable {
 }
 
 protocol SelectionListable: ObservableObject {
-    var listItems: [any SelectionListItemable] { get set }
-    var selectedItem: (any SelectionListItemable)? { get set }
+    associatedtype ListItemable: SelectionListItemable
+    
+    var listItems: [ListItemable] { get set }
+    var selectedItem: ListItemable? { get set }
     var showLoader: Bool { get set }
     var showAlert: Bool { get set }
     var searchText: String { get set }
@@ -23,7 +25,7 @@ protocol SelectionListable: ObservableObject {
     var navTitle: String { get }
 
     func getListItems()
-    func didSelect(item: any SelectionListItemable, completion: @escaping (Bool) -> Void)
+    func didSelect(item: ListItemable, completion: @escaping (Bool) -> Void)
 }
 
 struct SelectionListView<ViewModel: SelectionListable>: View {

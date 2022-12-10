@@ -38,7 +38,7 @@ struct CustomAddItemSheet: View {
         .cornerRadius(25)
     }
     
-    private func link(destination: some View, label: String) -> some View {
+    private func link<T>(destination: T, label: String) -> some View where T: View {
         NavigationLink(destination: destination.onAppear(perform: { dismisser.toggle() }), label: {
             Title3(title: label)
                 .padding(.vertical, 10)

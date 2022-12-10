@@ -8,7 +8,7 @@
 import Foundation
 import AVFoundation
 fileprivate let numberOfSamples1: Int = 100
-class VoiceViewModel : NSObject, ObservableObject , AVAudioPlayerDelegate{
+class VoiceViewModel : NSObject, ObservableObject , AVAudioPlayerDelegate {
     
     var audioRecorder : AVAudioRecorder!
     var audioPlayer : AVAudioPlayer!

@@ -35,7 +35,11 @@ struct AddVoiceOverView: View {
                                     }
                                 } else {
                                     AddCameraView(isAdd: viewModel.images.count != 2) {
-                                        viewModel.showAction = true
+                                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                            viewModel.showAction = true
+                                        } else {
+                                            viewModel.selectedMode = .photoLibrary
+                                        }
                                     }
                                 }
                             }
@@ -97,8 +101,6 @@ struct AddVoiceOverView: View {
                                 CustomTextFieldWithCount(searchText: $viewModel.hashTags, placeholder: "Enter", hashCount: 5)
                             }
                             
-                            
-                            
                             VStack(alignment: .leading) {
                                 EventDetailTitle(text: "Mark Friends")
                                 CustomTextFieldWithCount(searchText: $viewModel.markFriends, placeholder: "Enter")
@@ -118,7 +120,13 @@ struct AddVoiceOverView: View {
                                 }.foregroundColor(.lightBrown)
                                 Spacer()
                                 LargeButton(disable: false, title: "POST", width: 80, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
-                                    
+                                    viewModel.createVoiceOver(recording: voiceVM.filePath) { status, error in
+                                        if status {
+                                            self.dismiss()
+                                        } else {
+                                            // show alert
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -135,12 +143,18 @@ struct AddVoiceOverView: View {
         .sheet(item: $viewModel.selectedMode) { mode in
             SingleImagePicker(sourceType: mode, selectedItem: self.$viewModel.selectedImage)
         }
-        .actionSheet(isPresented: $viewModel.showAction) { () -> ActionSheet in
-            ActionSheet(title: Text("Choose mode"), message: Text("Please choose your preferred mode to set your profile image"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
-                viewModel.selectedMode = .camera
-            }), ActionSheet.Button.default(Text("Photo Library"), action: {
-                viewModel.selectedMode = .photoLibrary
-            }), ActionSheet.Button.cancel()])
+        .actionSheet(isPresented: $viewModel.showAction) {
+            var buttons: [ActionSheet.Button] = []
+            
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                buttons.append(.default(Text("Camera"), action: { viewModel.selectedMode = .camera }))
+            }
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                buttons.append(.default(Text("Camera"), action: { viewModel.selectedMode = .photoLibrary }))
+            }
+            buttons.append(.cancel())
+            
+            return ActionSheet(title: Text("Choose mode"), message: Text("Please choose your preferred mode to set your profile image"), buttons: buttons)
         }
         .navigationBarTitle(Text(viewModel.selectedImage != nil ? "" : "ADD IMAGE/VIDEO"), displayMode: .inline)
         .modifier(BackButtonModifier(fColor: viewModel.selectedImage != nil ? .white : .primary ,action: {

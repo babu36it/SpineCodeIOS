@@ -65,6 +65,8 @@ extension EventCategoryModel: SelectionListItemable {
 }
 
 extension EventCategoryListViewModel: SelectionListable {
+    typealias ListItemable = EventCategoryModel
+    
     var showAlert: Bool {
         get { self.showAlertView }
         set { self.showAlertView = newValue }
@@ -80,19 +82,19 @@ extension EventCategoryListViewModel: SelectionListable {
         set { alertMessageStr = newValue }
     }
     
-    func didSelect(item: any SelectionListItemable, completion: @escaping (Bool) -> Void) {
-        selectedCategory = item as? EventCategoryModel
+    func didSelect(item: ListItemable, completion: @escaping (Bool) -> Void) {
+        selectedCategory = item
         if let didSelectCategory = didSelectCategory {
             completion(didSelectCategory(selectedCategory))
         }
     }
     
-    var selectedItem: (any SelectionListItemable)? {
+    var selectedItem: ListItemable? {
         get { selectedCategory }
-        set { selectedCategory = newValue as? EventCategoryModel }
+        set { selectedCategory = newValue }
     }
     
-    var listItems: [any SelectionListItemable] {
+    var listItems: [ListItemable] {
         get { filteredCategories ?? [] }
         set { }
     }

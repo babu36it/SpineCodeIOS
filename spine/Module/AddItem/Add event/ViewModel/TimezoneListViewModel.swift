@@ -65,6 +65,8 @@ extension TimezoneModel: SelectionListItemable {
 }
 
 extension TimezoneListViewModel: SelectionListable {
+    typealias ListItemable = TimezoneModel
+    
     var showAlert: Bool {
         get { self.showAlertView }
         set { self.showAlertView = newValue }
@@ -80,19 +82,19 @@ extension TimezoneListViewModel: SelectionListable {
         set { alertMessageStr = newValue }
     }
     
-    func didSelect(item: any SelectionListItemable, completion: @escaping (Bool) -> Void) {
-        selectedTimezone = item as? TimezoneModel
+    func didSelect(item: ListItemable, completion: @escaping (Bool) -> Void) {
+        selectedTimezone = item
         if let didSelectTimezone = didSelectTimezone {
             completion(didSelectTimezone(selectedTimezone))
         }
     }
     
-    var selectedItem: (any SelectionListItemable)? {
+    var selectedItem: ListItemable? {
         get { selectedTimezone }
-        set { selectedTimezone = newValue as? TimezoneModel }
+        set { selectedTimezone = newValue }
     }
     
-    var listItems: [any SelectionListItemable] {
+    var listItems: [ListItemable] {
         get { filteredTimezones ?? [] }
         set { }
     }

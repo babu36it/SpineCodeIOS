@@ -87,6 +87,8 @@ extension CurrencyModel: SelectionListItemable {
 }
 
 extension CurrenciesListViewModel: SelectionListable {
+    typealias ListItemable = CurrencyModel
+
     var showAlert: Bool {
         get { self.showAlertView }
         set { self.showAlertView = newValue }
@@ -102,8 +104,8 @@ extension CurrenciesListViewModel: SelectionListable {
         set { alertMessageStr = newValue }
     }
 
-    func didSelect(item: any SelectionListItemable, completion: @escaping (Bool) -> Void) {
-        selectedCurrency = item as? CurrencyModel
+    func didSelect(item: ListItemable, completion: @escaping (Bool) -> Void) {
+        selectedCurrency = item
         if let didSelectCurrency = didSelectCurrency {
             completion(didSelectCurrency(selectedCurrency))
         } else {
@@ -119,12 +121,12 @@ extension CurrenciesListViewModel: SelectionListable {
         }
     }
     
-    var selectedItem: (any SelectionListItemable)? {
+    var selectedItem: ListItemable? {
         get { selectedCurrency }
-        set { selectedCurrency = newValue as? CurrencyModel }
+        set { selectedCurrency = newValue }
     }
     
-    var listItems: [any SelectionListItemable] {
+    var listItems: [ListItemable] {
         get { filteredCurrencies ?? [] }
         set { }
     }

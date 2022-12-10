@@ -42,11 +42,11 @@ class EditProfileViewModel: ObservableObject {
         }
     }
 
-    private func imageDownloadTask(with imageURL: URL) -> any Publisher<UIImage?, Never> {
+    private func imageDownloadTask<T: Publisher>(with imageURL: URL) -> T? {
         URLSession.shared.dataTaskPublisher(for: imageURL)
             .map { (data, response) in UIImage(data: data) }
             .replaceError(with: nil)
-            .receive(on: DispatchQueue.main)
+            .receive(on: DispatchQueue.main) as? T
     }
     
     func getUserProfile() {

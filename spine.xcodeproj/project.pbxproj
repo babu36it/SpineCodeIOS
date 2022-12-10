@@ -101,7 +101,6 @@
 		0491B1B62907A48400C4CD1C /* RssLinkOTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491B1B52907A48400C4CD1C /* RssLinkOTPViewModel.swift */; };
 		0491B1B8290814BB00C4CD1C /* PodcastInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491B1B7290814BB00C4CD1C /* PodcastInfoViewModel.swift */; };
 		0492CCEF28C30FEC00A2E29E /* AddVoiceOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0492CCEE28C30FEC00A2E29E /* AddVoiceOverView.swift */; };
-		0492CCF128C369E000A2E29E /* AddVoiceOverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0492CCF028C369E000A2E29E /* AddVoiceOverViewModel.swift */; };
 		0496238C28CC615F003F14F8 /* VoiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0496238B28CC615F003F14F8 /* VoiceViewModel.swift */; };
 		0496238E28CC627E003F14F8 /* MicrophoneVisualization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0496238D28CC627E003F14F8 /* MicrophoneVisualization.swift */; };
 		0496239028CCE026003F14F8 /* AudioPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0496238F28CCE026003F14F8 /* AudioPreviewView.swift */; };
@@ -172,6 +171,8 @@
 		2C1EC5A2293B4CD00037B6E7 /* EventAttendeesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1EC5A1293B4CD00037B6E7 /* EventAttendeesListViewModel.swift */; };
 		2C1EC5A4293BEE410037B6E7 /* UINavigationBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1EC5A3293BEE410037B6E7 /* UINavigationBar+Extensions.swift */; };
 		2C1EC5A6293C842B0037B6E7 /* EventDetailCommentSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1EC5A5293C842B0037B6E7 /* EventDetailCommentSectionViewModel.swift */; };
+		2C3786ED2943D10A008E9FE2 /* AddVoiceOverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3786EC2943D10A008E9FE2 /* AddVoiceOverViewModel.swift */; };
+		2C3786EF2943D919008E9FE2 /* AddVoiceOverService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3786EE2943D919008E9FE2 /* AddVoiceOverService.swift */; };
 		2C47FADE291AE17800F7EE46 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47FADD291AE17800F7EE46 /* EditProfileViewModel.swift */; };
 		2C47FAE1291AE1E200F7EE46 /* EditProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47FAE0291AE1E200F7EE46 /* EditProfileService.swift */; };
 		2C47FAE3291D846600F7EE46 /* UserDetailResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C47FAE2291D846600F7EE46 /* UserDetailResponse.swift */; };
@@ -361,7 +362,6 @@
 		0491B1B52907A48400C4CD1C /* RssLinkOTPViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RssLinkOTPViewModel.swift; sourceTree = "<group>"; };
 		0491B1B7290814BB00C4CD1C /* PodcastInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastInfoViewModel.swift; sourceTree = "<group>"; };
 		0492CCEE28C30FEC00A2E29E /* AddVoiceOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVoiceOverView.swift; sourceTree = "<group>"; };
-		0492CCF028C369E000A2E29E /* AddVoiceOverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVoiceOverViewModel.swift; sourceTree = "<group>"; };
 		0496238B28CC615F003F14F8 /* VoiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceViewModel.swift; sourceTree = "<group>"; };
 		0496238D28CC627E003F14F8 /* MicrophoneVisualization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneVisualization.swift; sourceTree = "<group>"; };
 		0496238F28CCE026003F14F8 /* AudioPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPreviewView.swift; sourceTree = "<group>"; };
@@ -432,6 +432,8 @@
 		2C1EC5A1293B4CD00037B6E7 /* EventAttendeesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAttendeesListViewModel.swift; sourceTree = "<group>"; };
 		2C1EC5A3293BEE410037B6E7 /* UINavigationBar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Extensions.swift"; sourceTree = "<group>"; };
 		2C1EC5A5293C842B0037B6E7 /* EventDetailCommentSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailCommentSectionViewModel.swift; sourceTree = "<group>"; };
+		2C3786EC2943D10A008E9FE2 /* AddVoiceOverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVoiceOverViewModel.swift; sourceTree = "<group>"; };
+		2C3786EE2943D919008E9FE2 /* AddVoiceOverService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVoiceOverService.swift; sourceTree = "<group>"; };
 		2C47FADD291AE17800F7EE46 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		2C47FAE0291AE1E200F7EE46 /* EditProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileService.swift; sourceTree = "<group>"; };
 		2C47FAE2291D846600F7EE46 /* UserDetailResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailResponse.swift; sourceTree = "<group>"; };
@@ -770,9 +772,9 @@
 		0492CCED28C30DF300A2E29E /* VoiceOver */ = {
 			isa = PBXGroup;
 			children = (
+				2C3786EA2943D0F7008E9FE2 /* Services */,
+				2C3786EB2943D0F7008E9FE2 /* ViewModels */,
 				0492CCEE28C30FEC00A2E29E /* AddVoiceOverView.swift */,
-				0492CCF028C369E000A2E29E /* AddVoiceOverViewModel.swift */,
-				0496238B28CC615F003F14F8 /* VoiceViewModel.swift */,
 				0496238D28CC627E003F14F8 /* MicrophoneVisualization.swift */,
 				0496238F28CCE026003F14F8 /* AudioPreviewView.swift */,
 			);
@@ -1032,6 +1034,23 @@
 			children = (
 				2C0913AE292242DF009ECF8F /* OTPViewModel.swift */,
 				2C5BADEA292541A500BB31D1 /* MobileOTPViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2C3786EA2943D0F7008E9FE2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2C3786EE2943D919008E9FE2 /* AddVoiceOverService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2C3786EB2943D0F7008E9FE2 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				0496238B28CC615F003F14F8 /* VoiceViewModel.swift */,
+				2C3786EC2943D10A008E9FE2 /* AddVoiceOverViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1592,13 +1611,13 @@
 				180C16C42856CB140072D0DF /* ReviewPodcastView.swift in Sources */,
 				66A237C2281709FC00CA3763 /* APIService.swift in Sources */,
 				66A237CF281709FC00CA3763 /* EmailHelper.swift in Sources */,
+				2C3786ED2943D10A008E9FE2 /* AddVoiceOverViewModel.swift in Sources */,
 				049D653728A3FCE600124805 /* CustomImageView.swift in Sources */,
 				2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */,
 				180C16C62856CB140072D0DF /* LinkRSSView.swift in Sources */,
 				2C8853A42937DC37008F922E /* EventsListViewModel.swift in Sources */,
 				188F227E2840B49E00F8896D /* MemberGalleryVC.swift in Sources */,
 				66A237B6281709FC00CA3763 /* SVIndefiniteAnimatedView.m in Sources */,
-				0492CCF128C369E000A2E29E /* AddVoiceOverViewModel.swift in Sources */,
 				180C16CB2856CB140072D0DF /* PodcastHomeView.swift in Sources */,
 				048726A028A273FC000FF0F8 /* CustomWebView.swift in Sources */,
 				66A237D8281709FC00CA3763 /* AppUtility.swift in Sources */,
@@ -1646,6 +1665,7 @@
 				66A237CC281709FC00CA3763 /* AppButtons.swift in Sources */,
 				2C0913B1292242F4009ECF8F /* OTPService.swift in Sources */,
 				66A237D9281709FC00CA3763 /* UserSettings.swift in Sources */,
+				2C3786EF2943D919008E9FE2 /* AddVoiceOverService.swift in Sources */,
 				66A237392817093A00CA3763 /* StringExtensions.swift in Sources */,
 				180C16C72856CB140072D0DF /* PodcastDetailView.swift in Sources */,
 				18D5E37C2824EC850075F5A2 /* WebClient.swift in Sources */,

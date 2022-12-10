@@ -87,6 +87,8 @@ extension LanguageModel: SelectionListItemable {
 }
 
 extension LanguagesListViewModel: SelectionListable {
+    typealias ListItemable = LanguageModel
+    
     var showAlert: Bool {
         get { self.showAlertView }
         set { self.showAlertView = newValue }
@@ -102,7 +104,7 @@ extension LanguagesListViewModel: SelectionListable {
         set { alertMessageStr = newValue }
     }
     
-    func didSelect(item: any SelectionListItemable, completion: @escaping (Bool) -> Void) {
+    func didSelect(item: ListItemable, completion: @escaping (Bool) -> Void) {
         selectedLanguage = item as? LanguageModel
         if let didSelectLanguage = didSelectLanguage {
             completion(didSelectLanguage(selectedLanguage))
@@ -119,12 +121,12 @@ extension LanguagesListViewModel: SelectionListable {
         }
     }
     
-    var selectedItem: (any SelectionListItemable)? {
+    var selectedItem: ListItemable? {
         get { selectedLanguage }
         set { selectedLanguage = newValue as? LanguageModel }
     }
     
-    var listItems: [any SelectionListItemable] {
+    var listItems: [ListItemable] {
         get { filteredLanguages ?? [] }
         set { }
     }

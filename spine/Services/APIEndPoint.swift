@@ -51,6 +51,9 @@ enum APIEndPoint: String {
     case getEventCommentReplies = "/events/getSpineEventsReplys/%@"
     case postEventComment = "events/spineEventsComment"
     
+    // voiceover
+    case createVoiceOver = "createVoiceOver"
+    
     var urlStr: String {
         return baseUrl + rawValue
     }

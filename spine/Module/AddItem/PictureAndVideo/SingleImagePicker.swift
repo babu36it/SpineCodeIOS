@@ -19,7 +19,7 @@ struct SingleImagePicker: UIViewControllerRepresentable {
     func makeUIViewController(context: UIViewControllerRepresentableContext<SingleImagePicker>) -> UIImagePickerController {
  
         let imagePicker = UIImagePickerController()
-        imagePicker.allowsEditing = false
+        imagePicker.allowsEditing = true
         imagePicker.sourceType = sourceType
         if supportVideo {
             imagePicker.mediaTypes = ["public.image", "public.movie"]
