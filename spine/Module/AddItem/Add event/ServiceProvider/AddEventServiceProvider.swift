@@ -77,7 +77,7 @@ struct AddEventServiceProvider: CommonEventFetcher {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(url: url, resultType: APIResponseModel<[EventModel]>.self) { result in
+        httpUtility.requestData(url: url, resultType: APIResponseModel<[EventModel]>.self, queue: .main) { result in
             completion(result)
         }
     }
@@ -87,7 +87,7 @@ struct AddEventServiceProvider: CommonEventFetcher {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestFormData(postData: params, mediaFiles: media, url: url, resultType: EventPublishResponse.self) { result in
+        httpUtility.requestFormData(postData: params, mediaFiles: media, url: url, resultType: EventPublishResponse.self, queue: .main) { result in
             completion(result)
         }
     }

@@ -120,16 +120,13 @@ class AddEventViewModel: ObservableObject {
     }
         
     func getUserEvents() {
-        eventService.getUserEvents { result in
-            DispatchQueue.main.async { [weak self] in
-                switch result {
-                case .success(let success):
-                    self?
-                        .imagePath = success.image
-                    self?.userEvents = success.data
-                case .failure(let failure):
-                    print(failure)
-                }
+        eventService.getUserEvents { [weak self] result in
+            switch result {
+            case .success(let success):
+                self?.imagePath = success.image
+                self?.userEvents = success.data
+            case .failure(let failure):
+                print(failure)
             }
         }
     }

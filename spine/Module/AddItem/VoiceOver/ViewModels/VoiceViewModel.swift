@@ -130,6 +130,11 @@ class VoiceViewModel : NSObject, ObservableObject , AVAudioPlayerDelegate {
         print("stop playing")
     }
     
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        if let error = error {
+            print(error)
+        }
+    }
     func deleteRecording(){
         do {
             try FileManager.default.removeItem(at: filePath)

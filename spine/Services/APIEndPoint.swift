@@ -54,6 +54,9 @@ enum APIEndPoint: String {
     // voiceover
     case createVoiceOver = "createVoiceOver"
     
+    // questions
+    case addQuestionPost = "post/addPost"
+    
     var urlStr: String {
         return baseUrl + rawValue
     }

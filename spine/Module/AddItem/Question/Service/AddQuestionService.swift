@@ -1,17 +1,17 @@
 //
-//  AddVoiceOverService.swift
+//  AddQuestionService.swift
 //  spine
 //
-//  Created by Mac on 10/12/22.
+//  Created by Mac on 12/12/22.
 //
 
 import Foundation
 
-class AddVoiceOverService {
+class AddQuestionService {
     private let httpUtility: HttpUtility = .shared
     
-    func publishVoiceOver(_ params: [String: Any]? = nil, media: [Media]?, completion: @escaping (_ result: Result<GenericPostAPIResponse, CHError>) -> Void) {
-        guard let url = URL(string: APIEndPoint.createVoiceOver.urlStr) else {
+    func publishQuestion(_ params: [String: Any]? = nil, media: [Media]?, completion: @escaping (_ result: Result<GenericPostAPIResponse, CHError>) -> Void) {
+        guard let url = URL(string: APIEndPoint.addQuestionPost.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }

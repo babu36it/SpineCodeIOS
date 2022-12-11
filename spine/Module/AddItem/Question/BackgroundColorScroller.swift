@@ -17,31 +17,24 @@ struct BackgroundColorScroller: View {
     
     var body: some View {
         VStack {
-            TabView(selection: $questionVM.selectedTab) {
-                ForEach(questionVM.bgColors, id: \.self){ bgColor in
-                    ZStack(alignment: .topLeading) {
-                        bgColor
-                        ZStack(alignment: .topLeading) {
-                            TextEditor(text: $questionVM.postText)
-                                //.frame(height: 400)
-                                .foregroundColor(.white)
-                                .background(bgColor)
-                            Text(C.PlaceHolder.postQuestion)
-                                .foregroundColor(.white).padding(8).hidden(!questionVM.postText.isEmpty)
-                                .allowsHitTesting(false)
-                        }.font(.Poppins(type: .regular, size: 25))
-                            .padding(20)
-                    }//.tag(questionVM.selectedTab)
-                    .onAppear {
-                       // questionVM.selectedTab = bgColor
-                    }
+            ZStack(alignment: .topLeading) {
+                Color.lightBrown
+                ZStack(alignment: .topLeading) {
+                    TextEditor(text: $questionVM.postText)
+                        //.frame(height: 400)
+                    Text(C.PlaceHolder.postQuestion)
+                        .padding(8)
+                        .foregroundColor(.lightGray1)
+                        .hidden(!questionVM.postText.isEmpty)
+                        .allowsHitTesting(false)
                 }
-                
-                
-            }.tabViewStyle(.page)
-                //.tabViewStyle(.page)
-                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .interactive))
-            
+                .font(.Poppins(type: .regular, size: 25))
+                .padding(20)
+            }
+            .onAppear {
+               // questionVM.selectedTab = bgColor
+            }
+
             NavigationLink(isActive: $questionVM.showTag) {
                 AddHashTagView().environmentObject(questionVM)
             } label: {

@@ -206,6 +206,7 @@
 		2C8853A029368CBD008F922E /* EventTypesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C88539F29368CBD008F922E /* EventTypesViewModel.swift */; };
 		2C8853A22937DA40008F922E /* EventAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8853A12937DA40008F922E /* EventAPIResponse.swift */; };
 		2C8853A42937DC37008F922E /* EventsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8853A32937DC37008F922E /* EventsListViewModel.swift */; };
+		2CC82AB129467DB30005E95D /* AddQuestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC82AB029467DB30005E95D /* AddQuestionService.swift */; };
 		661830B92824409D00289E66 /* HomeSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661830B82824409D00289E66 /* HomeSectionView.swift */; };
 		6624C1082821A801009DD4F3 /* MobileNoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6624C1072821A801009DD4F3 /* MobileNoVC.swift */; };
 		6630D248281B1CBC007138B8 /* AppLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6630D247281B1CBC007138B8 /* AppLoginButton.swift */; };
@@ -467,6 +468,7 @@
 		2C88539F29368CBD008F922E /* EventTypesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTypesViewModel.swift; sourceTree = "<group>"; };
 		2C8853A12937DA40008F922E /* EventAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAPIResponse.swift; sourceTree = "<group>"; };
 		2C8853A32937DC37008F922E /* EventsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsListViewModel.swift; sourceTree = "<group>"; };
+		2CC82AB029467DB30005E95D /* AddQuestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuestionService.swift; sourceTree = "<group>"; };
 		661830B82824409D00289E66 /* HomeSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSectionView.swift; sourceTree = "<group>"; };
 		6624C1072821A801009DD4F3 /* MobileNoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileNoVC.swift; sourceTree = "<group>"; };
 		6630D247281B1CBC007138B8 /* AppLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLoginButton.swift; sourceTree = "<group>"; };
@@ -565,11 +567,12 @@
 		04826C76288FEC2800F171A4 /* Question */ = {
 			isa = PBXGroup;
 			children = (
+				2CC82AAF29467D9D0005E95D /* Service */,
+				2CC82AAE29467D9D0005E95D /* ViewModel */,
 				048C0EB6288D020100EB362C /* QuestionAndThoughtView.swift */,
 				04826C77288FEC5200F171A4 /* BackgroundColorScroller.swift */,
 				04826C79288FEC7300F171A4 /* AddHashTagView.swift */,
 				04826C7B288FEC9900F171A4 /* ReviewPostView.swift */,
-				04826C7D288FECB800F171A4 /* AddQuestionThoughtViewModel.swift */,
 			);
 			path = Question;
 			sourceTree = "<group>";
@@ -1143,6 +1146,22 @@
 				2C5BADF72928CFAF00BB31D1 /* AccountViewService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		2CC82AAE29467D9D0005E95D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				04826C7D288FECB800F171A4 /* AddQuestionThoughtViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2CC82AAF29467D9D0005E95D /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				2CC82AB029467DB30005E95D /* AddQuestionService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		4253A9C4071BCD003375B840 /* Pods */ = {
@@ -1734,6 +1753,7 @@
 				66A237FB281709FC00CA3763 /* LoginViewModel.swift in Sources */,
 				04826C7A288FEC7300F171A4 /* AddHashTagView.swift in Sources */,
 				04973537289A90150019548A /* CustomButtons.swift in Sources */,
+				2CC82AB129467DB30005E95D /* AddQuestionService.swift in Sources */,
 				04A0593628B67AB900262BDA /* ReportingUserMainView.swift in Sources */,
 				2C7B1FBC29202C7500E06E40 /* MessagingSettingsViewService.swift in Sources */,
 				18F87D37286986D100A0FC71 /* AppDelegate.swift in Sources */,
