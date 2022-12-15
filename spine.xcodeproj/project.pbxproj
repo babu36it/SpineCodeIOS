@@ -121,6 +121,7 @@
 		04A0593328B62F3600262BDA /* Dot3ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A0593228B62F3600262BDA /* Dot3ViewModel.swift */; };
 		04A0593628B67AB900262BDA /* ReportingUserMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A0593528B67AB900262BDA /* ReportingUserMainView.swift */; };
 		04A3D3FE285AEF5A00827941 /* EventDetailPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A3D3FD285AEF5A00827941 /* EventDetailPreviewView.swift */; };
+		04A9D434294A3E400096935A /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9D433294A3E400096935A /* UIScreen+Extension.swift */; };
 		04B779C12886B6A8009EB505 /* PractitionersDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B779C02886B6A8009EB505 /* PractitionersDetailsView.swift */; };
 		04B779C32886BF27009EB505 /* PracticionerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B779C22886BF27009EB505 /* PracticionerListView.swift */; };
 		04D1D551287C043300A62CA4 /* FeedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1D550287C043300A62CA4 /* FeedHomeView.swift */; };
@@ -383,6 +384,7 @@
 		04A0593228B62F3600262BDA /* Dot3ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot3ViewModel.swift; sourceTree = "<group>"; };
 		04A0593528B67AB900262BDA /* ReportingUserMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportingUserMainView.swift; sourceTree = "<group>"; };
 		04A3D3FD285AEF5A00827941 /* EventDetailPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailPreviewView.swift; sourceTree = "<group>"; };
+		04A9D433294A3E400096935A /* UIScreen+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		04B779C02886B6A8009EB505 /* PractitionersDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PractitionersDetailsView.swift; sourceTree = "<group>"; };
 		04B779C22886BF27009EB505 /* PracticionerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticionerListView.swift; sourceTree = "<group>"; };
 		04D1D550287C043300A62CA4 /* FeedHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHomeView.swift; sourceTree = "<group>"; };
@@ -1236,6 +1238,7 @@
 				04983D8729113D9C0054F887 /* DateComponentsFormatter+Extension.swift */,
 				2C5BADF32928113F00BB31D1 /* FileManager+Extensions.swift */,
 				2C1EC5A3293BEE410037B6E7 /* UINavigationBar+Extensions.swift */,
+				04A9D433294A3E400096935A /* UIScreen+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1780,6 +1783,7 @@
 				0499F75528721605003CE532 /* SettingsListView.swift in Sources */,
 				04983D8829113D9C0054F887 /* DateComponentsFormatter+Extension.swift in Sources */,
 				048198CC286ECF4500AFC6AA /* AboutProfileView.swift in Sources */,
+				04A9D434294A3E400096935A /* UIScreen+Extension.swift in Sources */,
 				2C5BAE0329311DC900BB31D1 /* RemoteImage.swift in Sources */,
 				04D1D551287C043300A62CA4 /* FeedHomeView.swift in Sources */,
 				04B779C12886B6A8009EB505 /* PractitionersDetailsView.swift in Sources */,

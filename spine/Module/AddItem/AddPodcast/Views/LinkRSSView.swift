@@ -10,7 +10,6 @@ import Combine
 
 struct LinkRSSView: View {
     @Environment(\.dismiss) var dismiss
-    let screenWidth = UIScreen.main.bounds.size.width
     @StateObject var linkRssVM = LinkRssViewModel()
     
     var body: some View {
@@ -18,7 +17,7 @@ struct LinkRSSView: View {
             if linkRssVM.status == .failure {
                 ZStack {
                     Color.black1
-                        .frame(width: screenWidth, height: 130)
+                        .frame(width: UIScreen.screenWidth, height: 130)
                     VStack(spacing: 0) {
                         
                         ButtonWithSystemImage(image: ImageName.multiply, size: 14, fColor: .white) {
@@ -50,7 +49,7 @@ struct LinkRSSView: View {
                 }
                 CustomTextField(searchText: $linkRssVM.searchText)
             }
-            LargeButton(title: "VALIDATE RSS FEED", width: screenWidth - 60, height: 40, bColor: Color.lightBrown, fSize: 15, fColor: .white) {
+            LargeButton(title: "VALIDATE RSS FEED", width: UIScreen.screenWidth - 60, height: 40, bColor: Color.lightBrown, fSize: 15, fColor: .white) {
                 print("Tapped")
                 linkRssVM.validateRss()
                 //linkRssVM.status = .success

@@ -23,8 +23,8 @@ class RssLinkOTPViewModel: ObservableObject {
                 switch result {
                 case .success(let value):
                     self.isValidCode = value.status
-                    if value.status {
-                        ShowToast.show(toatMessage: "OTP is successfully validated.")
+                    if !self.isValidCode {
+                        ShowToast.show(toatMessage: value.message)
                     }
                 case .failure(let error):
                     if error == .tokenExpired {
