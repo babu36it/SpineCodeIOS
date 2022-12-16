@@ -12,6 +12,7 @@ struct CustomAddItemSheet: View {
     
     @Binding var dismisser: Bool
     
+    @State var rootLinkActive: Bool = false
     private let bottomInset: CGFloat = (UIApplication.keyWindow?.safeAreaInsets.bottom ?? 0) + 70
 
     var body: some View {
@@ -20,7 +21,7 @@ struct CustomAddItemSheet: View {
             SubHeader4(title: "Add").padding()
             List {
                 link(destination: AddVoiceOverView(), label: "Voiceover")
-                link(destination: QuestionAndThoughtView(), label: "Question or Thought")
+                link(destination: QuestionAndThoughtView(rootLinkActive: $rootLinkActive), isActive: $rootLinkActive, label: "Question or Thought")
                 link(destination: AddImageOrVideoView(addItemType: .videoImage), label: "Picture or Video")
                 link(destination: AddImageOrVideoView(addItemType: .story), label: "Story")
                 link(destination: AddEventTypeSelectionView(), label: "Event")
@@ -38,11 +39,18 @@ struct CustomAddItemSheet: View {
         .cornerRadius(25)
     }
     
-    private func link<T>(destination: T, label: String) -> some View where T: View {
-        NavigationLink(destination: destination.onAppear(perform: { dismisser.toggle() }), label: {
-            Title3(title: label)
-                .padding(.vertical, 10)
-        })
+    private func link<T>(destination: T, isActive: Binding<Bool>? = nil, label: String) -> some View where T: View {
+        if let isActive = isActive {
+            return NavigationLink(destination: destination.onAppear(perform: { dismisser.toggle() }), isActive: isActive, label: {
+                Title3(title: label)
+                    .padding(.vertical, 10)
+            })
+        } else {
+            return NavigationLink(destination: destination.onAppear(perform: { dismisser.toggle() }), label: {
+                Title3(title: label)
+                    .padding(.vertical, 10)
+            })
+        }
     }
 }
 

@@ -10,8 +10,9 @@ import SwiftUI
 struct AddHashTagView: View {
     @EnvironmentObject var questionVM: AddQuestionThoughtViewModel
     @Environment(\.dismiss) var dismiss
-    //@State var showPreview = false
-    
+
+    @Binding var rootLinkActive: Bool
+
     var body: some View {
         VStack {
             LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
@@ -27,10 +28,12 @@ struct AddHashTagView: View {
             Spacer()
             
             NavigationLink(isActive: $questionVM.showPreview) {
-                ReviewPostView().environmentObject(questionVM)
+                ReviewPostView(rootLinkActive: $rootLinkActive)
+                    .environmentObject(questionVM)
             } label: {
                 EmptyView()
             }
+            .isDetailLink(false)
         }
         .navigationBarTitle(Text("ADD HASTAGS"), displayMode: .inline)
         .modifier(BackButtonModifier(action: {
@@ -42,9 +45,9 @@ struct AddHashTagView: View {
     }
 }
 
-
 struct AddHashTagView_Previews: PreviewProvider {
     static var previews: some View {
-        AddHashTagView()
+        let rootLink: Binding<Bool> = .init(get: { true }, set: { _ in })
+        AddHashTagView(rootLinkActive: rootLink)
     }
 }

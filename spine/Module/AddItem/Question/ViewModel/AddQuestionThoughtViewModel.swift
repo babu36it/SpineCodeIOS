@@ -14,6 +14,7 @@ class AddQuestionThoughtViewModel: ObservableObject {
     
     let postTextLimit = 460
     let hashTagCount = 5
+    let bgColors: [Color] = [.lightBrown, .red, .green, .blue, .yellow]
     @Published var selectedTab: Color = .lightBrown
     @Published var showTag = false
     @Published var showPreview = false
