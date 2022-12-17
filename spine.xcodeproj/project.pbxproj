@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		040A224A288534B600C9F65A /* PostDetailListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040A2249288534B600C9F65A /* PostDetailListView.swift */; };
 		040A224C288565E300C9F65A /* FeedSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040A224B288565E300C9F65A /* FeedSearchVC.swift */; };
+		040D9F9B294C453D00E1E2E5 /* PodcastHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D9F9A294C453D00E1E2E5 /* PodcastHomeViewModel.swift */; };
+		040D9F9E294C586E00E1E2E5 /* PodcastHomeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D9F9D294C586E00E1E2E5 /* PodcastHomeModels.swift */; };
+		040D9FA1294C672B00E1E2E5 /* PodcastViewServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D9FA0294C672B00E1E2E5 /* PodcastViewServiceProvider.swift */; };
+		040D9FA3294C790000E1E2E5 /* PodcastResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D9FA2294C790000E1E2E5 /* PodcastResponse.swift */; };
 		043D7CDA28968EE500284898 /* CustomTextFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D7CD928968EE500284898 /* CustomTextFields.swift */; };
 		043D7CDC28968F3F00284898 /* CustomTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D7CDB28968F3F00284898 /* CustomTextEditor.swift */; };
 		046F515B28659DC600260E65 /* SendInvitationAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F515A28659DC600260E65 /* SendInvitationAlertView.swift */; };
@@ -122,6 +126,8 @@
 		04A0593628B67AB900262BDA /* ReportingUserMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A0593528B67AB900262BDA /* ReportingUserMainView.swift */; };
 		04A3D3FE285AEF5A00827941 /* EventDetailPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A3D3FD285AEF5A00827941 /* EventDetailPreviewView.swift */; };
 		04A9D434294A3E400096935A /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9D433294A3E400096935A /* UIScreen+Extension.swift */; };
+		04B49E12294D865E0084DB43 /* ViewDidLoadModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B49E11294D865E0084DB43 /* ViewDidLoadModifier.swift */; };
+		04B49E14294D88A00084DB43 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B49E13294D88A00084DB43 /* LoadingView.swift */; };
 		04B779C12886B6A8009EB505 /* PractitionersDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B779C02886B6A8009EB505 /* PractitionersDetailsView.swift */; };
 		04B779C32886BF27009EB505 /* PracticionerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B779C22886BF27009EB505 /* PracticionerListView.swift */; };
 		04D1D551287C043300A62CA4 /* FeedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1D550287C043300A62CA4 /* FeedHomeView.swift */; };
@@ -272,6 +278,10 @@
 /* Begin PBXFileReference section */
 		040A2249288534B600C9F65A /* PostDetailListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailListView.swift; sourceTree = "<group>"; };
 		040A224B288565E300C9F65A /* FeedSearchVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedSearchVC.swift; sourceTree = "<group>"; };
+		040D9F9A294C453D00E1E2E5 /* PodcastHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastHomeViewModel.swift; sourceTree = "<group>"; };
+		040D9F9D294C586E00E1E2E5 /* PodcastHomeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastHomeModels.swift; sourceTree = "<group>"; };
+		040D9FA0294C672B00E1E2E5 /* PodcastViewServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastViewServiceProvider.swift; sourceTree = "<group>"; };
+		040D9FA2294C790000E1E2E5 /* PodcastResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastResponse.swift; sourceTree = "<group>"; };
 		043D7CD928968EE500284898 /* CustomTextFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFields.swift; sourceTree = "<group>"; };
 		043D7CDB28968F3F00284898 /* CustomTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextEditor.swift; sourceTree = "<group>"; };
 		046F515A28659DC600260E65 /* SendInvitationAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendInvitationAlertView.swift; sourceTree = "<group>"; };
@@ -385,6 +395,8 @@
 		04A0593528B67AB900262BDA /* ReportingUserMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportingUserMainView.swift; sourceTree = "<group>"; };
 		04A3D3FD285AEF5A00827941 /* EventDetailPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailPreviewView.swift; sourceTree = "<group>"; };
 		04A9D433294A3E400096935A /* UIScreen+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
+		04B49E11294D865E0084DB43 /* ViewDidLoadModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDidLoadModifier.swift; sourceTree = "<group>"; };
+		04B49E13294D88A00084DB43 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		04B779C02886B6A8009EB505 /* PractitionersDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PractitionersDetailsView.swift; sourceTree = "<group>"; };
 		04B779C22886BF27009EB505 /* PracticionerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticionerListView.swift; sourceTree = "<group>"; };
 		04D1D550287C043300A62CA4 /* FeedHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHomeView.swift; sourceTree = "<group>"; };
@@ -553,6 +565,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040D9F98294C449100E1E2E5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				180C16C02856CB140072D0DF /* PodcastHomeView.swift */,
+				180C16BC2856CB140072D0DF /* PodcastDetailView.swift */,
+				180C16BF2856CB140072D0DF /* MusicPlayerView.swift */,
+				180C16BD2856CB140072D0DF /* FilterPodcastView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		040D9F99294C44B100E1E2E5 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				040D9F9A294C453D00E1E2E5 /* PodcastHomeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		040D9F9C294C527E00E1E2E5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				040D9F9D294C586E00E1E2E5 /* PodcastHomeModels.swift */,
+				040D9FA2294C790000E1E2E5 /* PodcastResponse.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		040D9F9F294C66E300E1E2E5 /* ServiceProvider */ = {
+			isa = PBXGroup;
+			children = (
+				040D9FA0294C672B00E1E2E5 /* PodcastViewServiceProvider.swift */,
+			);
+			path = ServiceProvider;
+			sourceTree = "<group>";
+		};
 		043D7CD828968EC400284898 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -840,6 +888,15 @@
 			path = 3DotUserProfile;
 			sourceTree = "<group>";
 		};
+		04B49E10294D861C0084DB43 /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				04B49E11294D865E0084DB43 /* ViewDidLoadModifier.swift */,
+				04B49E13294D88A00084DB43 /* LoadingView.swift */,
+			);
+			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
 		04D1D54F287C040C00A62CA4 /* Views-New */ = {
 			isa = PBXGroup;
 			children = (
@@ -939,10 +996,10 @@
 		180C16B42856CB140072D0DF /* Podcasts */ = {
 			isa = PBXGroup;
 			children = (
-				180C16C02856CB140072D0DF /* PodcastHomeView.swift */,
-				180C16BC2856CB140072D0DF /* PodcastDetailView.swift */,
-				180C16BF2856CB140072D0DF /* MusicPlayerView.swift */,
-				180C16BD2856CB140072D0DF /* FilterPodcastView.swift */,
+				040D9F9F294C66E300E1E2E5 /* ServiceProvider */,
+				040D9F9C294C527E00E1E2E5 /* Model */,
+				040D9F99294C44B100E1E2E5 /* ViewModel */,
+				040D9F98294C449100E1E2E5 /* View */,
 			);
 			path = Podcasts;
 			sourceTree = "<group>";
@@ -1208,6 +1265,7 @@
 				66A2373F281709FC00CA3763 /* Library */,
 				66A23778281709FC00CA3763 /* Module */,
 				66A2375A281709FC00CA3763 /* Components */,
+				04B49E10294D861C0084DB43 /* ViewModifiers */,
 				66A2374B281709FC00CA3763 /* Resources */,
 				66A23756281709FC00CA3763 /* Webclient */,
 				66A237312817093A00CA3763 /* Extension */,
@@ -1631,6 +1689,7 @@
 				048C0EB7288D020100EB362C /* QuestionAndThoughtView.swift in Sources */,
 				66A237CA281709FC00CA3763 /* AlertView.swift in Sources */,
 				180C16C42856CB140072D0DF /* ReviewPodcastView.swift in Sources */,
+				040D9FA1294C672B00E1E2E5 /* PodcastViewServiceProvider.swift in Sources */,
 				66A237C2281709FC00CA3763 /* APIService.swift in Sources */,
 				66A237CF281709FC00CA3763 /* EmailHelper.swift in Sources */,
 				2C3786ED2943D10A008E9FE2 /* AddVoiceOverViewModel.swift in Sources */,
@@ -1644,6 +1703,7 @@
 				048726A028A273FC000FF0F8 /* CustomWebView.swift in Sources */,
 				66A237D8281709FC00CA3763 /* AppUtility.swift in Sources */,
 				048306FE286C7A6C00F677CC /* EventList.swift in Sources */,
+				04B49E14294D88A00084DB43 /* LoadingView.swift in Sources */,
 				048AD9F228A50F8B0091BC60 /* CustomLabels.swift in Sources */,
 				047FA03C287748A30062BF79 /* LoadingBar.swift in Sources */,
 				66A237D1281709FC00CA3763 /* Collapsible.swift in Sources */,
@@ -1671,6 +1731,7 @@
 				2C5BADF0292590E400BB31D1 /* MobileOTPVC.swift in Sources */,
 				66A23726281704A600CA3763 /* ContentView.swift in Sources */,
 				180C16C52856CB140072D0DF /* PodcastInfoView.swift in Sources */,
+				04B49E12294D865E0084DB43 /* ViewDidLoadModifier.swift in Sources */,
 				2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */,
 				0485B62528817F4100A79B40 /* DiscoverMembersListView.swift in Sources */,
 				04867268286206E700582275 /* MDPContentView.swift in Sources */,
@@ -1751,6 +1812,7 @@
 				66A662CA2822EDEA0012A129 /* FeedListVC.swift in Sources */,
 				0485B62328814FCF00A79B40 /* StoryListView.swift in Sources */,
 				2C7B1FC6292118CA00E06E40 /* CurrenciesListViewModel.swift in Sources */,
+				040D9F9E294C586E00E1E2E5 /* PodcastHomeModels.swift in Sources */,
 				2C5BADF62928CFA100BB31D1 /* AccountViewViewModel.swift in Sources */,
 				2C5BADEE292587E400BB31D1 /* CountryPhoneModel.swift in Sources */,
 				66A237FB281709FC00CA3763 /* LoginViewModel.swift in Sources */,
@@ -1763,6 +1825,7 @@
 				0486725B2861F2B800582275 /* MultipleSelectionList.swift in Sources */,
 				2C7B1FCC292128E800E06E40 /* NotificationTypeService.swift in Sources */,
 				6624C1082821A801009DD4F3 /* MobileNoVC.swift in Sources */,
+				040D9FA3294C790000E1E2E5 /* PodcastResponse.swift in Sources */,
 				0485B621288142BE00A79B40 /* GenericLabels.swift in Sources */,
 				66A237C3281709FC00CA3763 /* Handlers.swift in Sources */,
 				048A003A28A0CEEE005CEC12 /* CreateAdView.swift in Sources */,
@@ -1793,6 +1856,7 @@
 				66A2380C2817115B00CA3763 /* CurrentScreen.swift in Sources */,
 				18D5E37D2824EC850075F5A2 /* Protocols.swift in Sources */,
 				2C7B1FC82921190100E06E40 /* CurrenciesListService.swift in Sources */,
+				040D9F9B294C453D00E1E2E5 /* PodcastHomeViewModel.swift in Sources */,
 				66A23724281704A600CA3763 /* spineApp.swift in Sources */,
 				6630D248281B1CBC007138B8 /* AppLoginButton.swift in Sources */,
 				048AD9F028A4EFAB0091BC60 /* PaymentView.swift in Sources */,

@@ -24,6 +24,10 @@ enum APIEndPoint: String {
     case addPodcastsSubcategory = "/podcasts/addPodcastsSubcategory"
     case addPodcasts = "/podcasts/addPodcasts"
     
+    // podcast view
+    case getPodacastEpisodes = "podcasts/getPodcastsEpisodeCustom"
+    case getPodacasts = "podcasts/getPodcastsCustom"
+    
     // profile
     case editProfile = "/profile/profileEdit"
     case userDetails = "/userDetails"

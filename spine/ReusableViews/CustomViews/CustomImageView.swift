@@ -72,3 +72,52 @@ struct CustomAsyncImage: View {
     }
 }
 
+struct CustomAsyncCircularImage: View {
+    let urlStr: String
+    let size: CGFloat
+    
+    var body: some View {
+        AsyncImage(url: URL(string: urlStr)) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+        } placeholder: {
+            Color.gray
+        }.frame(width: size, height: size)
+            .cornerRadius(size)
+            .clipped()
+    }
+}
+
+struct VideoThumbnailImage: View {
+    let image: String
+    let size: CGFloat
+    var body: some View {
+        ZStack {
+            Image(image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: size, height: size)
+            Image(ImageName.playImageThumb)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: size/2, height: size/2)
+        }
+        
+    }
+}
+
+struct VideoThumbnailImage1: View {
+    let image: String
+    let size: CGFloat
+    var body: some View {
+        ZStack {
+            CustomAsyncImage(urlStr: image, width: size, height: size)
+            Image(ImageName.playImageThumb)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: size/2, height: size/2)
+        }
+        
+    }
+}

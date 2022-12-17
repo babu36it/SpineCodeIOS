@@ -107,25 +107,6 @@ struct BannerImageView: View {
     }
 }
 
-struct VideoThumbnailImage: View {
-    let image: String
-    let size: CGFloat
-    var body: some View {
-        ZStack {
-            Image(image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: size, height: size)
-            Image(ImageName.playImageThumb)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: size/2, height: size/2)
-        }
-        
-    }
-}
-
-
 extension Notification.Name {
     static let clearDates = Notification.Name("cleardates")
 }
