@@ -9,15 +9,17 @@ import SwiftUI
 
 struct QuestionAndThoughtView: View {
     @StateObject var questionVM = AddQuestionThoughtViewModel()
+    @Binding var rootLinkActive: Bool
     var body: some View {
-        BackgroundColorScroller().environmentObject(questionVM)
-           // .navigationBarHidden(true)
+        BackgroundColorScroller(rootLinkActive: $rootLinkActive)
+            .environmentObject(questionVM)
     }
 }
 
 struct QuestionAndThoughtView_Previews: PreviewProvider {
     static var previews: some View {
-        QuestionAndThoughtView()
+        let rootLink: Binding<Bool> = .init(get: { true }, set: { _ in })
+        QuestionAndThoughtView(rootLinkActive: rootLink)
     }
 }
     
