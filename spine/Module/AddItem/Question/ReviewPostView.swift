@@ -29,10 +29,10 @@ struct ReviewPostView: View {
                             print("tapped")
                             questionVM.showPreview = false
                         }
-                }.foregroundColor(.white)
-                    .font(.Poppins(type: .regular, size: 20))
-                
-                    .padding(20)
+                }
+                .foregroundColor(.white)
+                .font(.Poppins(type: .regular, size: 20))
+                .padding(20)
                 
                 Spacer()
             }
@@ -48,6 +48,7 @@ struct ReviewPostView: View {
                 if status {
                     rootLinkActive = false
                 } else if let error = error {
+                    ShowToast.show(toatMessage: error.localizedDescription)
                     print(error)
                 }
             }

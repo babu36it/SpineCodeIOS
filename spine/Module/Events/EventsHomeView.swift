@@ -379,7 +379,7 @@ struct EventsListView: View {
         .modifier(BackButtonModifier(action: {
             self.dismiss()
         }))
-        .navigationTitle(eventType.name.uppercased())
+        .navigationBarTitle(Text(eventType.name.uppercased()), displayMode: .inline)
     }
 }
 

@@ -171,43 +171,46 @@ struct HttpUtility {
     }
     
     private func handleAPIResponse<T: Decodable>(request: URLRequest, queue: DispatchQueue?, data: Data?, response: URLResponse?, error: Error?, completion: @escaping(_ result: Result<T, CHError>)-> Void) {
-        let response = response as! HTTPURLResponse
-        let errCode = response.statusCode
-        
-        switch errCode {
-        case 200, 201:
-            print("Success")
-            if error == nil && data != nil {
-                do {
-                    let results = try JSONDecoder().decode(T.self, from: data!)
-                    completion(.success(results))
-                } catch let err1 {
-                    let resultURLStr: String = response.url?.absoluteString ?? ""
-                    debugPrint("Error while parsing- \(err1.localizedDescription)- \(resultURLStr)")
-                    completion(.failure(.parsingError))
-                }
-            }
+        if let response = response as? HTTPURLResponse {
+            let errCode = response.statusCode
             
-        case 401:
-            print("token time expired for request: \(request)") //delte existing token and refresh token
-            //call refresh token here
-            self.refreshToken { success in
-                if success {
-                    // get the updated token
-                    if let authToken: String = AppUtility.shared.userInfo?.token {
-                        var urlRequest: URLRequest = request
-                        urlRequest.setValue(authToken, forHTTPHeaderField: "Authorization")
-                        httpRequest(urlRequest, queue: queue, completion: completion)
+            switch errCode {
+            case 200, 201:
+                print("Success")
+                if error == nil && data != nil {
+                    do {
+                        let results = try JSONDecoder().decode(T.self, from: data!)
+                        completion(.success(results))
+                    } catch let err1 {
+                        let resultURLStr: String = response.url?.absoluteString ?? ""
+                        debugPrint("Error while parsing- \(err1.localizedDescription)- \(resultURLStr)")
+                        completion(.failure(.parsingError))
+                    }
+                }
+                
+            case 401:
+                print("token time expired for request: \(request)") //delte existing token and refresh token
+                //call refresh token here
+                self.refreshToken { success in
+                    if success {
+                        // get the updated token
+                        if let authToken: String = AppUtility.shared.userInfo?.token {
+                            var urlRequest: URLRequest = request
+                            urlRequest.setValue(authToken, forHTTPHeaderField: "Authorization")
+                            httpRequest(urlRequest, queue: queue, completion: completion)
+                        } else {
+                            completion(.failure(.tokenExpired))
+                        }
                     } else {
                         completion(.failure(.tokenExpired))
                     }
-                } else {
-                    completion(.failure(.tokenExpired))
                 }
-            }
 
-        default:
-            print("all other case for request: \(request)")
+            default:
+                print("all other case for request: \(request)")
+                completion(.failure(.otherError))
+            }
+        } else {
             completion(.failure(.otherError))
         }
     }

@@ -61,6 +61,9 @@ enum APIEndPoint: String {
     // questions
     case addQuestionPost = "post/addPost"
     
+    // story
+    case addUserStory = "stories/addUserStories"
+    
     var urlStr: String {
         return baseUrl + rawValue
     }

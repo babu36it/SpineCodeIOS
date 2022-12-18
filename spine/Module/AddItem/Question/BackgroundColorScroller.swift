@@ -12,10 +12,10 @@ struct BackgroundColorScroller: View {
     @EnvironmentObject var questionVM: AddQuestionThoughtViewModel
     @Binding var rootLinkActive: Bool
     
-//    init(rootLinkActive: Bool) {
-//        self.rootLinkActive = rootLinkActive
-//        UITextView.appearance().backgroundColor = .clear
-//    }
+    init(rootLinkActive: Binding<Bool>) {
+        self._rootLinkActive = rootLinkActive
+        UITextView.appearance().backgroundColor = .clear
+    }
     
     var body: some View {
         VStack {
@@ -26,10 +26,10 @@ struct BackgroundColorScroller: View {
                         ZStack(alignment: .topLeading) {
                             TextEditor(text: $questionVM.postText)
 //                                .frame(height: 400)
-//                                .foregroundColor(.white)
+                                .foregroundColor(.white)
                                 .background(bgColor)
                             Text(C.PlaceHolder.postQuestion)
-                                .foregroundColor(.white)
+                                .foregroundColor(Color.init(.sRGB, white: 1, opacity: 0.5))
                                 .padding(8)
                                 .hidden(!questionVM.postText.isEmpty)
                                 .allowsHitTesting(false)

@@ -343,13 +343,8 @@ struct EventDetailView: View {
     @StateObject var eventDetails: EventDetailViewModel
 
 //    init(eventDetails: EventDetailViewModel) {
-//        self.eventDetails = eventDetails
-//
-//        let appearance = UINavigationBarAppearance()
-//        appearance.configureWithTransparentBackground()
-//        appearance.backgroundColor = .clear
-//        appearance.shadowColor = .clear
-//        UINavigationBar.appearance().standardAppearance = appearance
+//        _eventDetails = StateObject(wrappedValue: eventDetails)
+//        UINavigationBar.changeAppearance(clear: true)
 //    }
     
     var body: some View {
@@ -357,14 +352,14 @@ struct EventDetailView: View {
             ScrollView { //put it down
                 VStack(spacing: 0) {
                     let event: EventModel = eventDetails.event
-
+                    
                     ZStack(alignment: .bottomLeading) {
                         HorizontalImageScroller(images: eventDetails.eventImages)
                         DateBadge(date: Date())
                             .padding(20)
                     }
                     .onAppear { eventDetails.getEventImages() }
-
+                    
                     VStack(alignment: .leading, spacing: 14) {
                         PodcastTitle(title: event.typeName.uppercased(), fSize: 12, linelimit: 1, fontWeight: .black, fColor: .white)
                         PodcastTitle(title: event.title, fSize: 20, linelimit: 2, fontWeight: .heavy, fColor: .white).padding(.trailing, 30)
@@ -373,7 +368,7 @@ struct EventDetailView: View {
                             let startTimeStr = event.startTime?.toString("HH:mm") ?? ""
                             let endDateStr = event.endDate?.toString("EEE, dd MMM") ?? ""
                             let endTimeStr = event.endTime?.toString("HH:mm") ?? ""
-
+                            
                             EventDetailPreviewRow(image: "Calender", title: startDateStr, subtitle: startTimeStr)
                             Text("-").foregroundColor(.white)
                             EventDetailPreviewRow(image: "", title: endDateStr, subtitle: endTimeStr, arrow: true)
@@ -386,7 +381,7 @@ struct EventDetailView: View {
                     .padding(.vertical, 10)
                     .frame(maxWidth: .infinity)
                     .background(Color.lightBrown)
-
+                    
 //                    AttendingListScrollView()
                     EventAttendeesListView(eventID: event.id)
                     
@@ -449,6 +444,7 @@ struct EventDetailView: View {
             Button("Follow"){ }
             Button("Report Post"){ }
         })
+        .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: Button(action : {
             print("More")
             showMoreAction = true
