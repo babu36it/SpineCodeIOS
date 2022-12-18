@@ -10,6 +10,8 @@ import UIKit
 class AddEventViewModel: ObservableObject {
     private let eventService = AddEventServiceProvider()
 
+    @Published var showLoader = false
+
     @Published private(set) var userEvents: [EventModel]?
 
     @Published var selectedEvent: EventModel? {
@@ -132,7 +134,9 @@ class AddEventViewModel: ObservableObject {
     }
     
     func publishSelectedEvent(params: [String: Any]? = nil, media: [Media]? = nil, completion: @escaping (Int?) -> Void) {
-        eventService.publishEvent(params, media: media) { result in
+        showLoader = true
+        eventService.publishEvent(params, media: media) { [weak self] result in
+            self?.showLoader = false
             switch result {
             case .success(let success):
                 completion(success.eventID)

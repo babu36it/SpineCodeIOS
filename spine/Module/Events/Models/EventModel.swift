@@ -190,7 +190,12 @@ class EventModel: ObservableObject, Codable, Identifiable {
         try container.encode(userSaveStatus, forKey: .userSaveStatus)
     }
     
-    init() { }
+    init() {
+        startDate = Date()
+        endDate = Date()
+        startTime = Date()
+        endTime = Date()
+    }
 }
 
 extension EventModel {

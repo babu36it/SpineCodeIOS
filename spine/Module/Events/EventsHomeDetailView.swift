@@ -297,7 +297,12 @@ struct EventDetailPreviewAboutView: View {
     var body: some View {
         VStack(spacing: 20) {
             HStack(spacing: 15) {
-                if let userImagePath = userImagePath, let userImage: String = eventModel.hostedProfilePic {
+                if eventModel.hostedProfilePic.isEmpty, let userImagePath = userImagePath, let userImage: String = AppUtility.shared.userInfo?.data?.userImage {
+                    let imageURL = "\(userImagePath)\(userImage)"
+                    RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imageURL))
+                        .circularBorder(radius: 100, borderWidth: 3, shadowRadius: 5)
+                        .aspectRatio(contentMode: .fill)
+                } else if let userImagePath = userImagePath, let userImage: String = eventModel.hostedProfilePic {
                     let imageURL = "\(userImagePath)\(userImage)"
                     RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imageURL))
                         .circularBorder(radius: 100, borderWidth: 3, shadowRadius: 5)
@@ -307,7 +312,11 @@ struct EventDetailPreviewAboutView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    Header5(title: eventModel.userName)
+                    if eventModel.userName.isEmpty, let username: String = AppUtility.shared.userInfo?.data?.name {
+                        Header5(title: username)
+                    } else {
+                        Header5(title: eventModel.userName)
+                    }
                     Title4(title: "HOST")
                 }
                 Spacer()
@@ -355,7 +364,7 @@ struct EventDetailView: View {
                     
                     ZStack(alignment: .bottomLeading) {
                         HorizontalImageScroller(images: eventDetails.eventImages)
-                        DateBadge(date: Date())
+                        DateBadge(date: Date(), showMonthName: true)
                             .padding(20)
                     }
                     .onAppear { eventDetails.getEventImages() }

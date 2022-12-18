@@ -29,7 +29,7 @@ struct EventDetailPreviewView: View {
             VStack(spacing: 0) {
                 ZStack(alignment: .bottomLeading) {
                     HorizontalImageScroller(images: images)
-                    DateBadge(date: todayDate).padding(20)
+                    DateBadge(date: todayDate, showMonthName: true).padding(20)
                 }
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
@@ -82,6 +82,7 @@ struct EventDetailPreviewView: View {
                     .padding()
                 }
             }
+            .modifier(LoadingView(isLoading: $addEventVM.showLoader))
             .edgesIgnoringSafeArea(.top)
             .confirmationDialog("", isPresented: $showMoreAction, actions: {
                 Button("Follow"){
@@ -181,10 +182,16 @@ struct EventDetailPreviewRow: View {
 
 struct DateBadge: View {
     let date: Date
+    var showMonthName: Bool = false
+    
     var body: some View {
         VStack {
             SubHeader6(title: "\(date.day)", fColor: .white)
-            SubHeader6(title: "\(date.month)", fColor: .white)
+            if showMonthName {
+                SubHeader6(title: "\(date.monthAs3String)", fColor: .white)
+            } else {
+                SubHeader6(title: "\(date.month)", fColor: .white)
+            }
         }.frame(width: 30)
         //.foregroundColor(.white)
         .padding(5)
