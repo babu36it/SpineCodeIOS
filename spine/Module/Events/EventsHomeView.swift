@@ -10,8 +10,9 @@ import SwiftUI
 struct EventsHomeView: View {
     @State var searchText = ""
     @State var showAdd = false
-    @State var selectedTab: EventsHomeTabType = .none
     @State var sheetType: EventSheetType?
+
+    @Binding var selectedTab: EventsHomeTabType
 
     private let eventTypesVM: EventTypesViewModel = .init()
     private let eventsListVM: EventsListViewModel = .init()
@@ -88,7 +89,7 @@ struct EventsHomeView: View {
 
 struct EventsHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        EventsHomeView()
+        EventsHomeView(selectedTab: Binding(get: { .none }, set: { _ in }))
     }
 }
 

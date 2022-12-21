@@ -219,43 +219,46 @@ struct EventAttendeesListView: View {
     let eventID: String
     
     var body: some View {
-        VStack(alignment: .leading) {
-            if attendeesListVM.attendees.isEmpty {
-                Title5(title: "---")
-            } else if attendeesListVM.attendees.count == 1 {
-                Title5(title: "1 person going")
-            } else {
-                Title5(title: "\(attendeesListVM.attendees.count) people are going")
-            }
-            HStack {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack {
-                        ForEach(attendeesListVM.attendees) { attendee in
-                            if let imagePath = attendeesListVM.imageForAttendee(attendee) {
-                                RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
-                                    .circularClip(radius: 40)
+        if attendeesListVM.attendees.isEmpty {
+            EmptyView()
+                .onAppear {
+                    attendeesListVM.getAttendees(for: eventID)
+                }
+        } else {
+            VStack(alignment: .leading) {
+                if attendeesListVM.attendees.count == 1 {
+                    Title5(title: "1 person going")
+                } else {
+                    Title5(title: "\(attendeesListVM.attendees.count) people are going")
+                }
+
+                HStack {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack {
+                            ForEach(attendeesListVM.attendees) { attendee in
+                                if let imagePath = attendeesListVM.imageForAttendee(attendee) {
+                                    RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
+                                        .circularClip(radius: 40)
+                                }
                             }
                         }
                     }
+                    Button {
+                        showAttendees = true
+                    } label: {
+                        Image(systemName: ImageName.chevronLeft)
+                            .foregroundColor(.gray)
+                    }
+                    
+                    NavigationLink("", isActive: $showAttendees) {
+                        AttendeesListView()
+                            .environmentObject(attendeesListVM)
+                    }
                 }
-                Button {
-                    showAttendees = true
-                } label: {
-                    Image(systemName: ImageName.chevronLeft)
-                        .foregroundColor(.gray)
-                }
-
-                NavigationLink("", isActive: $showAttendees) {
-                    AttendeesListView()
-                        .environmentObject(attendeesListVM)
-                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
             }
         }
-        .onAppear {
-            attendeesListVM.getAttendees(for: eventID)
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 10)
     }
 }
 
