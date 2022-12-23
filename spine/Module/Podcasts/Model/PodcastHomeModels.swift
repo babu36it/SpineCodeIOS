@@ -24,7 +24,7 @@ struct PodcastEpisodeCustom: Codable {
     }
 }
 
-struct PodcastEpisodeDetail: Codable {
+struct PodcastEpisodeDetail: Codable, Hashable {
     let title: String
     let language: String
     let favCount: Int

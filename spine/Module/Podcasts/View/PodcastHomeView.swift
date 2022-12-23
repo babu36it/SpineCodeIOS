@@ -23,16 +23,7 @@ struct PodcastHomeView: View {
          NavigationView {
             ZStack {
                 VStack {
-                    HStack(spacing: 0) {
-                        SystemButton(image: "plus", font: .title2) {
-                            self.showAdd.toggle()
-                        }
-                        CustomSearchBar(placeHolder: "Search podcasts", searchText: $searchText)
-                        CustomButton(image: "FilterBTN") {
-                            print("Filter tapped")
-                            showFilter = true
-                        }
-                    }.padding(.horizontal)
+                    CustomNavBar()
                     
                     VStack(spacing: 0) {
                         HStack {
@@ -74,6 +65,20 @@ struct PodcastHomeView: View {
             })
         } //nav
     }
+    
+    @ViewBuilder
+    func CustomNavBar() -> some View {
+        HStack(spacing: 0) {
+            SystemButton(image: "plus", font: .title2) {
+                self.showAdd.toggle()
+            }
+            CustomSearchBar(placeHolder: "Search podcasts", searchText: $searchText)
+            CustomButton(image: "FilterBTN") {
+                print("Filter tapped")
+                showFilter = true
+            }
+        }.padding(.horizontal)
+    }
 }
 
 struct PodcastHomeView_Previews: PreviewProvider {
@@ -85,29 +90,28 @@ struct PodcastHomeView_Previews: PreviewProvider {
 
 struct PodcastHomeViewTab1: View {
     @EnvironmentObject var podcastHomeVM: PodcastHomeViewModel
+    
     var body: some View {
         List {
                Divider().padding(.leading, 10)
                 .listRowSeparator(.hidden)
 
-                ForEach((1...4), id: \.self) { item in
-                    VStack {
-                        if item == 2 {
-                            BannerImageView(image: "ic_launch").padding(.top, -10)
-                        } else {
-                                ZStack {
-                                    PodcastHomeListVideoRow()//.padding(.vertical, 5)
-                                    NavigationLink(destination: PodcastDetailView()) {
-                                        EmptyView()
-                                    }.buttonStyle(PlainButtonStyle())
-                                    .opacity(0.0)
-                                }
-                            Divider().padding(.leading, 10)
+            ForEach(podcastHomeVM.podcastEpisodes, id: \.self) { episode in
+                VStack {
+                    ZStack {
+                        PodcastHomeListVideoRow1(item: PodcastItem(episode: episode), isEpisode: true)//.padding(.vertical, 5)
+                        NavigationLink(destination: PodcastDetailView()) {
+                            EmptyView()
                         }
-
-                    }.listRowSeparator(.hidden)
+                        .buttonStyle(PlainButtonStyle())
+                        .opacity(0.0)
+                    }
+                    Divider().padding(.leading, 10)
                 }
-        }.edgesIgnoringSafeArea(.all)
+                .listRowSeparator(.hidden)
+            }
+        }
+        .edgesIgnoringSafeArea(.all)
         .padding(.leading, -20)
         .listStyle(.plain)
         .refreshable {
@@ -118,6 +122,7 @@ struct PodcastHomeViewTab1: View {
 
 struct PodcastHomeViewTab2: View {
     @EnvironmentObject var podcastHomeVM: PodcastHomeViewModel
+    
     var body: some View {
         List {
                Divider().padding(.leading, 10)
@@ -126,7 +131,7 @@ struct PodcastHomeViewTab2: View {
             ForEach(podcastHomeVM.podcasts, id: \.self) { podcast in
                 VStack {
                     ZStack {
-                        PodcastHomeListVideoRow1(podcast: podcast)//.padding(.vertical, 5)
+                        PodcastHomeListVideoRow1(item: PodcastItem(podcast: podcast), isEpisode: false)//.padding(.vertical, 5)
                         NavigationLink(destination: PodcastDetailView()) {
                             EmptyView()
                         }
@@ -134,9 +139,11 @@ struct PodcastHomeViewTab2: View {
                         .opacity(0.0)
                     }
                     Divider().padding(.leading, 10)
-                }.listRowSeparator(.hidden)
+                }
+                .listRowSeparator(.hidden)
             }
-        }.edgesIgnoringSafeArea(.all)
+        }
+        .edgesIgnoringSafeArea(.all)
         .padding(.leading, -20)
         .listStyle(.plain)
         .refreshable {
@@ -146,11 +153,12 @@ struct PodcastHomeViewTab2: View {
 }
 
 struct PodcastHomeListVideoRow1: View {
-    let podcast: PodcastDetail
+    let item: PodcastItem
+    let isEpisode: Bool
     
     var body: some View {
         HStack(alignment: .center) {
-            VideoThumbnailImage1(image: podcast.rssDetail.image, size: 80)
+            VideoThumbnailImage1(image: item.thumbnailImage, size: 80)
             
             VStack(alignment: .leading, spacing: 5) {
                 
@@ -161,49 +169,60 @@ struct PodcastHomeListVideoRow1: View {
                         .frame(width: 8, height: 8)
                         .foregroundColor(K.appColors.lightGray)
                         
-                    Text(podcast.rssDetail.language + "  |")
+                    Text(item.language)
                         .modifier(SubTitleModifier())
                     
-                    Image(systemName: "clock")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 12, height: 12)
-                        .foregroundColor(K.appColors.lightGray)
-                    
-                    Text("1h 17min") // TODO: get duration from api
-                        .modifier(SubTitleModifier())
+                    if isEpisode {
+                        Text("  |")
+                            .modifier(SubTitleModifier())
+                        
+                        Image(systemName: "clock")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 12, height: 12)
+                            .foregroundColor(K.appColors.lightGray)
+                        
+                        Text(item.duration.getHourAndMin()) // TODO: get duration from api
+                            .modifier(SubTitleModifier())
+                    }
+                    Spacer()
+                    HStack {
+                        ButtonWithCustomImage(image: "directArrow", size: 18) {
+                            print("share tapped")
+                        }
+                        ButtonWithCustomImage(image: ImageName.ic_bookmark, size: 18) {
+                            print("BookMark tapped")
+                        }
+                    }
                 }
                
-                Header5(title: podcast.rssDetail.title, lineLimit: 2)
+                Header5(title: item.title, lineLimit: 2)
+                    .padding(.trailing, 60)
                     
                 HStack(spacing: 10) {
-                    ButtonWithSystemImage(image: "play.fill", size: 8, fColor: K.appColors.lightGray) {
-                        print("Play tapped")
+                    if isEpisode {
+                        ButtonWithSystemImage(image: "play.fill", size: 8, fColor: K.appColors.lightGray) {
+                            print("Play tapped")
+                        }
+                        Text("\(item.playCount)")
+                            .modifier(SubTitleModifier())
+                        ButtonWithSystemImage(image: ImageName.heartFill, size: 12, fColor: K.appColors.lightGray) {
+                            print("Heart tapped")
+                        }
+                    } else {
+                        Text("\(item.episodeCount) Episodes")
+                            .modifier(SubTitleModifier())
                     }
-                    Text("45").modifier(SubTitleModifier()) // TODO: get playcount from api
-                    ButtonWithSystemImage(image: ImageName.heartFill, size: 12, fColor: K.appColors.lightGray) {
-                        print("Heart tapped")
+                    
+                    Spacer()
+                    HStack {
+                        Title5(title: item.username, fColor: K.appColors.lightGray)
+                        CustomAsyncCircularImage(urlStr: item.userImage, size: 30)
                     }
+                    
                 }//.foregroundColor(K.appColors.lightGray)
                 
             }.padding(.leading, 10)
-            Spacer()
-            
-            VStack(alignment: .trailing) {
-                HStack {
-                    ButtonWithCustomImage(image: "directArrow", size: 18) {
-                        print("share tapped")
-                    }
-                    ButtonWithCustomImage(image: ImageName.ic_bookmark, size: 18) {
-                        print("BookMark tapped")
-                    }
-                }//.padding(.top, 10)
-                Spacer()
-                HStack {
-                    Title5(title: podcast.username, fColor: K.appColors.lightGray)
-                    CustomAsyncCircularImage(urlStr: podcast.userImage, size: 30)
-                }
-            }
             
         }.padding(.leading, 10)
             .padding(.vertical, 5)
@@ -229,68 +248,5 @@ struct SegmentedButton: View {
             }
             .frame(width:120)
         }
-    }
-}
-
-struct PodcastHomeListVideoRow: View {
-    var body: some View {
-        HStack(alignment: .center) {
-            VideoThumbnailImage(image: "thumbnail1", size: 80)
-            
-            VStack(alignment: .leading, spacing: 5) {
-                
-                HStack {
-                    ButtonWithSystemImage(image: ImageName.mic, size: 8) {
-                        print("mic tapped")
-                    }.foregroundColor(.primary).offset(y: -3)
-                        
-                    Text("En  |")
-                        .modifier(SubTitleModifier())
-                    
-                    ButtonWithCustomImage(image: "CircleClock", size: 15) {
-                        print("mic tapped")
-                    }.foregroundColor(.primary).offset(y: -3)
-                    
-                    Text("1h 17min")
-                        .modifier(SubTitleModifier())
-                }
-               
-                Header5(title: "Universal law From Friend of Indins ameri", lineLimit: 2)
-                    
-                HStack(spacing: 10) {
-                    ButtonWithSystemImage(image: "play.fill", size: 8, fColor: K.appColors.lightGray) {
-                        print("Play tapped")
-                    }
-                    Text("45").modifier(SubTitleModifier())
-                    ButtonWithSystemImage(image: ImageName.heartFill, size: 12, fColor: K.appColors.lightGray) {
-                        print("Heart tapped")
-                    }
-                }//.foregroundColor(K.appColors.lightGray)
-                
-            }.padding(.leading, 10)
-            Spacer()
-            
-            VStack(alignment: .trailing) {
-                HStack {
-                    ButtonWithCustomImage(image: "directArrow", size: 18) {
-                        print("share tapped")
-                    }
-                    ButtonWithCustomImage(image: ImageName.ic_bookmark, size: 18) {
-                        print("BookMark tapped")
-                    }
-                }//.padding(.top, 10)
-                Spacer()
-                HStack {
-                    Title5(title: "Tom", fColor: K.appColors.lightGray)
-                    Image("Oval 57")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 30, height: 30)
-                        .cornerRadius(30)
-                }
-            }
-            
-        }.padding(.leading, 10)
-            .padding(.vertical, 5)
     }
 }
