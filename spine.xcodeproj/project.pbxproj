@@ -124,12 +124,15 @@
 		04A0593128B62F0000262BDA /* ReportConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A0593028B62F0000262BDA /* ReportConfirmationView.swift */; };
 		04A0593328B62F3600262BDA /* Dot3ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A0593228B62F3600262BDA /* Dot3ViewModel.swift */; };
 		04A0593628B67AB900262BDA /* ReportingUserMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A0593528B67AB900262BDA /* ReportingUserMainView.swift */; };
+		04A2E4B12955FF4700A46A55 /* ToolBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A2E4B02955FF4600A46A55 /* ToolBarButton.swift */; };
+		04A2E4B32956018600A46A55 /* GradientDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A2E4B22956018600A46A55 /* GradientDivider.swift */; };
 		04A3D3FE285AEF5A00827941 /* EventDetailPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A3D3FD285AEF5A00827941 /* EventDetailPreviewView.swift */; };
 		04A9D434294A3E400096935A /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9D433294A3E400096935A /* UIScreen+Extension.swift */; };
 		04B49E12294D865E0084DB43 /* ViewDidLoadModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B49E11294D865E0084DB43 /* ViewDidLoadModifier.swift */; };
 		04B49E14294D88A00084DB43 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B49E13294D88A00084DB43 /* LoadingView.swift */; };
 		04B779C12886B6A8009EB505 /* PractitionersDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B779C02886B6A8009EB505 /* PractitionersDetailsView.swift */; };
 		04B779C32886BF27009EB505 /* PracticionerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B779C22886BF27009EB505 /* PracticionerListView.swift */; };
+		04BD3D32295369E100EC1965 /* PodcastItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BD3D31295369E100EC1965 /* PodcastItem.swift */; };
 		04D1D551287C043300A62CA4 /* FeedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1D550287C043300A62CA4 /* FeedHomeView.swift */; };
 		04D1D553287C060D00A62CA4 /* FeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1D552287C060D00A62CA4 /* FeedHeaderView.swift */; };
 		04E06E2528FF16A300290BE5 /* AddPodcastModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E06E2428FF16A300290BE5 /* AddPodcastModels.swift */; };
@@ -393,12 +396,15 @@
 		04A0593028B62F0000262BDA /* ReportConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportConfirmationView.swift; sourceTree = "<group>"; };
 		04A0593228B62F3600262BDA /* Dot3ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dot3ViewModel.swift; sourceTree = "<group>"; };
 		04A0593528B67AB900262BDA /* ReportingUserMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportingUserMainView.swift; sourceTree = "<group>"; };
+		04A2E4B02955FF4600A46A55 /* ToolBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarButton.swift; sourceTree = "<group>"; };
+		04A2E4B22956018600A46A55 /* GradientDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientDivider.swift; sourceTree = "<group>"; };
 		04A3D3FD285AEF5A00827941 /* EventDetailPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailPreviewView.swift; sourceTree = "<group>"; };
 		04A9D433294A3E400096935A /* UIScreen+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		04B49E11294D865E0084DB43 /* ViewDidLoadModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDidLoadModifier.swift; sourceTree = "<group>"; };
 		04B49E13294D88A00084DB43 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		04B779C02886B6A8009EB505 /* PractitionersDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PractitionersDetailsView.swift; sourceTree = "<group>"; };
 		04B779C22886BF27009EB505 /* PracticionerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticionerListView.swift; sourceTree = "<group>"; };
+		04BD3D31295369E100EC1965 /* PodcastItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastItem.swift; sourceTree = "<group>"; };
 		04D1D550287C043300A62CA4 /* FeedHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHomeView.swift; sourceTree = "<group>"; };
 		04D1D552287C060D00A62CA4 /* FeedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeaderView.swift; sourceTree = "<group>"; };
 		04E06E2428FF16A300290BE5 /* AddPodcastModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPodcastModels.swift; sourceTree = "<group>"; };
@@ -589,6 +595,7 @@
 			children = (
 				040D9F9D294C586E00E1E2E5 /* PodcastHomeModels.swift */,
 				040D9FA2294C790000E1E2E5 /* PodcastResponse.swift */,
+				04BD3D31295369E100EC1965 /* PodcastItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -610,6 +617,7 @@
 				048AD9F128A50F8B0091BC60 /* CustomLabels.swift */,
 				04973536289A90150019548A /* CustomButtons.swift */,
 				2C5BAE0229311DC900BB31D1 /* RemoteImage.swift */,
+				04A2E4B22956018600A46A55 /* GradientDivider.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -893,6 +901,7 @@
 			children = (
 				04B49E11294D865E0084DB43 /* ViewDidLoadModifier.swift */,
 				04B49E13294D88A00084DB43 /* LoadingView.swift */,
+				04A2E4B02955FF4600A46A55 /* ToolBarButton.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -1672,6 +1681,7 @@
 				66A237C4281709FC00CA3763 /* SwiftUIViewModifier.swift in Sources */,
 				66A238172817165A00CA3763 /* PageView.swift in Sources */,
 				0482D5E02869B10600DFCA2A /* MyProfileHomeView.swift in Sources */,
+				04A2E4B12955FF4700A46A55 /* ToolBarButton.swift in Sources */,
 				18D5E3772824EC350075F5A2 /* UserDefaultsExtension.swift in Sources */,
 				048691FF2875D10100BA0BAB /* MailView.swift in Sources */,
 				66A237FC281709FC00CA3763 /* LoginVC.swift in Sources */,
@@ -1866,6 +1876,7 @@
 				0482B60F28713393006017E9 /* UserProfileViewModel.swift in Sources */,
 				2C1EC5A6293C842B0037B6E7 /* EventDetailCommentSectionViewModel.swift in Sources */,
 				04873C7328E337A00054A00C /* HttpUtility.swift in Sources */,
+				04BD3D32295369E100EC1965 /* PodcastItem.swift in Sources */,
 				0482D5E22869B45C00DFCA2A /* FollowerListView.swift in Sources */,
 				2C5BAE072933EF8B00BB31D1 /* TimezoneListService.swift in Sources */,
 				048306FC286C79D300F677CC /* PostList.swift in Sources */,
@@ -1878,6 +1889,7 @@
 				04A0592F28B62ED900262BDA /* ReportReasonView.swift in Sources */,
 				0491886128590749002343CA /* SubCategoryView.swift in Sources */,
 				180C16B02856CAE90072D0DF /* CustomAddItemSheet.swift in Sources */,
+				04A2E4B32956018600A46A55 /* GradientDivider.swift in Sources */,
 				180C16AF2856CAE90072D0DF /* ActivityView.swift in Sources */,
 				2C5BAE092933F74B00BB31D1 /* EventCategoryListViewModel.swift in Sources */,
 				04894D27286DF8FC00CF4860 /* EmployeeProfileView.swift in Sources */,
@@ -2074,7 +2086,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.spiritualnetwork.spine;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spiritualnetwork.spin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -2115,7 +2127,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.spiritualnetwork.spine;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spiritualnetwork.spin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -1030,3 +1030,16 @@ extension String {
         return Int((hours * 60 * 60) + (minutes * 60) + seconds)
     }
 }
+
+extension String {
+    func getHourAndMin() -> String {
+        var timeString = ""
+        let components = self.components(separatedBy: ":")
+        guard components.count == 3 else { return "NA" }
+        if components[0].integer != 0 {
+            timeString = "\(components[0])h "
+        }
+        timeString.append(contentsOf: "\(components[1])min")
+        return timeString
+    }
+}
