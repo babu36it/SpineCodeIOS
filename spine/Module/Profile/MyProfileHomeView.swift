@@ -40,33 +40,43 @@ struct MyProfileHomeView: View {
     @State var eventList = [EventDetail]()
     @State var podcastList = [EventDetail]()
     
+    @StateObject var postsListVM: PostListViewModel = .init()
+    
+    let userInfoModel: SignInResponseModel? = AppUtility.shared.userInfo
     
     var body: some View {
         NavigationView {
             ZStack {
                 VStack(spacing: 0) {
                     ZStack {
-                        LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)//.padding(.vertical, 5)
-                        CircularBorderedProfileView(image: "Oval 57", size: 100, borderWidth: 3, showShadow: true)
-                    }.offset(y: -30)
+                        LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
+//                            .padding(.vertical, 5)
+                        if let userImage: String = userInfoModel?.data?.userImage, let userImagePath: String = userInfoModel?.imagePath, !userImage.isEmpty, !userImagePath.isEmpty {
+                            RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: "\(userImagePath)\(userImage)"))
+                                .profileImage(radius: 100, borderWidth: 3)
+                        } else {
+                            CircularBorderedProfileView(image: "Oval 57", size: 100, borderWidth: 3, showShadow: true)
+                        }
+                    }
+                    .offset(y: -30)
                     
                     HStack(spacing: 60) {
-                        
                         NavigationLink(destination: FollowerListView(selectedTab: .followers)) {
-                            FollowBtn(title: "Followers")
+                            FollowBtn(title: "Followers", desc: userInfoModel?.followersCount ?? "")
                         }
-                        
                         Button("VIEW FROFILE"){
                             screenType = .myProfile
-                        }.foregroundColor(.gray)
-                            .font(.Poppins(type: .regular, size: 14))
+                        }
+                        .foregroundColor(.gray)
+                        .font(.Poppins(type: .regular, size: 14))
                         
                         NavigationLink(destination: FollowerListView(selectedTab: .following)) {
-                            FollowBtn(title: "Following")
+                            FollowBtn(title: "Following", desc: userInfoModel?.followingCount ?? "")
                         }
-                        
                     }
-                    Divider().padding(.vertical, 20).padding(.horizontal, 30)
+                    Divider()
+                        .padding(.vertical, 20)
+                        .padding(.horizontal, 30)
                     
                     VStack(spacing: 0) {
                         HStack {
@@ -84,7 +94,8 @@ struct MyProfileHomeView: View {
                                 selectedTab = .bookmark
                                 
                             }.offset(y: 8)
-                        }.padding(.horizontal, 5)
+                        }
+                        .padding(.horizontal, 5)
                         .animation(.default, value: selectedTab)
                         
                         LinearGradient(colors: [.white, Color(.sRGB, white: 0.85, opacity: 0.3)], startPoint: .bottom, endPoint: .top).frame(height: 4)
@@ -94,10 +105,10 @@ struct MyProfileHomeView: View {
                     NavigationLink(destination: MyPublicProfileView(), tag: .myProfile, selection: $screenType) { EmptyView() }
                     NavigationLink(destination: SettingsListView(), tag: .settings, selection: $screenType) { EmptyView() }
                     
-                    
                     switch selectedTab {
                     case .posts:
                         PostList(postsSection: postsSection)
+                            .environmentObject(postsListVM)
                     case .events:
                         EventList(events: eventList)
                     case .podcasts:
@@ -105,14 +116,15 @@ struct MyProfileHomeView: View {
                     case .bookmark:
                         BookmarkList(events: [event1])
                     }
-                    
                 } //vstack
                 VStack {
                     Spacer()
                     CustomAddItemSheet(dismisser: $showAdd).offset(y: self.showAdd ? 0: UIScreen.main.bounds.height)
-                }.background((self.showAdd ? Color.black.opacity(0.3) : Color.clear).onTapGesture {
+                }
+                .background((self.showAdd ? Color.black.opacity(0.3) : Color.clear).onTapGesture {
                     self.showAdd.toggle()
-                }).edgesIgnoringSafeArea(.all)
+                })
+                .edgesIgnoringSafeArea(.all)
             } //zstack
             .animation(.default, value: showAdd)
             .onAppear(perform: {
@@ -144,7 +156,8 @@ struct MyProfileHomeView: View {
             }){
                 Image(systemName: ImageName.shift)
             }).tint(.primary)
-        }.navigationViewStyle(StackNavigationViewStyle())
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     func getPosts()-> [SectionDetail] {
@@ -172,11 +185,15 @@ struct MyProfileHomeView_Previews: PreviewProvider {
 
 struct FollowBtn: View {
     let title: String
+    let desc: String
+    
     var body: some View {
         ZStack(alignment: .top) {
             Title5(title: title, fColor: .gray)
-            Title4(title: "3k").offset(y: -20)
-        }//.padding(.top, 20)
+            Title4(title: desc)
+                .offset(y: -20)
+        }
+//        .padding(.top, 20)
     }
 }
 
@@ -215,8 +232,10 @@ struct SegmentedBtn: View {
                     }
                     .foregroundColor(selectedTab.rawValue == title ? .primary : .gray)
                 }
-                Rectangle().frame(height: 4.0, alignment: .top)
-                    .foregroundColor(K.appColors.appTheme).opacity(selectedTab.rawValue == title ? 1.0 : 0.0)
+                Rectangle()
+                    .frame(height: 4.0, alignment: .top)
+                    .foregroundColor(K.appColors.appTheme)
+                    .opacity(selectedTab.rawValue == title ? 1.0 : 0.0)
             }
             .frame(width:80)
     }

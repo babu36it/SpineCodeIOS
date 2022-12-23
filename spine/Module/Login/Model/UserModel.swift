@@ -88,6 +88,24 @@ extension SignInResponseModel {
     class func remove() {
         KeychainHelper.shared.delete(forKey: "UserInformation")
     }
+    
+    var profileImage: String? {
+        if let userImage: String = data?.userImage, let imagePath: String = imagePath, !userImage.isEmpty, !imagePath.isEmpty {
+            return imagePath + userImage
+        }
+        return nil
+    }
+    
+    var followersCount: String {
+        let followers: Int = Int(data?.followerRecordCount ?? "0") ?? 0
+        return followers.formatUsingAbbrevation()
+    }
+    
+    var followingCount: String {
+        let followings: Int = Int(data?.followingRecordCount ?? "0") ?? 0
+        return followings.formatUsingAbbrevation()
+    }
+
 }
 
 /*

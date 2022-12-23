@@ -65,7 +65,7 @@ class EventsListViewModel: ObservableObject {
             var page: Int = 1
             var pageLimit: Int = 10
             if let currentPage: Int = Int(eventResponses[type]?.currentPage ?? "0"), currentPage > 0 {
-                page = currentPage
+                page = currentPage + 1
             }
             if let currentPageLimit: Int = Int(eventResponses[type]?.currentPerPage ?? "0"), currentPageLimit > 0 {
                 pageLimit = currentPageLimit

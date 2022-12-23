@@ -200,6 +200,9 @@
 		2C5BAE0B2933F75900BB31D1 /* EventCategoryListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5BAE0A2933F75900BB31D1 /* EventCategoryListService.swift */; };
 		2C5CAFEE294DA07200E81528 /* AddImageVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5CAFED294DA07200E81528 /* AddImageVideoViewModel.swift */; };
 		2C5CAFF0294F5A0700E81528 /* AddImageVideoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5CAFEF294F5A0700E81528 /* AddImageVideoService.swift */; };
+		2C73DD342954D40300141D70 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD332954D40300141D70 /* PostModel.swift */; };
+		2C73DD362955669C00141D70 /* PostListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD352955669C00141D70 /* PostListService.swift */; };
+		2C73DD382955759F00141D70 /* PostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD372955759F00141D70 /* PostListViewModel.swift */; };
 		2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */; };
 		2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */; };
 		2C7B1FBA29202C4600E06E40 /* MessagingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */; };
@@ -471,6 +474,9 @@
 		2C5BAE0A2933F75900BB31D1 /* EventCategoryListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCategoryListService.swift; sourceTree = "<group>"; };
 		2C5CAFED294DA07200E81528 /* AddImageVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageVideoViewModel.swift; sourceTree = "<group>"; };
 		2C5CAFEF294F5A0700E81528 /* AddImageVideoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageVideoService.swift; sourceTree = "<group>"; };
+		2C73DD332954D40300141D70 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
+		2C73DD352955669C00141D70 /* PostListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListService.swift; sourceTree = "<group>"; };
+		2C73DD372955759F00141D70 /* PostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailService.swift; sourceTree = "<group>"; };
 		2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -646,6 +652,7 @@
 			isa = PBXGroup;
 			children = (
 				0482B60E28713393006017E9 /* UserProfileViewModel.swift */,
+				2C73DD372955759F00141D70 /* PostListViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1070,6 +1077,9 @@
 		18D5E37E28253FF90075F5A2 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				0482B610287149F0006017E9 /* ViewModels */,
+				2C73DD322954D3FA00141D70 /* Models */,
+				2C73DD312954D3FA00141D70 /* Services */,
 				18D5E37F2825401B0075F5A2 /* ProfileVC.swift */,
 				0482D5DF2869B10600DFCA2A /* MyProfileHomeView.swift */,
 				0482D5E12869B45C00DFCA2A /* FollowerListView.swift */,
@@ -1083,7 +1093,6 @@
 				048198CB286ECF4400AFC6AA /* AboutProfileView.swift */,
 				0482B61128714A7B006017E9 /* Edit Profile */,
 				0499F75328721439003CE532 /* Settings */,
-				0482B610287149F0006017E9 /* ViewModels */,
 				04894D1F286D9EB700CF4860 /* Chat View */,
 			);
 			path = Profile;
@@ -1199,6 +1208,22 @@
 				2C5CAFEF294F5A0700E81528 /* AddImageVideoService.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		2C73DD312954D3FA00141D70 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2C73DD352955669C00141D70 /* PostListService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2C73DD322954D3FA00141D70 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2C73DD332954D40300141D70 /* PostModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		2C7B1FB3291FFA7700E06E40 /* VIewModels */ = {
@@ -1759,6 +1784,7 @@
 				04867268286206E700582275 /* MDPContentView.swift in Sources */,
 				189D8B92282E76CB00C1126C /* CustomHalfSheetsUIView.swift in Sources */,
 				0486725D2861FD0D00582275 /* MultiSelectionCalenderView.swift in Sources */,
+				2C73DD382955759F00141D70 /* PostListViewModel.swift in Sources */,
 				04867260286205D400582275 /* MultiDatePicker.swift in Sources */,
 				2C5CAFEE294DA07200E81528 /* AddImageVideoViewModel.swift in Sources */,
 				66A237CB281709FC00CA3763 /* HeaderTitleView.swift in Sources */,
@@ -1818,8 +1844,10 @@
 				18D28A02283DCDE200C7BDDF /* StoriesMemmberVC.swift in Sources */,
 				2C5BADEB292541A500BB31D1 /* MobileOTPViewModel.swift in Sources */,
 				188D3271281F877C00DA078D /* OTPVC.swift in Sources */,
+				2C73DD362955669C00141D70 /* PostListService.swift in Sources */,
 				188F22842840FD1C00F8896D /* PracticionersListVC.swift in Sources */,
 				048712C72877E81800F70FBE /* CountTimer.swift in Sources */,
+				2C73DD342954D40300141D70 /* PostModel.swift in Sources */,
 				04867266286206BC00582275 /* MDPMonthView.swift in Sources */,
 				66A237FE281709FC00CA3763 /* UserModel.swift in Sources */,
 				2C5BAE052933EF6C00BB31D1 /* TimezoneListViewModel.swift in Sources */,
