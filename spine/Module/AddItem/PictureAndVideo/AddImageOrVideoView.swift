@@ -21,23 +21,18 @@ extension UIImagePickerController.SourceType: Identifiable {
 }
 
 struct AddImageOrVideoView: View {
-    let addItemType: AddItemType
-    @State private var showAction = false
-    @State var selectedMode: UIImagePickerController.SourceType?
     @Environment(\.dismiss) var dismiss
-    @State var images: [Any?] = [nil]
-    @State var selectedImage: Any?
-    @State var aboutText = ""
-    @State var hashTags = ""
-    @State var markFriends = ""
-    @State var linkPlace = ""
-    @State var allowComments = false
+
+    @State private var showAction = false
+    @StateObject private var viewModel: AddImageVideoViewModel = .init()
     
+    let addItemType: AddItemType
+
     var body: some View {
         Group {
-            if let image = selectedImage as? UIImage {
+            if let image = viewModel.selectedImage as? UIImage {
                 ImagePreviewView(image: image)
-            } else if let videoUrl = selectedImage as? URL {
+            } else if let videoUrl = viewModel.selectedImage as? URL {
                 VideoPreviewView(videoUrl: videoUrl)
             } else {
                 ScrollView {
@@ -46,17 +41,22 @@ struct AddImageOrVideoView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                            //[GridItem(.adaptive(minimum: 100))]
-                            //[GridItem(.fixed(100)), GridItem(.fixed(100)), GridItem(.fixed(100))]
-                            ForEach(Array(images.enumerated()), id: \.offset) { index, image in
-                                
+                            ForEach(Array(viewModel.images.enumerated()), id: \.offset) { index, image in
                                 if let media = image {
                                     ImageVideoCell(media: media) {
-                                        images.remove(at: index)
+                                        if addItemType == .videoImage {
+                                            viewModel.images.remove(at: index)
+                                        } else {
+                                            viewModel.images = [nil] // reset to add image view
+                                        }
                                     }
                                 } else {
                                     AddCameraView {
-                                        showAction = true
+                                        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                            viewModel.showAction = true
+                                        } else {
+                                            viewModel.selectedMode = .photoLibrary
+                                        }
                                     }
                                 }
                             }
@@ -65,28 +65,26 @@ struct AddImageOrVideoView: View {
                         if addItemType == .videoImage {
                             VStack(alignment: .leading) {
                                 EventDetailTitle(text: "Add Capture")
-                                CustomTextEditorWithCount(txt: $aboutText, placeholder: "Want to say more about this image?", count: 140, height: 100)
+                                CustomTextEditorWithCount(txt: $viewModel.aboutText, placeholder: "Want to say more about this image?", count: 140, height: 100)
                             }
                             
                             VStack(alignment: .leading) {
                                 HStack {
                                     EventDetailTitle(text: "Add Hashtags")
                                     Spacer()
-                                    Title4(title: "(\(hashTags.components(separatedBy: "#").count - 1)/5 hashtags)", fColor: .gray)
+                                    Title4(title: "(\(viewModel.hashTags.components(separatedBy: "#").count - 1)/5 hashtags)", fColor: .gray)
                                 }
-                                CustomTextFieldWithCount(searchText: $hashTags, placeholder: "Enter", hashCount: 5)
+                                CustomTextFieldWithCount(searchText: $viewModel.hashTags, placeholder: "Enter", hashCount: 5)
                             }
-                            
-                            
-                            
+
                             VStack(alignment: .leading) {
                                 EventDetailTitle(text: "Mark Friends")
-                                CustomTextFieldWithCount(searchText: $markFriends, placeholder: "Enter")
+                                CustomTextFieldWithCount(searchText: $viewModel.markFriends, placeholder: "Enter")
                             }
                             
                             VStack(alignment: .leading) {
                                 EventDetailTitle(text: "Link Place")
-                                CustomTextFieldWithCount(searchText: $linkPlace, placeholder: "Enter")
+                                CustomTextFieldWithCount(searchText: $viewModel.linkPlace, placeholder: "Enter")
                             }
                             
                             Text("Would you like to promote your post, click here1")
@@ -95,61 +93,81 @@ struct AddImageOrVideoView: View {
                             Divider()
                             HStack {
                                 Button("Delete"){
-                                    
-                                }.foregroundColor(.lightBrown)
+                                }
+                                .foregroundColor(.lightBrown)
                                 Spacer()
                                 LargeButton(disable: false, title: "POST", width: 80, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
-                                    
+                                    viewModel.publishPost { status, error in
+                                        if status {
+                                            dismiss()
+                                        } else if let error = error {
+                                            ShowToast.show(toatMessage: error.localizedDescription)
+                                            print(error)
+                                        }
+                                    }
                                 }
                             }
                         } else if addItemType == .story {
-                            
                             VStack(alignment: .leading) {
                                 EventDetailTitle(text: "Give your story a meaning")
-                                CustomTextFieldWithCount(searchText: $hashTags, placeholder: "Want to give your story a title or motto?", count: 90)
+                                CustomTextFieldWithCount(searchText: $viewModel.aboutText, placeholder: "Want to give your story a title or motto?", count: 90)
                             }
                             HStack {
                                 EventDetailTitle2(text: "Allow comments*")
-                                Toggle("", isOn: $allowComments)
+                                Toggle("", isOn: $viewModel.allowComments)
                                     .tint(Color.lightBrown)
                             }
                             Divider()
                             HStack {
-                                Button("Delete"){
+                                Button("Delete") {
                                     
-                                }.foregroundColor(.lightBrown)
+                                }
+                                .foregroundColor(.lightBrown)
                                 Spacer()
+                                LargeButton(disable: false, title: "POST", width: 80, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
+                                    viewModel.publishStory { status, error in
+                                        if status {
+                                            dismiss()
+                                        } else if let error = error {
+                                            ShowToast.show(toatMessage: error.localizedDescription)
+                                            print(error)
+                                        }
+                                    }
+                                }
                             }
-                            
                         }
                         Spacer()
-                    }.padding()//vst
+                    }
+                    .padding()//vst
                 }
             }
         }
-        .sheet(item: $selectedMode) { mode in
-            SingleImagePicker(sourceType: mode, selectedItem: self.$selectedImage)
+        .sheet(item: $viewModel.selectedMode) { mode in
+            SingleImagePicker(sourceType: mode, selectedItem: $viewModel.selectedImage)
         }
         .actionSheet(isPresented: $showAction) { () -> ActionSheet in
             ActionSheet(title: Text("Choose mode"), message: Text("Please choose your preferred mode to set your profile image"), buttons: [ActionSheet.Button.default(Text("Camera"), action: {
-                selectedMode = .camera
+                viewModel.selectedMode = .camera
             }), ActionSheet.Button.default(Text("Photo Library"), action: {
-                selectedMode = .photoLibrary
+                viewModel.selectedMode = .photoLibrary
             }), ActionSheet.Button.cancel()])
         }
-        .navigationBarTitle(Text(selectedImage != nil ? "" : "ADD IMAGE/VIDEO"), displayMode: .inline)
-        .modifier(BackButtonModifier(fColor: selectedImage != nil ? .white : .primary ,action: {
-            if selectedImage != nil {
-                selectedImage = nil
+        .navigationBarTitle(Text(viewModel.selectedImage != nil ? "" : (addItemType == .videoImage ? "ADD IMAGE/VIDEO" : "ADD STORY")), displayMode: .inline)
+        .modifier(BackButtonModifier(fColor: viewModel.selectedImage != nil ? .white : .primary ,action: {
+            if viewModel.selectedImage != nil {
+                viewModel.selectedImage = nil
             } else {
                 self.dismiss()
             }
-            
         }))
-        .navigationBarItems(trailing: LargeButton(disable: false, title: selectedImage != nil ? "ADD" : "POST", width: 40, height: 22, bColor: .lightBrown, fSize: 12, fColor: .white) {
-            if let image = selectedImage {
-                images.insert(image, at: 0)
-                selectedImage = nil
+        .navigationBarItems(trailing: LargeButton(disable: false, title: viewModel.selectedImage != nil ? "ADD" : "POST", width: 40, height: 22, bColor: .lightBrown, fSize: 12, fColor: .white) {
+            if let image = viewModel.selectedImage {
+                if addItemType == .videoImage {
+                    viewModel.images.insert(image, at: 0)
+                } else {
+                    viewModel.images = [image]
+                }
+                viewModel.selectedImage = nil
             } else {
                 // call post api
             }

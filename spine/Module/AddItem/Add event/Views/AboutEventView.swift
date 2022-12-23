@@ -25,12 +25,12 @@ struct AboutEventView: View {
                     Text(C.PlaceHolder.aboutEvent)
                         .foregroundColor(.black.opacity(0.25)).padding(8).hidden(!tempTxt.isEmpty)
                         .allowsHitTesting(false)
-                }.font(.Poppins(type: .regular, size: 20))
-                    .padding(.horizontal, 20)
-                
-                    .onChange(of: tempTxt) { newValue in
-                        disableSave = newValue.count >= 50 ? false : true
-                    }
+                }
+                .font(.Poppins(type: .regular, size: 20))
+                .padding(.horizontal, 20)
+                .onChange(of: tempTxt) { newValue in
+                    disableSave = newValue.count >= 50 ? false : true
+                }
                 
                 Spacer()
             }

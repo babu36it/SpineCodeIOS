@@ -9,13 +9,15 @@ struct TabBarView: View {
     @State private var selection = 0
     @State private var showEvent = true
 
+    @State var eventHomeSelectedTab: EventsHomeTabType = .none
+    
     var handler: Binding<Int> { Binding(
         get: { self.selection },
         set: {
             if $0 == self.selection {
                 print("Reset here!!")
                 if self.selection == 1 { // event home
-                    eventHomeView.updateSelectedTab(.none)
+                    eventHomeSelectedTab = .none
                 }
             }
             self.selection = $0
@@ -31,7 +33,7 @@ struct TabBarView: View {
                 }
                 .tag(0)
             
-            eventHomeView
+            EventsHomeView(selectedTab: $eventHomeSelectedTab)
                 .tabItem {
                     Image(ImageName.ic_event).renderingMode(.template)
                     Text("Event")
@@ -61,10 +63,6 @@ struct TabBarView: View {
         }
         .accentColor(K.appColors.appTheme)
     }
-    
-    private let eventHomeView: EventsHomeView = {
-        EventsHomeView()
-    }()
 }
 
 struct TabBarView_Previews: PreviewProvider {

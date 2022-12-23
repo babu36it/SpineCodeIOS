@@ -20,19 +20,19 @@ class AddQuestionThoughtViewModel: ObservableObject {
     @Published var showPreview = false
     
     @Published var postText = "" {
-            didSet {
-                if postText.count > postTextLimit {
-                    postText = String(postText.prefix(postTextLimit))
-                }
+        didSet {
+            if postText.count > postTextLimit {
+                postText = String(postText.prefix(postTextLimit))
             }
+        }
     }
     
     @Published var hashTag = "" {
-            didSet {
-                if hashTag.components(separatedBy: "#").count - 1 > hashTagCount {
-                    hashTag = String(hashTag.prefix(hashTag.count - 1))
-                }
+        didSet {
+            if hashTag.components(separatedBy: "#").count - 1 > hashTagCount {
+                hashTag = String(hashTag.prefix(hashTag.count - 1))
             }
+        }
     }
     
     func publishPost(_ post: String, hashtags: String, completion: @escaping (Bool, CHError?) -> Void) {

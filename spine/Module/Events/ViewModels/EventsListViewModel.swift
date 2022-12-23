@@ -86,4 +86,8 @@ class EventsListViewModel: ObservableObject {
             }
         }
     }
+    
+    deinit {
+        print("EventListViewModel - deinit \(self)")
+    }
 }

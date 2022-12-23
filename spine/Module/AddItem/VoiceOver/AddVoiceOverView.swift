@@ -123,8 +123,9 @@ struct AddVoiceOverView: View {
                                     viewModel.createVoiceOver(recording: voiceVM.filePath) { status, error in
                                         if status {
                                             self.dismiss()
-                                        } else {
-                                            // show alert
+                                        } else if let error = error {
+                                            ShowToast.show(toatMessage: error.localizedDescription)
+                                            print(error)
                                         }
                                     }
                                 }
@@ -156,7 +157,7 @@ struct AddVoiceOverView: View {
             
             return ActionSheet(title: Text("Choose mode"), message: Text("Please choose your preferred mode to set your profile image"), buttons: buttons)
         }
-        .navigationBarTitle(Text(viewModel.selectedImage != nil ? "" : "ADD IMAGE/VIDEO"), displayMode: .inline)
+        .navigationBarTitle(Text(viewModel.selectedImage != nil ? "" : "ADD VOICEOVER"), displayMode: .inline)
         .modifier(BackButtonModifier(fColor: viewModel.selectedImage != nil ? .white : .primary ,action: {
             if viewModel.selectedImage != nil {
                 viewModel.selectedImage = nil

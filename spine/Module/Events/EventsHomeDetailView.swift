@@ -219,43 +219,46 @@ struct EventAttendeesListView: View {
     let eventID: String
     
     var body: some View {
-        VStack(alignment: .leading) {
-            if attendeesListVM.attendees.isEmpty {
-                Title5(title: "---")
-            } else if attendeesListVM.attendees.count == 1 {
-                Title5(title: "1 person going")
-            } else {
-                Title5(title: "\(attendeesListVM.attendees.count) people are going")
-            }
-            HStack {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack {
-                        ForEach(attendeesListVM.attendees) { attendee in
-                            if let imagePath = attendeesListVM.imageForAttendee(attendee) {
-                                RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
-                                    .circularClip(radius: 40)
+        if attendeesListVM.attendees.isEmpty {
+            EmptyView()
+                .onAppear {
+                    attendeesListVM.getAttendees(for: eventID)
+                }
+        } else {
+            VStack(alignment: .leading) {
+                if attendeesListVM.attendees.count == 1 {
+                    Title5(title: "1 person going")
+                } else {
+                    Title5(title: "\(attendeesListVM.attendees.count) people are going")
+                }
+
+                HStack {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack {
+                            ForEach(attendeesListVM.attendees) { attendee in
+                                if let imagePath = attendeesListVM.imageForAttendee(attendee) {
+                                    RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
+                                        .circularClip(radius: 40)
+                                }
                             }
                         }
                     }
+                    Button {
+                        showAttendees = true
+                    } label: {
+                        Image(systemName: ImageName.chevronLeft)
+                            .foregroundColor(.gray)
+                    }
+                    
+                    NavigationLink("", isActive: $showAttendees) {
+                        AttendeesListView()
+                            .environmentObject(attendeesListVM)
+                    }
                 }
-                Button {
-                    showAttendees = true
-                } label: {
-                    Image(systemName: ImageName.chevronLeft)
-                        .foregroundColor(.gray)
-                }
-
-                NavigationLink("", isActive: $showAttendees) {
-                    AttendeesListView()
-                        .environmentObject(attendeesListVM)
-                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
             }
         }
-        .onAppear {
-            attendeesListVM.getAttendees(for: eventID)
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 10)
     }
 }
 
@@ -297,7 +300,12 @@ struct EventDetailPreviewAboutView: View {
     var body: some View {
         VStack(spacing: 20) {
             HStack(spacing: 15) {
-                if let userImagePath = userImagePath, let userImage: String = eventModel.hostedProfilePic {
+                if eventModel.hostedProfilePic.isEmpty, let userImagePath = userImagePath, let userImage: String = AppUtility.shared.userInfo?.data?.userImage {
+                    let imageURL = "\(userImagePath)\(userImage)"
+                    RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imageURL))
+                        .circularBorder(radius: 100, borderWidth: 3, shadowRadius: 5)
+                        .aspectRatio(contentMode: .fill)
+                } else if let userImagePath = userImagePath, let userImage: String = eventModel.hostedProfilePic {
                     let imageURL = "\(userImagePath)\(userImage)"
                     RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imageURL))
                         .circularBorder(radius: 100, borderWidth: 3, shadowRadius: 5)
@@ -307,7 +315,11 @@ struct EventDetailPreviewAboutView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    Header5(title: eventModel.userName)
+                    if eventModel.userName.isEmpty, let username: String = AppUtility.shared.userInfo?.data?.name {
+                        Header5(title: username)
+                    } else {
+                        Header5(title: eventModel.userName)
+                    }
                     Title4(title: "HOST")
                 }
                 Spacer()
@@ -343,13 +355,8 @@ struct EventDetailView: View {
     @StateObject var eventDetails: EventDetailViewModel
 
 //    init(eventDetails: EventDetailViewModel) {
-//        self.eventDetails = eventDetails
-//
-//        let appearance = UINavigationBarAppearance()
-//        appearance.configureWithTransparentBackground()
-//        appearance.backgroundColor = .clear
-//        appearance.shadowColor = .clear
-//        UINavigationBar.appearance().standardAppearance = appearance
+//        _eventDetails = StateObject(wrappedValue: eventDetails)
+//        UINavigationBar.changeAppearance(clear: true)
 //    }
     
     var body: some View {
@@ -357,14 +364,14 @@ struct EventDetailView: View {
             ScrollView { //put it down
                 VStack(spacing: 0) {
                     let event: EventModel = eventDetails.event
-
+                    
                     ZStack(alignment: .bottomLeading) {
                         HorizontalImageScroller(images: eventDetails.eventImages)
-                        DateBadge(date: Date())
+                        DateBadge(date: Date(), showMonthName: true)
                             .padding(20)
                     }
                     .onAppear { eventDetails.getEventImages() }
-
+                    
                     VStack(alignment: .leading, spacing: 14) {
                         PodcastTitle(title: event.typeName.uppercased(), fSize: 12, linelimit: 1, fontWeight: .black, fColor: .white)
                         PodcastTitle(title: event.title, fSize: 20, linelimit: 2, fontWeight: .heavy, fColor: .white).padding(.trailing, 30)
@@ -373,7 +380,7 @@ struct EventDetailView: View {
                             let startTimeStr = event.startTime?.toString("HH:mm") ?? ""
                             let endDateStr = event.endDate?.toString("EEE, dd MMM") ?? ""
                             let endTimeStr = event.endTime?.toString("HH:mm") ?? ""
-
+                            
                             EventDetailPreviewRow(image: "Calender", title: startDateStr, subtitle: startTimeStr)
                             Text("-").foregroundColor(.white)
                             EventDetailPreviewRow(image: "", title: endDateStr, subtitle: endTimeStr, arrow: true)
@@ -386,7 +393,7 @@ struct EventDetailView: View {
                     .padding(.vertical, 10)
                     .frame(maxWidth: .infinity)
                     .background(Color.lightBrown)
-
+                    
 //                    AttendingListScrollView()
                     EventAttendeesListView(eventID: event.id)
                     
@@ -449,6 +456,7 @@ struct EventDetailView: View {
             Button("Follow"){ }
             Button("Report Post"){ }
         })
+        .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: Button(action : {
             print("More")
             showMoreAction = true
