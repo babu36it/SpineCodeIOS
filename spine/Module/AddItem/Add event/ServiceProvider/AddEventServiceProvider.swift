@@ -48,6 +48,7 @@ struct EventRequest {
 protocol CommonEventFetcher {
     func getEventsTypes(completion: @escaping(_ result: Result<APIResponseModel<[EventTypeModel]>, CHError>)-> Void)
     func getEvents<T: Decodable>(for request: EventRequest, completion: @escaping(_ result: Result<T, CHError>)-> Void)
+    func getUserEvents(completion: @escaping(_ result: Result<APIResponseModel<[EventModel]>, CHError>)-> Void)
 }
 
 extension CommonEventFetcher {
@@ -67,20 +68,21 @@ extension CommonEventFetcher {
         
         HttpUtility.shared.requestData(httpMethod: .post, postData: request.queryParams, url: url, resultType:  T.self, queue: .main, completion: completion)
     }
-}
-
-struct AddEventServiceProvider: CommonEventFetcher {
-    private let httpUtility: HttpUtility = .shared
-        
+    
     func getUserEvents(completion: @escaping(_ result: Result<APIResponseModel<[EventModel]>, CHError>)-> Void) {
         guard let url = URL(string: APIEndPoint.getUserEvents.urlStr) else {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(url: url, resultType: APIResponseModel<[EventModel]>.self, queue: .main) { result in
+        
+        HttpUtility.shared.requestData(url: url, resultType: APIResponseModel<[EventModel]>.self, queue: .main) { result in
             completion(result)
         }
     }
+}
+
+struct AddEventServiceProvider: CommonEventFetcher {
+    private let httpUtility: HttpUtility = .shared
     
     func publishEvent(_ params: [String: Any]? = nil, media: [Media]? = nil, completion: @escaping (_ result: Result<EventPublishResponse, CHError>) -> Void) {
         guard let url = URL(string: APIEndPoint.publishEvent.urlStr) else {

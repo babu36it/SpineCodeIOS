@@ -41,7 +41,8 @@ struct MyProfileHomeView: View {
     @State var podcastList = [EventDetail]()
     
     @StateObject var postsListVM: PostListViewModel = .init()
-    
+    @StateObject var eventsListVM: ProfileEventListViewModel = .init()
+
     let userInfoModel: SignInResponseModel? = AppUtility.shared.userInfo
     
     var body: some View {
@@ -110,7 +111,8 @@ struct MyProfileHomeView: View {
                         PostList(postsSection: postsSection)
                             .environmentObject(postsListVM)
                     case .events:
-                        EventList(events: eventList)
+                        ProfileEventListView()
+                            .environmentObject(eventsListVM)
                     case .podcasts:
                         PodcastList(podcasts: podcastList)
                     case .bookmark:

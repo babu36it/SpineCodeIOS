@@ -207,6 +207,7 @@
 		2C73DD342954D40300141D70 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD332954D40300141D70 /* PostModel.swift */; };
 		2C73DD362955669C00141D70 /* PostListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD352955669C00141D70 /* PostListService.swift */; };
 		2C73DD382955759F00141D70 /* PostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD372955759F00141D70 /* PostListViewModel.swift */; };
+		2C73DD3A2956406900141D70 /* ProfileEventListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD392956406900141D70 /* ProfileEventListViewModel.swift */; };
 		2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */; };
 		2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */; };
 		2C7B1FBA29202C4600E06E40 /* MessagingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */; };
@@ -485,6 +486,7 @@
 		2C73DD332954D40300141D70 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		2C73DD352955669C00141D70 /* PostListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListService.swift; sourceTree = "<group>"; };
 		2C73DD372955759F00141D70 /* PostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewModel.swift; sourceTree = "<group>"; };
+		2C73DD392956406900141D70 /* ProfileEventListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEventListViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailService.swift; sourceTree = "<group>"; };
 		2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -663,6 +665,7 @@
 			children = (
 				0482B60E28713393006017E9 /* UserProfileViewModel.swift */,
 				2C73DD372955759F00141D70 /* PostListViewModel.swift */,
+				2C73DD392956406900141D70 /* ProfileEventListViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1733,6 +1736,7 @@
 				0482D5E02869B10600DFCA2A /* MyProfileHomeView.swift in Sources */,
 				04A2E4B12955FF4700A46A55 /* ToolBarButton.swift in Sources */,
 				18D5E3772824EC350075F5A2 /* UserDefaultsExtension.swift in Sources */,
+				2C73DD3A2956406900141D70 /* ProfileEventListViewModel.swift in Sources */,
 				048691FF2875D10100BA0BAB /* MailView.swift in Sources */,
 				66A237FC281709FC00CA3763 /* LoginVC.swift in Sources */,
 				048712C92877EF7A00F70FBE /* InstaTypeStoryViewer.swift in Sources */,
