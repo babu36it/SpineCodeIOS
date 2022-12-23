@@ -22,7 +22,6 @@
 		04735BCF287F0F740075009E /* AddImageOrVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04735BCE287F0F740075009E /* AddImageOrVideoView.swift */; };
 		047F64BB28B9D89300370458 /* HidePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F64BA28B9D89300370458 /* HidePostView.swift */; };
 		047F64BD28B9DB0600370458 /* BaseSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F64BC28B9DB0600370458 /* BaseSheetView.swift */; };
-		047FA03A2876FF5A0062BF79 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047FA0392876FF5A0062BF79 /* ViewModifiers.swift */; };
 		047FA03C287748A30062BF79 /* LoadingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047FA03B287748A30062BF79 /* LoadingBar.swift */; };
 		048198CC286ECF4500AFC6AA /* AboutProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048198CB286ECF4400AFC6AA /* AboutProfileView.swift */; };
 		048198CE286F5C8900AFC6AA /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048198CD286F5C8800AFC6AA /* EditProfileView.swift */; };
@@ -126,6 +125,8 @@
 		04A0593628B67AB900262BDA /* ReportingUserMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A0593528B67AB900262BDA /* ReportingUserMainView.swift */; };
 		04A2E4B12955FF4700A46A55 /* ToolBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A2E4B02955FF4600A46A55 /* ToolBarButton.swift */; };
 		04A2E4B32956018600A46A55 /* GradientDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A2E4B22956018600A46A55 /* GradientDivider.swift */; };
+		04A2E4B52956078C00A46A55 /* BackButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A2E4B42956078C00A46A55 /* BackButtonModifier.swift */; };
+		04A2E4B7295607C100A46A55 /* DarkModeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A2E4B6295607C100A46A55 /* DarkModeViewModifier.swift */; };
 		04A3D3FE285AEF5A00827941 /* EventDetailPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A3D3FD285AEF5A00827941 /* EventDetailPreviewView.swift */; };
 		04A9D434294A3E400096935A /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9D433294A3E400096935A /* UIScreen+Extension.swift */; };
 		04B49E12294D865E0084DB43 /* ViewDidLoadModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B49E11294D865E0084DB43 /* ViewDidLoadModifier.swift */; };
@@ -296,7 +297,6 @@
 		04735BCE287F0F740075009E /* AddImageOrVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageOrVideoView.swift; sourceTree = "<group>"; };
 		047F64BA28B9D89300370458 /* HidePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HidePostView.swift; sourceTree = "<group>"; };
 		047F64BC28B9DB0600370458 /* BaseSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSheetView.swift; sourceTree = "<group>"; };
-		047FA0392876FF5A0062BF79 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		047FA03B287748A30062BF79 /* LoadingBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingBar.swift; sourceTree = "<group>"; };
 		048198CB286ECF4400AFC6AA /* AboutProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutProfileView.swift; sourceTree = "<group>"; };
 		048198CD286F5C8800AFC6AA /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
@@ -400,6 +400,8 @@
 		04A0593528B67AB900262BDA /* ReportingUserMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportingUserMainView.swift; sourceTree = "<group>"; };
 		04A2E4B02955FF4600A46A55 /* ToolBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarButton.swift; sourceTree = "<group>"; };
 		04A2E4B22956018600A46A55 /* GradientDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientDivider.swift; sourceTree = "<group>"; };
+		04A2E4B42956078C00A46A55 /* BackButtonModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonModifier.swift; sourceTree = "<group>"; };
+		04A2E4B6295607C100A46A55 /* DarkModeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeViewModifier.swift; sourceTree = "<group>"; };
 		04A3D3FD285AEF5A00827941 /* EventDetailPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailPreviewView.swift; sourceTree = "<group>"; };
 		04A9D433294A3E400096935A /* UIScreen+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		04B49E11294D865E0084DB43 /* ViewDidLoadModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDidLoadModifier.swift; sourceTree = "<group>"; };
@@ -908,6 +910,8 @@
 				04B49E11294D865E0084DB43 /* ViewDidLoadModifier.swift */,
 				04B49E13294D88A00084DB43 /* LoadingView.swift */,
 				04A2E4B02955FF4600A46A55 /* ToolBarButton.swift */,
+				04A2E4B42956078C00A46A55 /* BackButtonModifier.swift */,
+				04A2E4B6295607C100A46A55 /* DarkModeViewModifier.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -1452,7 +1456,6 @@
 				66A23775281709FC00CA3763 /* Constant.swift */,
 				66A23776281709FC00CA3763 /* AppUtility.swift */,
 				66A23777281709FC00CA3763 /* UserSettings.swift */,
-				047FA0392876FF5A0062BF79 /* ViewModifiers.swift */,
 				04887741285A2A4200C4022B /* Enums.swift */,
 				048B0D5B2909167F003C7BA7 /* Helper.swift */,
 				2C5BADF12926D6B000BB31D1 /* KeychainHelper.swift */,
@@ -1740,7 +1743,6 @@
 				047FA03C287748A30062BF79 /* LoadingBar.swift in Sources */,
 				66A237D1281709FC00CA3763 /* Collapsible.swift in Sources */,
 				0471A2E1286B09C5007779CF /* MyPublicProfileView.swift in Sources */,
-				047FA03A2876FF5A0062BF79 /* ViewModifiers.swift in Sources */,
 				0491885D2858D07A002343CA /* AddEventDetailsView.swift in Sources */,
 				04894D21286D9F4E00CF4860 /* MessageRow.swift in Sources */,
 				180C16C92856CB140072D0DF /* HelperViews.swift in Sources */,
@@ -1880,6 +1882,7 @@
 				0499F75528721605003CE532 /* SettingsListView.swift in Sources */,
 				04983D8829113D9C0054F887 /* DateComponentsFormatter+Extension.swift in Sources */,
 				048198CC286ECF4500AFC6AA /* AboutProfileView.swift in Sources */,
+				04A2E4B52956078C00A46A55 /* BackButtonModifier.swift in Sources */,
 				04A9D434294A3E400096935A /* UIScreen+Extension.swift in Sources */,
 				2C5BAE0329311DC900BB31D1 /* RemoteImage.swift in Sources */,
 				04D1D551287C043300A62CA4 /* FeedHomeView.swift in Sources */,
@@ -1909,6 +1912,7 @@
 				2C1EC5A4293BEE410037B6E7 /* UINavigationBar+Extensions.swift in Sources */,
 				0481A9182872FDC60096AFEE /* ChangeEmailView.swift in Sources */,
 				66A237C8281709FC00CA3763 /* YBTextPicker.swift in Sources */,
+				04A2E4B7295607C100A46A55 /* DarkModeViewModifier.swift in Sources */,
 				048672642862067C00582275 /* MDPDayOfMonth.swift in Sources */,
 				04A0592F28B62ED900262BDA /* ReportReasonView.swift in Sources */,
 				0491886128590749002343CA /* SubCategoryView.swift in Sources */,
