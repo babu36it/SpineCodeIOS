@@ -166,30 +166,38 @@ struct EventTypesTabView: View {
 
 struct EventSegmentTabView: View {
     @EnvironmentObject var eventsListVM: EventsListViewModel
-
+    
     @Binding var sheetType: EventSheetType?
     let tabType: EventsHomeTabType
     
     var body: some View {
         VStack {
-            ScrollView(.vertical, showsIndicators: false) {
+            VStack {
                 if let eventRecords = eventsListVM.eventRecords[tabType.requestType], !eventRecords.isEmpty {
-                    ForEach(eventRecords, id: \.startDate) { eventRecord in
-                        let date: Date = eventRecord.startDate?.toDate(format: "yyyy-MM-dd") ?? Date()
-                        if let events: [EventModel] = eventRecord.records, !events.isEmpty {
-                            ForEach(events) { event in
-                                let eventDetail: EventDetailViewModel = .init(event: event, eventImagePath: eventsListVM.eventImagePath(forRequestType: tabType.requestType), userImagePath: eventsListVM.userImagePath(forRequestType: tabType.requestType))
-                                NavigationLink(destination: EventDetailView(eventDetails: eventDetail)) {
-                                    EventListItem(tabType: tabType)
-                                        .environmentObject(event)
+                    List {
+                        ForEach(eventRecords, id: \.startDate) { eventRecord in
+                            let date: Date = eventRecord.startDate?.toDate(format: "yyyy-MM-dd") ?? Date()
+                            if let events: [EventModel] = eventRecord.records, !events.isEmpty {
+                                ForEach(events) { event in
+                                    let eventDetail: EventDetailViewModel = .init(event: event, eventImagePath: eventsListVM.eventImagePath(forRequestType: tabType.requestType), userImagePath: eventsListVM.userImagePath(forRequestType: tabType.requestType))
+                                    NavigationLink(destination: EventDetailView(eventDetails: eventDetail)) {
+                                        EventListItem(tabType: tabType)
+                                            .environmentObject(event)
+                                    }
+                                    .listRowSeparator(.hidden)
+                                    EventHomeDateRow(date: date)
                                 }
-                                EventHomeDateRow(date: date)
                             }
                         }
+                    }
+                    .listStyle(.plain)
+                    .refreshable {
+                        eventsListVM.reloadEvents(forType: tabType.requestType)
                     }
                 } else if let message = eventsListVM.message(forRequestType: tabType.requestType) {
                     Text(message)
                         .padding(.top, 100)
+                    Spacer()
                 }
             }
             .onAppear {
@@ -198,7 +206,8 @@ struct EventSegmentTabView: View {
             .onChange(of: tabType, perform: { newTab in
                 eventsListVM.getEvents(forType: newTab.requestType)
             })
-
+            
+            Spacer(minLength: 0)
             LargeButton(title: "Map view", width:120, height: 30, bColor: .lightBrown, fSize: 12, fColor: .white) {
                 sheetType = .mapView
             }
@@ -353,8 +362,8 @@ struct EventsListView: View {
     
     var body: some View {
         VStack {
-            ScrollView(.vertical, showsIndicators: false, content: {
-                if let eventRecords = eventsListVM.eventRecords[EventsHomeTabType.all.requestType], !eventRecords.isEmpty {
+            if let eventRecords = eventsListVM.eventRecords[EventsHomeTabType.all.requestType], !eventRecords.isEmpty {
+                List {
                     ForEach(eventRecords, id: \.startDate) { eventRecord in
                         let date: Date = eventRecord.startDate?.toDate(format: "yyyy-MM-dd") ?? Date()
                         EventHomeDateRow(date: date)
@@ -365,14 +374,20 @@ struct EventsListView: View {
                                     EventListItem(tabType: EventsHomeTabType.none)
                                         .environmentObject(event)
                                 }
+                                .listRowSeparator(.hidden)
                             }
                         }
                     }
-                } else if let message = eventsListVM.message(forRequestType: EventsHomeTabType.all.requestType) {
-                    Text(message)
-                        .padding(.top, 100)
                 }
-            })
+                .listStyle(.plain)
+                .refreshable {
+                    eventsListVM.reloadEvents(forType: .all, eventTypeId: eventType.id)
+                }
+            } else if let message = eventsListVM.message(forRequestType: EventsHomeTabType.all.requestType) {
+                Text(message)
+                    .padding(.top, 100)
+                Spacer()
+            }
         }
         .onAppear {
             eventsListVM.getEvents(forType: .all, eventTypeId: eventType.id)
@@ -395,7 +410,7 @@ struct EventListItem: View {
     var body: some View {
         VStack {
             HStack {
-                VStack(spacing: 10) {
+                VStack {
                     if let userImage = event.hostedProfilePic, let imagePath: String = eventsListVM.imagePath(forUserImage: userImage, onRequestType: tabType.requestType) {
                         RemoteImage(imageDownloader: DefaultImageDownloader(imagePath: imagePath))
                             .circularClip(radius: 65)
@@ -428,7 +443,6 @@ struct EventListItem: View {
 //                        }.padding(.top, 2)
 //                    }
                 }
-                .padding(.horizontal, 10)
                 Spacer()
                 VStack(alignment: .trailing, spacing: 50) {
                     HStack {
@@ -445,7 +459,6 @@ struct EventListItem: View {
             }
             Divider()
         }
-        .padding(.horizontal, 20)
         .onAppear {
             event.cost { costStr in
                 eventCost = costStr

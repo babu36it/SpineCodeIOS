@@ -60,6 +60,14 @@ class EventsListViewModel: ObservableObject {
         eventResponses[type] = eventResponse
     }
     
+    func reloadEvents(forType type: EventRequest.RequestType, eventTypeId: String? = nil) {
+        isDataFetchComplete[type] = false
+        eventRecords.removeValue(forKey: type)
+        eventResponses.removeValue(forKey: type)
+        
+        getEvents(forType: type, eventTypeId: eventTypeId)
+    }
+    
     func getEvents(forType type: EventRequest.RequestType, eventTypeId: String? = nil) {
         if shouldFetchData(for: type) {
             var page: Int = 1
