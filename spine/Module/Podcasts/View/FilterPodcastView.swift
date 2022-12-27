@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct FilterPodcastView: View {
+    @StateObject var viewModel = FilterPodcastViewModel()
     @Environment(\.dismiss) var dismiss
     let screenWidth = UIScreen.main.bounds.size.width
     @State var showPopOver = false
-    @State var languages: [String] = []
-    @State var categories: [String] = []
     
     var body: some View {
         NavigationView {
@@ -24,15 +23,15 @@ struct FilterPodcastView: View {
                     
                     VStack(alignment: .leading) {
                         Title4(title: "Language")
-                        NavigationLink(destination: MultipleSelectionList(type: .language, selections: $languages)) {
-                            CustomSearchBar1(items: $languages.count)
+                        NavigationLink(destination: SingleItemSelectionView(selectedItem: $viewModel.selectedLanguage, itemType: .language, items: viewModel.languages)) {
+                            CustomSearchBar2(items: viewModel.selectedLanguage?.name ?? "")
                         }
                     }
                     
                     VStack(alignment: .leading) {
-                        Title4(title: "Category")
-                        NavigationLink(destination: MultipleSelectionList(type: .category, selections: $categories)) {
-                            CustomSearchBar1(items: $categories.count)
+                        Title4(title: "Categories")
+                        NavigationLink(destination: MultipleSelectionList1(title: "Categories", selections: $viewModel.selectedCategories, listItems: viewModel.categories)) {
+                            CustomSearchBar2(items: viewModel.selectedCategories.map {$0.name}.joined(separator: ",") )
                         }
                     }
                     

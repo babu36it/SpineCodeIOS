@@ -70,7 +70,7 @@ struct PodcastReviewDetailList: View {
                 VStack {
                     ZStack {
                         PodcastDetailListRow1(item: item)
-                        NavigationLink(destination: MusicPlayerView1(audioVM: AudioViewModel(urlStr: item.enclosure.link), feed: podcastInfoVM.rssData?.feed, item: item, user: podcastInfoVM.rssData?.user)) {
+                        NavigationLink(destination: MusicPlayerView1(audioVM: AudioViewModel(urlStr: item.enclosure.link), mpModel: MusicPlayerModel(feed: podcastInfoVM.rssData?.feed, item: item, user: podcastInfoVM.rssData?.user))) {
                             EmptyView()
                         }.buttonStyle(PlainButtonStyle())
                             .opacity(0.0)

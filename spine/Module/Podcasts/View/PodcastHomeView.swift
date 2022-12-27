@@ -100,7 +100,7 @@ struct PodcastHomeViewTab1: View {
                 VStack {
                     ZStack {
                         PodcastHomeListVideoRow1(item: PodcastItem(episode: episode), isEpisode: true)//.padding(.vertical, 5)
-                        NavigationLink(destination: PodcastDetailView()) {
+                        NavigationLink(destination: MusicPlayerView1(audioVM: AudioViewModel(urlStr: episode.mediaLink), mpModel: MusicPlayerModel(episode: episode))) {
                             EmptyView()
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -132,7 +132,7 @@ struct PodcastHomeViewTab2: View {
                 VStack {
                     ZStack {
                         PodcastHomeListVideoRow1(item: PodcastItem(podcast: podcast), isEpisode: false)//.padding(.vertical, 5)
-                        NavigationLink(destination: PodcastDetailView()) {
+                        NavigationLink(destination: PodcastDetailView(podcastId: podcast.id).environmentObject(podcastHomeVM)) {
                             EmptyView()
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -182,7 +182,7 @@ struct PodcastHomeListVideoRow1: View {
                             .frame(width: 12, height: 12)
                             .foregroundColor(K.appColors.lightGray)
                         
-                        Text(item.duration.getHourAndMin()) // TODO: get duration from api
+                        Text(item.duration.toHoursAndMinutes())
                             .modifier(SubTitleModifier())
                     }
                     Spacer()

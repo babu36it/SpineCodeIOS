@@ -89,3 +89,57 @@ struct MultipleSelectionRow: View {
             .padding(5)
     }
 }
+
+
+struct MultipleSelectionList1: View {
+    let title: String
+    @Binding var selections: [ItemModel]
+    let listItems: [ItemModel]
+    @State var tempSelections: [ItemModel] = []
+    @Environment(\.dismiss) var dismiss
+    @State var searchTxt = ""
+    
+    var body: some View {
+        VStack {
+            GradientDivider()
+                .padding(.vertical, 5)
+            VStack(alignment: .leading, spacing: 0) {
+                Title2(title: "Select \(title)")
+                    .padding(.leading, 30)
+                CustomSearchBar(placeHolder: "Search ", searchText: $searchTxt, screenWidth: UIScreen.screenWidth - 60)
+            }
+            List {
+                ForEach(self.listItems) { item in
+                    MultipleSelectionRow(title: item.name, isSelected: self.tempSelections.contains(item)) {
+                        if self.tempSelections.contains(item) {
+                            self.tempSelections.removeAll(where: { $0 == item })
+                        } else {
+                            self.tempSelections.append(item)
+                        }
+                    }
+                    .listRowSeparator(.hidden)
+                }
+            }
+            .listStyle(.plain)
+            Spacer()
+            
+            LargeButton(title: "APPLY FILTER", width: UIScreen.screenWidth - 100, height: 40, bColor: Color.lightBrown, fSize: 15, fColor: .white) {
+                selections = tempSelections
+                self.dismiss()
+            }.padding(.bottom, 20)
+        }.onAppear(perform: {
+            tempSelections = selections
+        })
+        .navigationBarTitle("Select \(title)".capitalized, displayMode: .inline)
+        //.searchable(text: $searchTxt)
+        .modifier(BackButtonModifier(action: {
+            self.dismiss()
+        }))
+    }
+}
+
+//struct MultipleSelectionList1_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MultipleSelectionList1(selections: .constant(["item1", "item2"]))
+//    }
+//}

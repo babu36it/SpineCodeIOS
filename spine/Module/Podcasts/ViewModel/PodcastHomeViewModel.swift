@@ -12,7 +12,16 @@ class PodcastHomeViewModel: ObservableObject {
     @Published var podcastEpisodes: [PodcastEpisodeDetail] = []
     @Published var podcasts: [PodcastDetail] = []
     @Published var showLoader = false
+    var podcastDetails: [PodcastEpisodeCustom] = []
     let dispatchGrp = DispatchGroup()
+    
+    func podcastEpisodes(for id: String)-> [PodcastEpisodeDetail] {
+        return podcastDetails.filter {$0.id == id}.first?.podcastEpisodes ?? []
+    }
+    
+    func selectedPodcast(for id: String) -> PodcastDetail? {
+        return podcasts.filter {$0.id == id}.first
+    }
     
     func getPodcastsAndEpisodes() {
         print(Date())
@@ -24,7 +33,10 @@ class PodcastHomeViewModel: ObservableObject {
             print(Date())
         }
     }
-    
+}
+
+
+extension PodcastHomeViewModel {
     func getPodcastEpisodes() {
         dispatchGrp.enter()
         serviceProvider.getPodcastEpisodes(postData: nil) { result in
@@ -33,6 +45,7 @@ class PodcastHomeViewModel: ObservableObject {
                 case .success(let value):
                     var episodes: [PodcastEpisodeDetail] = []
                     if value.status {
+                        self.podcastDetails = value.data
                         for episodeSection in value.data {
                             episodes.append(contentsOf: episodeSection.podcastEpisodes)
                         }
@@ -78,5 +91,4 @@ class PodcastHomeViewModel: ObservableObject {
             }
         }
     }
-    
 }

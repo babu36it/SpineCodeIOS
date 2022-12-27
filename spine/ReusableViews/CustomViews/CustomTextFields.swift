@@ -157,6 +157,22 @@ struct CustomSearchBar1: View {
     }
 }
 
+struct CustomSearchBar2: View {
+    let items: String
+    @Environment(\.colorScheme) var colorScheme
+    
+    var body: some View {
+        Text(items.isEmpty ? "Select" : items)
+            .frame(width: UIScreen.screenWidth - Kconstant.filterPadding, height: 30, alignment: .leading)
+            .padding(.leading, 10)
+                .padding(5)
+                .background(colorScheme == .dark ? .black : .white)
+                .cornerRadius(8)
+                .shadow(color: Color.gray.opacity(0.7), radius: 5)
+                .foregroundColor(.primary)
+    }
+}
+
 
 struct CustomSearchBarDynamic: View {
     let placeHolder: String

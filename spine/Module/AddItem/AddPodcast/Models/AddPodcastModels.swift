@@ -90,6 +90,12 @@ struct ItemModel: Identifiable {
     let name: String
 }
 
+extension ItemModel: Equatable {
+    static func == (lhs: ItemModel, rhs: ItemModel) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 //Category list
 struct CategryModel: Codable {
     let id: String

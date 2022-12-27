@@ -14,7 +14,7 @@ struct PodcastEpisodeCustomResponse: Codable {
     let message: String
 }
 
-struct PodcastEpisodeCustom: Codable {
+struct PodcastEpisodeCustom: Codable, Hashable, Identifiable {
     let id: String
     let podcastEpisodes: [PodcastEpisodeDetail]
     

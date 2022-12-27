@@ -8,16 +8,20 @@
 import SwiftUI
 
 struct PodcastDetailView: View {
-    //let num: Int = 1
+    let podcastId: String
+    @EnvironmentObject var podcastHomeVM: PodcastHomeViewModel
     let screenWidth = UIScreen.main.bounds.size.width
     let imageSize: CGFloat = 120
     @Environment(\.dismiss) var dismiss
     @State var showMoreAction = false
     
-    init() {
-           // UITabBar.appearance().backgroundColor = UIColor.white
-        //UITabBar.appearance().isHidden = true
-        }
+    var podcast: PodcastDetail {
+        podcastHomeVM.podcasts.filter {$0.id == podcastId}.first!
+    }
+    
+    var episodes: [PodcastEpisodeDetail] {
+        podcastHomeVM.podcastDetails.filter {$0.id == podcastId}.first?.podcastEpisodes ?? []
+    }
     
     var body: some View {
         // ScrollView {
@@ -26,40 +30,40 @@ struct PodcastDetailView: View {
                 VStack(spacing: 0) {
                     Image(ImageName.podcastDetailBanner)
                         .resizable()
-                    //.aspectRatio(contentMode: .fit)
+                        .aspectRatio(contentMode: .fill)
                         .frame(width: screenWidth, height: screenWidth/1.5)
-                    ZStack {
-                        Text("")
-                            .frame(width: screenWidth, height: screenWidth/2.5)
-                            .background(Color.lightBrown)
-                        VStack(alignment: .leading) {
-                            Header5(title: "Oliver Reese", fColor: .white, lineLimit: 1)
-                            Header2(title: "From American University Texas, Test sample", fColor: .white, lineLimit: 2)
-                            HStack {
-                                Header5(title: "4 Episodes", fColor: .white, lineLimit: 1)
-                                Spacer()
-                                LargeButton(title: "SUBSCRIBE", width: 100, height: 30, bColor: .white, fSize: 12, fColor: Color.lightBrown) {
-                                    print("Tapped")
-                                }
-                            }
-                        }.padding(.horizontal, 20)
-                    }
-                    
+                    PodcastDetailHeaderView(podcast: podcast)
                 }
-                
                 CircularBorderedProfileView(image: "Oval 57", size: imageSize, borderWidth: 5)
                     .offset(y: screenWidth/1.5 - (imageSize - 20))
             }
             
-            PodcastDetailList()
+            List {
+                Divider()
+                    .padding(.leading, 10)
+                    .listRowSeparator(.hidden)
+                
+                ForEach(episodes, id: \.self) { episode in
+                    VStack {
+                        ZStack {
+                            PodcastDetailListRow(episode: episode)
+                            NavigationLink(destination: MusicPlayerView1(audioVM: AudioViewModel(urlStr: episode.mediaLink), mpModel: MusicPlayerModel(episode: episode))) {
+                                EmptyView()
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .opacity(0.0)
+                        }
+                        Divider().padding(.leading, 10)
+                    }.listRowSeparator(.hidden)
+                }
+            }//.edgesIgnoringSafeArea(.all)
+                .padding(.leading, -20)
+                //.padding(.bottom, 70) // TODO: fix- list hides below tab bar
+                .listStyle(.plain)
         }.edgesIgnoringSafeArea(.top)
             .confirmationDialog("", isPresented: $showMoreAction, actions: {
-                Button("Follow"){
-                    
-                }
-                Button("Report Post"){
-                    
-                }
+                Button("Follow"){ }
+                Button("Report Post"){ }
             })
             .modifier(BackButtonModifier(fColor: .white, action: {
                 self.dismiss()
@@ -75,41 +79,31 @@ struct PodcastDetailView: View {
             }){
                 NavBarButtonImage(image: "directArrow")
             })
-        
     }
 }
 
-//struct PodcastDetailView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PodcastDetailView()
-//    }
-//}
-
-struct PodcastDetailList: View {
+struct PodcastDetailHeaderView: View {
+    let podcast: PodcastDetail
+    
     var body: some View {
-        List {
-               Divider().padding(.leading, 10)
-                .listRowSeparator(.hidden)
-
-                ForEach((1...4), id: \.self) { item in
-                    VStack {
-                        ZStack {
-                            PodcastDetailListRow()
-                            //.padding(.vertical, 5)
-                            NavigationLink(destination: MusicPlayerView()) {
-                                EmptyView()
-                            }.buttonStyle(PlainButtonStyle())
-                                .opacity(0.0)
-                        }
-                        Divider().padding(.leading, 10)
-                    }.listRowSeparator(.hidden)
+        ZStack {
+            Color.lightBrown
+                .frame(width: UIScreen.screenWidth, height: UIScreen.screenWidth / 2.5)
+            VStack(alignment: .leading) {
+                Header5(title: podcast.rssDetail.author, fColor: .white, lineLimit: 1)
+                Header2(title: podcast.rssDetail.title, fColor: .white, lineLimit: 2)
+                HStack {
+                    Header5(title: "\(podcast.rssDetail.episodes) Episodes", fColor: .white, lineLimit: 1)
+                    Spacer()
+                    LargeButton(title: "SUBSCRIBE", width: 100, height: 30, bColor: .white, fSize: 12, fColor: Color.lightBrown) {
+                        print("Tapped")
+                    }
                 }
-        }//.edgesIgnoringSafeArea(.all)
-        .padding(.leading, -20)
-        //.padding(.bottom, 70) // fix- list hides below tab bar
-        .listStyle(.plain)
+            }.padding(.horizontal, 20)
+        }
     }
 }
+
 
 
 struct PodcastDetailListRow1: View {
@@ -169,6 +163,8 @@ struct PodcastDetailListRow1: View {
 }
 
 struct PodcastDetailListRow: View {
+    let episode: PodcastEpisodeDetail
+    
     var body: some View {
         HStack(alignment: .center) {
             
@@ -179,23 +175,24 @@ struct PodcastDetailListRow: View {
                         print("mic tapped")
                     }.foregroundColor(.primary).offset(y: -3)
                         
-                    Text("En  |")
+                    Text("\(episode.language)  |")
                         .modifier(SubTitleModifier())
                     
                     ButtonWithCustomImage(image: "CircleClock", size: 15) {
                         print("mic tapped")
                     }.foregroundColor(.primary).offset(y: -3)
                     
-                    Text("1h 17min")
+                    Text(episode.duration.toHoursAndMinutes())
                         .modifier(SubTitleModifier())
                 }
-               Header5(title: "Universal law From Friend of Indins american for ", lineLimit: 2)
+                Header5(title: episode.title, lineLimit: 2)
                     
                 HStack(spacing: 10) {
                     ButtonWithSystemImage(image: "play.fill", size: 8, fColor: K.appColors.lightGray) {
                         print("Play tapped")
                     }
-                    Text("45").modifier(SubTitleModifier())
+                    Text("\(episode.playCount)")
+                        .modifier(SubTitleModifier())
                     ButtonWithSystemImage(image: "heart.fill", size: 12, fColor: K.appColors.lightGray) {
                         print("Heart tapped")
                     }
