@@ -60,12 +60,20 @@ class EventsListViewModel: ObservableObject {
         eventResponses[type] = eventResponse
     }
     
+    func reloadEvents(forType type: EventRequest.RequestType, eventTypeId: String? = nil) {
+        isDataFetchComplete[type] = false
+        eventRecords.removeValue(forKey: type)
+        eventResponses.removeValue(forKey: type)
+        
+        getEvents(forType: type, eventTypeId: eventTypeId)
+    }
+    
     func getEvents(forType type: EventRequest.RequestType, eventTypeId: String? = nil) {
         if shouldFetchData(for: type) {
             var page: Int = 1
             var pageLimit: Int = 10
             if let currentPage: Int = Int(eventResponses[type]?.currentPage ?? "0"), currentPage > 0 {
-                page = currentPage
+                page = currentPage + 1
             }
             if let currentPageLimit: Int = Int(eventResponses[type]?.currentPerPage ?? "0"), currentPageLimit > 0 {
                 pageLimit = currentPageLimit

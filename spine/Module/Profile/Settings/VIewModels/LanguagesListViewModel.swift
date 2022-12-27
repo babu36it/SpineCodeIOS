@@ -105,7 +105,7 @@ extension LanguagesListViewModel: SelectionListable {
     }
     
     func didSelect(item: ListItemable, completion: @escaping (Bool) -> Void) {
-        selectedLanguage = item as? LanguageModel
+        selectedLanguage = item
         if let didSelectLanguage = didSelectLanguage {
             completion(didSelectLanguage(selectedLanguage))
         } else {
@@ -123,7 +123,7 @@ extension LanguagesListViewModel: SelectionListable {
     
     var selectedItem: ListItemable? {
         get { selectedLanguage }
-        set { selectedLanguage = newValue as? LanguageModel }
+        set { selectedLanguage = newValue }
     }
     
     var listItems: [ListItemable] {

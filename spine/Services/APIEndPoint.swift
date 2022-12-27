@@ -64,6 +64,9 @@ enum APIEndPoint: String {
     // story
     case addUserStory = "stories/addUserStories"
     
+    // get post
+    case getPosts = "post/getSpineUserFollowersPostList/%d/%d/%@/%@/%@" // /{Page}/{PerPage}/{UserId}/{Followers}/{OnlyUserPost}
+    
     var urlStr: String {
         return baseUrl + rawValue
     }

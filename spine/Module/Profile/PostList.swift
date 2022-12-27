@@ -8,26 +8,41 @@
 import SwiftUI
 
 struct PostList: View {
+    @EnvironmentObject var postsListVM: PostListViewModel
+    
     let postsSection: [SectionDetail]
     let padding: CGFloat = 5
     
     var body: some View {
         ScrollView {
-            if postsSection.count == 0 {
-                EmptyItemView(title: "published posts")
-            } else {
-                VStack(spacing: padding) { //lazyVstack - todo
-                    ForEach(postsSection, id: \.self) { postSec in
-                        if postSec.title == .video {
-                            ThreeItemRow(posts: postSec)
-                        } else {
-                            if let item = postSec.items.first {
-                                OneItemRow(post: item)
+            if let posts = postsListVM.posts, !posts.isEmpty {
+                LazyVStack(spacing: padding) { //lazyVstack - todo
+                    ForEach(posts, id: \.id) { post in
+                        PostItemRow(postItem: post)
+                    }
+                    if !posts.isEmpty, postsListVM.shouldFetchNextBatch {
+                        progress
+                            .onAppear {
+                                fetchData()
                             }
-                        }
                     }
                 }
+            } else {
+                EmptyItemView(title: "published posts")
             }
+        }
+        .onAppear {
+            fetchData()
+        }
+    }
+    
+    private var progress: some View {
+        ProgressView()
+    }
+    
+    private func fetchData() {
+        if let userId: String = AppUtility.shared.userInfo?.data?.usersId {
+            postsListVM.getPosts(forUser: userId)
         }
     }
 }
@@ -122,6 +137,18 @@ struct OneItemRow: View {
                 .resizable()
                 .frame(width: screenWidth, height: imgH + padding)
             Title3(title: post.txt, fColor: .white)
+        }
+    }
+}
+
+struct PostItemRow: View {
+    let postItem: PostItem
+    
+    var body: some View {
+        ZStack(alignment: .leading) {
+            Color.lightBrown
+            Title3(title: postItem.title ?? "Empty Post!", fColor: .white)
+                .padding()
         }
     }
 }

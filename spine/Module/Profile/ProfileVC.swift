@@ -22,9 +22,6 @@ struct ProfileVC: View {
             VStack {
                  VStack {
                     VStack {
-//                        NavigationLink(destination: LoginVC(), tag: 1, selection: self.$selection) {
-//
-//                        }
                         AppLoginButton(title: K.appButtonTitle.logout, callback: {
                             //self.selection = 1
                             AppUtility.shared.redirectToLoginScreen()
@@ -47,8 +44,6 @@ struct ProfileVC: View {
         )
         .navigationBarBackButtonHidden(true)
     }
-    
-   
 }
 
 
