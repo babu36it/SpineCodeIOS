@@ -85,7 +85,8 @@ class EventsListViewModel: ObservableObject {
                 switch result {
                 case .success(let response):
                     self?.updateEventResponse(eventResponse: response, forRequestType: type)
-                    if let recordsCount: Int = response.data?.count, recordsCount < pageLimit {
+                    let recordsCount: Int = response.data?.count ?? 0
+                    if recordsCount < pageLimit {
                         self?.fetchCompleted(for: type)
                     }
                 case .failure(let error):

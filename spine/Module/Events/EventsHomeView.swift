@@ -179,15 +179,22 @@ struct EventSegmentTabView: View {
                             let date: Date = eventRecord.startDate?.toDate(format: "yyyy-MM-dd") ?? Date()
                             if let events: [EventModel] = eventRecord.records, !events.isEmpty {
                                 ForEach(events) { event in
+                                    EventHomeDateRow(date: date)
+
                                     let eventDetail: EventDetailViewModel = .init(event: event, eventImagePath: eventsListVM.eventImagePath(forRequestType: tabType.requestType), userImagePath: eventsListVM.userImagePath(forRequestType: tabType.requestType))
                                     NavigationLink(destination: EventDetailView(eventDetails: eventDetail)) {
                                         EventListItem(tabType: tabType)
                                             .environmentObject(event)
                                     }
                                     .listRowSeparator(.hidden)
-                                    EventHomeDateRow(date: date)
                                 }
                             }
+                        }
+                        if eventsListVM.shouldFetchData(for: tabType.requestType) {
+                            progress
+                                .onAppear {
+                                    eventsListVM.getEvents(forType: tabType.requestType)
+                                }
                         }
                     }
                     .listStyle(.plain)
@@ -213,6 +220,10 @@ struct EventSegmentTabView: View {
             }
             .padding(.bottom, 20)
         }
+    }
+    
+    private var progress: some View {
+        ProgressView()
     }
 }
 
