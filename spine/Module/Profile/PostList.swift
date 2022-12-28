@@ -28,7 +28,7 @@ struct PostList: View {
                     }
                 }
             } else {
-                EmptyItemView(title: "published posts")
+                EmptyItemView(title: "Published Posts")
             }
         }
         .onAppear {

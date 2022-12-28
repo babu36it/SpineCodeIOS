@@ -42,6 +42,7 @@ struct MyProfileHomeView: View {
     
     @StateObject var postsListVM: PostListViewModel = .init()
     @StateObject var eventsListVM: ProfileEventListViewModel = .init()
+    @StateObject var podcastsListVM: PodcastListViewModel = .init()
 
     let userInfoModel: SignInResponseModel? = AppUtility.shared.userInfo
     
@@ -115,6 +116,7 @@ struct MyProfileHomeView: View {
                             .environmentObject(eventsListVM)
                     case .podcasts:
                         PodcastList(podcasts: podcastList)
+                            .environmentObject(podcastsListVM)
                     case .bookmark:
                         BookmarkList(events: [event1])
                     }
@@ -182,8 +184,6 @@ struct MyProfileHomeView_Previews: PreviewProvider {
         MyProfileHomeView()
     }
 }
-
-
 
 struct FollowBtn: View {
     let title: String

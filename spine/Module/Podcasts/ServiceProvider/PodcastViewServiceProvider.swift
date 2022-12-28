@@ -25,7 +25,7 @@ struct PodcastViewServiceProvider {
             completion(.failure(.invalidUrl))
             return
         }
-        httpUtility.requestData(httpMethod: .get, postData: postData, url: url, resultType: PodcastResponse.self) { result in
+        httpUtility.requestData(httpMethod: .get, postData: postData, url: url, resultType: PodcastResponse.self, queue: .main) { result in
             completion(result)
         }
     }

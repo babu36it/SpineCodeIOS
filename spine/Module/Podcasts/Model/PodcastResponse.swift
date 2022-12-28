@@ -14,7 +14,7 @@ struct PodcastResponse: Codable {
     let message: String
 }
 
-struct PodcastDetail: Codable, Hashable {
+struct PodcastDetail: Codable, Hashable, Identifiable {
     let id: String
     let username: String
     let userId: String

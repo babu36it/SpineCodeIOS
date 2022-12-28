@@ -211,6 +211,7 @@
 		2C73DD362955669C00141D70 /* PostListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD352955669C00141D70 /* PostListService.swift */; };
 		2C73DD382955759F00141D70 /* PostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD372955759F00141D70 /* PostListViewModel.swift */; };
 		2C73DD3A2956406900141D70 /* ProfileEventListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD392956406900141D70 /* ProfileEventListViewModel.swift */; };
+		2C7767C3295CB938009D0A0B /* PodcastListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7767C2295CB938009D0A0B /* PodcastListViewModel.swift */; };
 		2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */; };
 		2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */; };
 		2C7B1FBA29202C4600E06E40 /* MessagingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */; };
@@ -493,6 +494,7 @@
 		2C73DD352955669C00141D70 /* PostListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListService.swift; sourceTree = "<group>"; };
 		2C73DD372955759F00141D70 /* PostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewModel.swift; sourceTree = "<group>"; };
 		2C73DD392956406900141D70 /* ProfileEventListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEventListViewModel.swift; sourceTree = "<group>"; };
+		2C7767C2295CB938009D0A0B /* PodcastListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastListViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailService.swift; sourceTree = "<group>"; };
 		2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -674,6 +676,7 @@
 			children = (
 				0482B60E28713393006017E9 /* UserProfileViewModel.swift */,
 				2C73DD372955759F00141D70 /* PostListViewModel.swift */,
+				2C7767C2295CB938009D0A0B /* PodcastListViewModel.swift */,
 				2C73DD392956406900141D70 /* ProfileEventListViewModel.swift */,
 			);
 			path = ViewModels;
@@ -1836,6 +1839,7 @@
 				048B0D5C2909167F003C7BA7 /* Helper.swift in Sources */,
 				66A2380B2817115B00CA3763 /* TabBarItem.swift in Sources */,
 				2C5BADF22926D6B000BB31D1 /* KeychainHelper.swift in Sources */,
+				2C7767C3295CB938009D0A0B /* PodcastListViewModel.swift in Sources */,
 				2C47FADE291AE17800F7EE46 /* EditProfileViewModel.swift in Sources */,
 				2C5BADF42928113F00BB31D1 /* FileManager+Extensions.swift in Sources */,
 				048AD9F428A52FBA0091BC60 /* PaymentConfirmView.swift in Sources */,
