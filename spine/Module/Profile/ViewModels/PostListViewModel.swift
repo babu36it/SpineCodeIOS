@@ -13,7 +13,7 @@ class PostListViewModel: ObservableObject {
     private var isAlreadyFetching: Bool = false
     @Published private(set) var shouldFetchNextBatch: Bool = true
 
-    private(set) var postListResponse: PostAPIResponse? {
+    private(set) var postListResponse: PageListAPIResponse<PostItem>? {
         didSet {
             if let postItems: [PostItem] = postListResponse?.data, !postItems.isEmpty {
                 if posts == nil {
@@ -43,7 +43,8 @@ class PostListViewModel: ObservableObject {
                 switch result {
                 case .success(let res):
                     self?.postListResponse = res
-                    if (res.data?.count ?? 0) < pageLimit {
+                    let resItemsCount: Int = res.data?.count ?? 0
+                    if resItemsCount < pageLimit {
                         self?.shouldFetchNextBatch = false
                     }
                 case .failure(let err):

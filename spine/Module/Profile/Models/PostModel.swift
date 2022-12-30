@@ -8,9 +8,9 @@
 import Foundation
 
 // MARK: - EventAPIResponse
-struct PostAPIResponse: Codable {
+struct PageListAPIResponse<T: Codable>: Codable {
     let status: Bool?
-    let data: [PostItem]?
+    let data: [T]?
     let currentPage, currentPerPage: String?
     let profilImage, image: String?
     let message: String?
@@ -69,3 +69,35 @@ struct PostItem: Codable {
     }
 }
 
+struct FollowerItem: Codable, Identifiable {
+    let tblUserID, userName, userDisplayName, bio: String?
+    let profilePic, id, userID, followUserID: String?
+    let privateReq, createdOn: String?
+    let _isFollow: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case id, bio
+        case tblUserID = "tbl_users_user_id"
+        case userName = "tbl_users_user_name"
+        case userDisplayName = "tbl_users_user_display_name"
+        case profilePic = "profile_pic"
+        case userID = "user_id"
+        case followUserID = "follow_user_id"
+        case privateReq = "private_req"
+        case createdOn = "created_on"
+        case _isFollow = "is_follow"
+    }
+}
+
+extension FollowerItem {
+    func userImage(forPath path: String?) -> String? {
+        if let path = path, let profilePic = profilePic, !path.isEmpty, !profilePic.isEmpty {
+            return "\(path)\(profilePic)"
+        }
+        return nil
+    }
+    
+    var isFollowing: Bool {
+        (_isFollow ?? 0) == 1
+    }
+}

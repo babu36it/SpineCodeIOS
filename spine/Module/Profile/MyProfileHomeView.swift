@@ -63,7 +63,7 @@ struct MyProfileHomeView: View {
                     .offset(y: -30)
                     
                     HStack(spacing: 60) {
-                        NavigationLink(destination: FollowerListView(selectedTab: .followers)) {
+                        NavigationLink(destination: FollowerListView(followerListVM: UserProfileFollowerListViewModel(tab: .followers))) {
                             FollowBtn(title: "Followers", desc: userInfoModel?.followersCount ?? "")
                         }
                         Button("VIEW FROFILE"){
@@ -72,7 +72,7 @@ struct MyProfileHomeView: View {
                         .foregroundColor(.gray)
                         .font(.Poppins(type: .regular, size: 14))
                         
-                        NavigationLink(destination: FollowerListView(selectedTab: .following)) {
+                        NavigationLink(destination: FollowerListView(followerListVM: UserProfileFollowerListViewModel(tab: .following))) {
                             FollowBtn(title: "Following", desc: userInfoModel?.followingCount ?? "")
                         }
                     }

@@ -30,11 +30,11 @@ struct MyPublicProfileView: View {
             }
             
             HStack {
-                NavigationLink(destination: FollowerListView(selectedTab: .followers)) {
+                NavigationLink(destination: FollowerListView(followerListVM: UserProfileFollowerListViewModel(tab: .followers))) {
                     FollowBtnV(title: "Followers")
                 }
                 Spacer()
-                NavigationLink(destination: FollowerListView(selectedTab: .following)) {
+                NavigationLink(destination: FollowerListView(followerListVM: UserProfileFollowerListViewModel(tab: .following))) {
                     FollowBtnV(title: "Following")
                 }
             }.padding(.vertical, 15).padding(.horizontal, 30)

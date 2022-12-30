@@ -212,6 +212,8 @@
 		2C73DD382955759F00141D70 /* PostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD372955759F00141D70 /* PostListViewModel.swift */; };
 		2C73DD3A2956406900141D70 /* ProfileEventListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73DD392956406900141D70 /* ProfileEventListViewModel.swift */; };
 		2C7767C3295CB938009D0A0B /* PodcastListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7767C2295CB938009D0A0B /* PodcastListViewModel.swift */; };
+		2C7767C5295D4951009D0A0B /* UserProfileFollowerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7767C4295D4951009D0A0B /* UserProfileFollowerListViewModel.swift */; };
+		2C7767C7295D4AB0009D0A0B /* UserProfileFollowerListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7767C6295D4AB0009D0A0B /* UserProfileFollowerListService.swift */; };
 		2C7B1FB5291FFA8700E06E40 /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */; };
 		2C7B1FB8291FFAC700E06E40 /* ChangeEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */; };
 		2C7B1FBA29202C4600E06E40 /* MessagingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */; };
@@ -495,6 +497,8 @@
 		2C73DD372955759F00141D70 /* PostListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewModel.swift; sourceTree = "<group>"; };
 		2C73DD392956406900141D70 /* ProfileEventListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEventListViewModel.swift; sourceTree = "<group>"; };
 		2C7767C2295CB938009D0A0B /* PodcastListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastListViewModel.swift; sourceTree = "<group>"; };
+		2C7767C4295D4951009D0A0B /* UserProfileFollowerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileFollowerListViewModel.swift; sourceTree = "<group>"; };
+		2C7767C6295D4AB0009D0A0B /* UserProfileFollowerListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileFollowerListService.swift; sourceTree = "<group>"; };
 		2C7B1FB4291FFA8700E06E40 /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		2C7B1FB7291FFAC700E06E40 /* ChangeEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailService.swift; sourceTree = "<group>"; };
 		2C7B1FB929202C4600E06E40 /* MessagingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -675,6 +679,7 @@
 			isa = PBXGroup;
 			children = (
 				0482B60E28713393006017E9 /* UserProfileViewModel.swift */,
+				2C7767C4295D4951009D0A0B /* UserProfileFollowerListViewModel.swift */,
 				2C73DD372955759F00141D70 /* PostListViewModel.swift */,
 				2C7767C2295CB938009D0A0B /* PodcastListViewModel.swift */,
 				2C73DD392956406900141D70 /* ProfileEventListViewModel.swift */,
@@ -1242,6 +1247,7 @@
 			isa = PBXGroup;
 			children = (
 				2C73DD352955669C00141D70 /* PostListService.swift */,
+				2C7767C6295D4AB0009D0A0B /* UserProfileFollowerListService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1777,6 +1783,7 @@
 				188F227E2840B49E00F8896D /* MemberGalleryVC.swift in Sources */,
 				66A237B6281709FC00CA3763 /* SVIndefiniteAnimatedView.m in Sources */,
 				180C16CB2856CB140072D0DF /* PodcastHomeView.swift in Sources */,
+				2C7767C7295D4AB0009D0A0B /* UserProfileFollowerListService.swift in Sources */,
 				049F91BD295B5AA1001F3D55 /* AudioViewModel.swift in Sources */,
 				048726A028A273FC000FF0F8 /* CustomWebView.swift in Sources */,
 				66A237D8281709FC00CA3763 /* AppUtility.swift in Sources */,
@@ -1958,6 +1965,7 @@
 				66A662CE2822F43D0012A129 /* CategoryModel.swift in Sources */,
 				2C1EC5A4293BEE410037B6E7 /* UINavigationBar+Extensions.swift in Sources */,
 				0481A9182872FDC60096AFEE /* ChangeEmailView.swift in Sources */,
+				2C7767C5295D4951009D0A0B /* UserProfileFollowerListViewModel.swift in Sources */,
 				66A237C8281709FC00CA3763 /* YBTextPicker.swift in Sources */,
 				04A2E4B7295607C100A46A55 /* DarkModeViewModifier.swift in Sources */,
 				048672642862067C00582275 /* MDPDayOfMonth.swift in Sources */,

@@ -34,7 +34,7 @@ enum APIEndPoint: String {
     case uploadProfilePic = "/profile/userProfilePic"
     case uploadBgProfilePic = "profile/userBgProfilePic"
     case updateUserEmail = "requestToChangeEmail"
-    
+    case userFollowerList = "follow/getFollowersList/%d/%d/%@" // {Page}/{PerPage}/{UserId}
     // settings
     case updateLanguage = "profile/updateProfileLanguage"
     case updateCurrency = "profile/updateProfileCurrency"
